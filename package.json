@@ -1,0 +1,73 @@
+{
+  "name": "bookit-client-react",
+  "author": "BuildIt",
+  "version": "0.0.1",
+  "description": "A client for Bookit written in javascript with the React framework",
+  "main": "index.js",
+  "license": "Apache-2.0",
+  "contributors": [
+    { "name": "frostiebot" }
+  ],
+  "devDependencies": {
+    "autoprefixer": "^7.1.4",
+    "babel-core": "^6.26.0",
+    "babel-eslint": "^8.0.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "browserslist": "^2.4.0",
+    "chai": "^4.1.2",
+    "chai-enzyme": "^0.8.0",
+    "css-loader": "^0.28.7",
+    "enzyme": "^2.9.1",
+    "eslint": "^4.7.2",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
+    "file-loader": "^0.11.2",
+    "html-webpack-plugin": "^2.30.1",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^21.1.0",
+    "node-sass": "^4.5.3",
+    "postcss-loader": "^2.0.6",
+    "react-hot-loader": "next",
+    "react-test-renderer": "^15.6.1",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "stylelint": "^8.1.1",
+    "url-loader": "^0.5.9",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.8.2",
+    "webpack-merge": "^4.1.0"
+  },
+  "dependencies": {
+    "history": "^4.7.2",
+    "immutable": "^3.8.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-redux": "^5.0.6",
+    "react-router-redux": "next",
+    "redux": "^3.7.2",
+    "redux-actions": "^2.2.1",
+    "redux-saga": "^0.15.6",
+    "reselect": "^3.0.1",
+    "reselect-immutable-helpers": "^1.2.2"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --hot",
+    "build": "webpack",
+    "lint:js": "eslint src/ --cache",
+    "lint:style": "stylelint src/**/*.scss src/**/*.css",
+    "test": "jest -c .jestrc.json",
+    "test:watch": "jest -c .jestrc.json --watch",
+    "test:coverage": "jest -c .jestrc.json --coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/buildit/bookit-client-react.git"
+  }
+}
