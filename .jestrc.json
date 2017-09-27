@@ -2,19 +2,19 @@
   "moduleNameMapper": {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
     "^[./a-zA-Z0-9!&$_-]+\\.(css|scss)$": "identity-obj-proxy",
-    "^ActionTypes(.*)$": "<rootDir>/src/constants/actionTypes",
-    "^Actions(.*)$": "<rootDir>/src/actions",
-    "^Reducers(.*)$": "<rootDir>/src/reducers",
-    "^Selectors(.*)$": "<rootDir>/src/selectors",
-    "^Sagas(.*)$": "<rootDir>/src/sagas",
-    "^Store(.*)$": "<rootDir>/src/store",
-    "^History(.*)$": "<rootDir>/src/history",
-    "^Routes(.*)$": "<rootDir>/src/routes",
-    "^Components(.*)$": "<rootDir>/src/components",
-    "^Containers(.*)$": "<rootDir>/src/containers",
-    "^Utils(.*)$": "<rootDir>/src/utils",
-    "^Styles(.*)$": "<rootDir>/src/styles",
-    "^Api(.*)$": "<rootDir>/src/api"
+    "^ActionTypes$": "<rootDir>/src/constants/actionTypes",
+    "^Actions$": "<rootDir>/src/actions",
+    "^Reducers$": "<rootDir>/src/reducers",
+    "^Selectors$": "<rootDir>/src/selectors",
+    "^Sagas$": "<rootDir>/src/sagas",
+    "^Store$": "<rootDir>/src/store",
+    "^History$": "<rootDir>/src/history",
+    "^Routes$": "<rootDir>/src/routes",
+    "^Components$": "<rootDir>/src/components",
+    "^Containers$": "<rootDir>/src/containers",
+    "^Utils$": "<rootDir>/src/utils",
+    "^Styles$": "<rootDir>/src/styles",
+    "^Api$": "<rootDir>/src/api"
   },
   "testPathIgnorePatterns": [
     "<rootDir>/(build|docs|node_modules|images)/"

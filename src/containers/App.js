@@ -1,7 +1,12 @@
 import React from 'react'
 
+import PingButton from 'Components/PingButton'
+
 const App = () => (
-  <h2>HOWBOWDAH?</h2>
+  <div>
+    <h2>HOWBOWDAH?</h2>
+    <PingButton>WAAAAGH</PingButton>
+  </div>
 )
 
 export default App

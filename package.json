@@ -70,7 +70,7 @@
     "analyze": "NODE_ENV=production webpack --env=production --config webpack.prod.js --profile --json > webpack.stats.json",
     "lint": "eslint src/ --cache",
     "lint:style": "stylelint src/**/*.scss src/**/*.css",
-    "test": "jest -c .jestrc.json --coverage",
+    "test": "jest -c .jestrc.json",
     "test:watch": "jest -c .jestrc.json --watch"
   },
   "repository": {
