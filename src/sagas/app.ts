@@ -1,7 +1,7 @@
 import { fork, put, takeEvery } from 'redux-saga/effects'
 
-import * as ActionTypes from 'ActionTypes'
-import { pingSuccess, pingFailure } from 'Actions'
+import { PING_REQUEST } from '../constants/actionTypes'
+import { pingSuccess, pingFailure } from '../actions'
 
 export function* ping() {
   try {
@@ -12,7 +12,7 @@ export function* ping() {
 }
 
 export function* watchPing() {
-  yield takeEvery(ActionTypes.PING_REQUEST, ping)
+  yield takeEvery(PING_REQUEST, ping)
 }
 
 export default function* app() {

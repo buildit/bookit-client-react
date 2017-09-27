@@ -7,10 +7,15 @@ const postcssReporter = require('postcss-reporter')
 
 const HTMLPlugin = require('html-webpack-plugin')
 
-const babelLoaderRule = {
+const javascriptLoaderRule = {
+  enforce: "pre",
   test: /\.js$/,
-  exclude: [ /node_modules/ ],
-  loader: 'babel-loader?cacheDirectory',
+  loader: 'source-map-loader',
+}
+
+const typescriptLoaderRule = {
+  test: /\.tsx?$/,
+  loader: 'awesome-typescript-loader',
 }
 
 const lintStylesRule = {
@@ -61,7 +66,9 @@ module.exports = {
 
       Api: path.join(__dirname, 'src/api'),
       // assets: path.join(__dirname, 'src/assets'),
+
     },
+    extensions: [".ts", ".tsx", ".js", ".json"],
   },
   entry: {},
   output: {},
@@ -78,7 +85,8 @@ module.exports = {
   ],
   module: {
     rules: [
-      babelLoaderRule,
+      javascriptLoaderRule,
+      typescriptLoaderRule,
       lintJavascriptRule,
       lintStylesRule,
       assetsRule,

@@ -1,8 +1,8 @@
-import React from 'react'
+import * as React from 'react'
 
 import { Route } from 'react-router'
 
-import App from 'Containers/App'
+import App from './containers/App'
 
 const createRoutes = () => (
   <Route path="/" component={App} />

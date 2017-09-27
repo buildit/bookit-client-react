@@ -1,6 +1,6 @@
-import { createReducer } from 'Utils'
+import { createReducer } from '../utils'
 
-import * as ActionTypes from 'ActionTypes'
+import * as ActionTypes from '../constants/actionTypes'
 
 export const pingStatus = createReducer(false, {
   [ActionTypes.PING_REQUEST]: () => false,

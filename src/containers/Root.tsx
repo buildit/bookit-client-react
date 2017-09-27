@@ -1,25 +1,26 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import * as React from 'react'
+import * as PropTypes from 'prop-types'
 
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'react-router-redux'
 
-import createRoutes from 'Routes'
+import createRoutes from '../routes'
 
 const routes = createRoutes()
 
+// TODO: Set types correctly
+interface Props {
+  store: any;
+  history: any;
+}
+
 /* istanbul ignore next */
-const Root = ({ store, history }) => (
+const Root = ({ store, history }: Props) => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
       { routes }
     </ConnectedRouter>
   </Provider>
 )
-
-Root.propTypes = {
-  store: PropTypes.object.isRequired,
-  history: PropTypes.object.isRequired,
-}
 
 export default Root
