@@ -1,8 +1,8 @@
 import { fork, put, takeEvery } from 'redux-saga/effects'
 import { cloneableGenerator } from 'redux-saga/utils'
 
-import * as ActionTypes from '../constants/actionTypes'
-import { pingSuccess, pingFailure } from '../actions'
+import * as ActionTypes from 'ActionTypes'
+import { pingSuccess, pingFailure } from 'Actions'
 
 import app, { watchPing, ping } from './app'
 

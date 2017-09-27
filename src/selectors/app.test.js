@@ -7,6 +7,7 @@ describe('selectors/app', () => {
       const state = { pingStatus: true }
       expect(getPingStatus(state)).to.be.true
     })
+
     it('returns false when state is false', () => {
       const state = { pingStatus: false }
       expect(getPingStatus(state)).to.be.false

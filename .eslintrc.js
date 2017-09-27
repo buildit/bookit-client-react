@@ -1,4 +1,6 @@
-{
+const path = require('path')
+
+module.exports = {
   "parser": "babel-eslint",
   "env": {
     "node": true,
@@ -12,15 +14,22 @@
     "chai": true,
     "fixture": true
   },
-  "plugins": [
-    "import",
-    "react"
-  ],
   "extends": [
     "eslint:recommended",
     "plugin:import/errors",
     "plugin:react/recommended"
   ],
+  "plugins": [
+    "import",
+    "react"
+  ],
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": path.resolve(__dirname, "webpack.config.js")
+      }
+    }
+  },
   "rules": {
     "semi": [ 2, "never" ],
     "indent": [ 2, 2 ],

@@ -1,6 +1,6 @@
 import { createAction } from 'redux-actions'
 
-import * as ActionTypes from '../constants/actionTypes'
+import * as ActionTypes from 'ActionTypes'
 
 export const pingRequest = createAction(ActionTypes.PING_REQUEST)
 export const pingSuccess = createAction(ActionTypes.PING_SUCCESS)

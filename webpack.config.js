@@ -1,97 +1,88 @@
 const path = require('path')
 
 const webpack = require('webpack')
-const HTMLWebpackPlugin = require('html-webpack-plugin')
+
+const stylelint = require('stylelint')
+const postcssReporter = require('postcss-reporter')
+
+const HTMLPlugin = require('html-webpack-plugin')
+
+const babelLoaderRule = {
+  test: /\.js$/,
+  exclude: [ /node_modules/ ],
+  loader: 'babel-loader?cacheDirectory',
+}
+
+const lintStylesRule = {
+  test: /\.(sass|scss|css)$/,
+  enforce: 'pre',
+  loader: 'postcss-loader',
+  options: { plugins: () => ([ stylelint(), postcssReporter({ clearMessages: true }) ]) },
+}
+
+const lintJavascriptRule = {
+  test: /\.js$/,
+  include: [ path.join(__dirname, 'src') ],
+  exclude: [ /node_modules/ ],
+  enforce: 'pre',
+  use: [ 'eslint-loader' ],
+}
+
+const assetsRule = {
+  test: /\.(jpg|jpeg|png|gif|eot|svg|ttf|woff|woff2)$/,
+  use: [ { loader: 'url-loader', options: { limit: 20000 } } ],
+}
+
+const htmlRule = {
+  test: /\.html$/,
+  use: [ { loader: 'file-loader?name=[name].[ext]' } ],
+}
 
 module.exports = {
-  entry: {
-    app: [
-      'react-hot-loader/patch',  // TODO - ignore if NOT development
-      './src/client.js',
-    ],
+  // MAKE IMPORTS GREAT AGAIN!
+  resolve: {
+    alias: {
+      ActionTypes: path.join(__dirname, 'src/constants/actionTypes'),
+      Actions: path.join(__dirname, 'src/actions'),
+      Reducers: path.join(__dirname, 'src/reducers'),
+      Selectors: path.join(__dirname, 'src/selectors'),
+      Sagas: path.join(__dirname, 'src/sagas'),
+
+      Store: path.join(__dirname, 'src/store'),
+      History: path.join(__dirname, 'src/history'),
+      Routes: path.join(__dirname, 'src/routes'),
+
+      Components: path.join(__dirname, 'src/components'),
+      Containers: path.join(__dirname, 'src/containers'),
+
+      Utils: path.join(__dirname, 'src/utils'),
+
+      Styles: path.join(__dirname, 'src/styles'),
+
+      Api: path.join(__dirname, 'src/api'),
+      // assets: path.join(__dirname, 'src/assets'),
+    },
   },
-  devtool: 'inline-source-map',
-  devServer: {
-    contentBase: './src',
-    hot: true,
-    port: 3001,
-    historyApiFallback: { verbose: true },
-  },
+  entry: {},
+  output: {},
   plugins: [
     new webpack.NoEmitOnErrorsPlugin,
-    new webpack.NamedModulesPlugin,
-    // new webpack.HotModuleReplacementPlugin,  // This causes trouble when the npm start script include `--hot`
     new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('development'),
-      },
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
     }),
-    new HTMLWebpackPlugin({
+    new HTMLPlugin({
       template: './src/index.ejs',
       filename: 'index.html',
       inject: 'body',
     }),
   ],
-  output: {
-    filename: '[name].bundle.js',
-    path: path.resolve(__dirname, 'dist'),
-  },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        exclude: [/node_modules/],
-        loader: 'babel-loader',
-      },
-      {
-        test: /\.(sass|scss|css)$/,
-        use: [
-          {
-            loader: 'style-loader',
-            options: { sourceMap: true },
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              sourceMap: true,
-              modules: true,
-              camelCase: 'only',
-              localIdentName: '[name]-[local]--[hash:base64:5]',
-              importLoaders: 2,
-            },
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              sourceMap: true,
-              plugins: () => ([
-                require('autoprefixer')(),
-              ]),
-            },
-          },
-          {
-            loader: 'sass-loader',
-            options: { sourceMap: true },
-          },
-        ],
-      },
-      {
-        test: /\.(jpg|jpeg|png|gif|eot|svg|ttf|woff|woff2)$/,
-        use: [
-          {
-            loader: 'url-loader',
-            options: { limit: 20000 },
-          },
-        ],
-      },
-      {
-        test: /\.html$/,
-        use: [
-          {
-            loader: 'file-loader?name=[name].[ext]',
-          },
-        ],
-      },
+      babelLoaderRule,
+      lintJavascriptRule,
+      lintStylesRule,
+      assetsRule,
+      htmlRule,
     ],
   },
 }

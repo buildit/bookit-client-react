@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'react-router-redux'
 
-import createRoutes from '../routes'
+import createRoutes from 'Routes'
 
 const routes = createRoutes()
 

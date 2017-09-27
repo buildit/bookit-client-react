@@ -3,12 +3,12 @@ import ReactDOM from 'react-dom'
 
 import { AppContainer } from 'react-hot-loader'
 
-import store from './store'
-import history from './history'
+import store from 'Store'
+import history from 'History'
 
-import Root from './containers/Root'
+import Root from 'Containers/Root'
 
-import './styles/client.scss'
+import 'Styles/client.scss'
 
 const render = (RootComponent) => {
   ReactDOM.render(

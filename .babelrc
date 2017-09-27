@@ -1,5 +1,18 @@
 {
-  "presets": [ [ "env", { "modules": false } ], "react" ],
+  "presets": [ [ "env", {
+    "targets": {
+      "browsers": [
+        "last 2 chrome versions",
+        "last 2 firefox versions",
+        "last 2 safari versions",
+        "explorer >= 11",
+        "edge > 0"
+      ]
+    },
+    "useBuiltIns": true,
+    "modules": false,
+    "debug": false,
+  } ], "react" ],
   "plugins": [
     "react-hot-loader/babel",
     "transform-class-properties",

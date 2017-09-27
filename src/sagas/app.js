@@ -1,7 +1,7 @@
 import { fork, put, takeEvery } from 'redux-saga/effects'
 
-import * as ActionTypes from '../constants/actionTypes'
-import { pingSuccess, pingFailure } from '../actions'
+import * as ActionTypes from 'ActionTypes'
+import { pingSuccess, pingFailure } from 'Actions'
 
 export function* ping() {
   try {

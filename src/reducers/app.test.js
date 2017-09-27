@@ -1,6 +1,6 @@
 import { pingStatus } from './app'
 
-import { pingRequest, pingSuccess, pingFailure } from '../actions/app'
+import { pingRequest, pingSuccess, pingFailure } from 'Actions/app'
 
 describe('reducers/app', () => {
   describe('#pingStatus(state, action)', () => {
