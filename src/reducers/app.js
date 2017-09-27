@@ -8,6 +8,12 @@ export const pingStatus = createReducer(false, {
   [ActionTypes.PING_FAILURE]: () => false,
 })
 
+export const requestInProgress = createReducer(false, {
+  [ActionTypes.PING_REQUEST]: () => true,
+  [ActionTypes.PING_COMPLETE]: () => false,
+})
+
 export default {
   pingStatus,
+  requestInProgress,
 }

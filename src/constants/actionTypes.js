@@ -1,3 +1,4 @@
 export const PING_REQUEST = 'PING_REQUEST'
+export const PING_COMPLETE = 'PING_COMPLETE'
 export const PING_SUCCESS = 'PING_SUCCESS'
 export const PING_FAILURE = 'PING_FAILURE'
