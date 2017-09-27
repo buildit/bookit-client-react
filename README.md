@@ -6,9 +6,9 @@ This is the front end for Bookit, a room booking app created by Buildit. It runs
 ## Quick start
 
 ```
-# brew install yarn # if you don't already have it.
+brew install yarn # If you don't already have it
 
-yarn #Install dependencies
-yarn start #Run the app in dev mode on localhost:3001
+yarn # Install dependencies
+yarn start # Run the app in dev mode on localhost:3001
 ```
 
