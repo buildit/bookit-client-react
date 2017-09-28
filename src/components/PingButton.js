@@ -29,7 +29,7 @@ export class PingButton extends Component {
   render() {
     return (
       <div>
-        <Button disabled={this.props.requestInProgress} onClick={this.handleClick}>
+        <Button id="bookit" disabled={this.props.requestInProgress} onClick={this.handleClick}>
           Ping Server
         </Button>
         { this.props.pingStatus && <span>SERVER IS ALIVE!</span> }
