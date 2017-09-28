@@ -46,3 +46,7 @@ $ yarn build
 # Outputs webpack.stats.json for use with any bundle analyzer
 $ yarn analyze
 ```
+
+## Contributing
+
+See [Contributing](./docs/CONTRIBUTING.md)
