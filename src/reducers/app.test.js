@@ -1,10 +1,10 @@
-import { pingStatus } from './app'
+import { pingStatus, requestInProgress } from './app'
 
-import { pingRequest, pingSuccess, pingFailure } from 'Actions/app'
+import { pingRequest, pingComplete, pingSuccess, pingFailure } from 'Actions/app'
 
 describe('reducers/app', () => {
-  describe('#pingStatus(state, action)', () => {
 
+  describe('#pingStatus(state, action)', () => {
     it('returns false on PING_REQUEST', () => {
       const state = pingStatus(true, pingRequest())
       expect(state).to.be.false
@@ -26,4 +26,22 @@ describe('reducers/app', () => {
     })
 
   })
+
+  describe('#requestInProgress(state, action)', () => {
+    it('returns true on PING_REQUEST', () => {
+      const state = requestInProgress(false, pingRequest())
+      expect(state).to.be.true
+    })
+
+    it('returns false on PING_COMPLETE', () => {
+      const state = requestInProgress(true, pingComplete())
+      expect(state).to.be.false
+    })
+
+    it('returns initialState when passed an unhandled action', () => {
+      const state = requestInProgress(false, { type: 'LEMON_CURRY' })
+      expect(state).to.be.false
+    })
+  })
+
 })

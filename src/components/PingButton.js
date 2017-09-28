@@ -8,7 +8,8 @@ import { getPingStatus, getRequestInProgress } from 'Selectors'
 
 import Button from './Button'
 
-class PingButton extends Component {
+// NOTE: This is note a great example of composing a component with connect and a base component, but oh wellz.
+export class PingButton extends Component {
   static propTypes = {
     pingRequest: PropTypes.func,
     pingStatus: PropTypes.bool,
@@ -37,11 +38,10 @@ class PingButton extends Component {
   }
 }
 
-
+/* istanbul ignore next */
 const mapStateToProps = state => ({
   pingStatus: getPingStatus(state),
   requestInProgress: getRequestInProgress(state),
 })
-// const mapStateToProps = (state, ownProps) => ({ ...state, ...ownProps })
 
 export default connect(mapStateToProps, { pingRequest })(PingButton)

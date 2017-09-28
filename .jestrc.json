@@ -22,8 +22,11 @@
   "testEnvironment": "jsdom",
   "testRegex": "\\.test.js$",
   "collectCoverageFrom": [
-    "**/src/*.js",
-    "**/src/**/*.js"
+    "!src/**/index.js",
+    "!src/store/*",
+    "!src/history/*",
+    "src/*.js",
+    "src/**/*.js"
   ],
   "coverageReporters": [
     "html",
