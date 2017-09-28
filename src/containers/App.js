@@ -1,11 +1,10 @@
 import React from 'react'
 
-import PingButton from 'Components/PingButton'
+import BookingButton from 'Components/BookingButton'
 
 const App = () => (
   <div>
-    <h2>HOWBOWDAH?</h2>
-    <PingButton />
+    <BookingButton />
   </div>
 )
 

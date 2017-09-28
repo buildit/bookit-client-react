@@ -1,7 +1,7 @@
 import { fork } from 'redux-saga/effects'
 
-import app from './app'
+import booking from './booking'
 
 export default function* root() {
-  yield fork(app)
+  yield fork(booking)
 }
