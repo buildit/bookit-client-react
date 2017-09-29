@@ -17,11 +17,13 @@ const newStore = (initialState = {}) => {
     applyMiddleware(sagaMiddleware, routerMiddleware(history))
   )(createStore)
 
-  // TODO: set up redux dev tools
-  const store = createStoreWithMiddleware(
+  const enhancer = (window as any).__REDUX_DEVTOOLS_EXTENSION__
+    ? (window as any).__REDUX_DEVTOOLS_EXTENSION__()(createStoreWithMiddleware)
+    : createStoreWithMiddleware
+
+  const store = enhancer(
     makeRootReducer(rootReducer),
     initialState
-    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 
   sagaMiddleware.run(rootSagas)
