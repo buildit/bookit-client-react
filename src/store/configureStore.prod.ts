@@ -3,10 +3,10 @@ import createSagaMiddleware from 'redux-saga'
 
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 
-import rootSagas from '../sagas'
-import rootReducer from '../reducers'
+import rootSagas from 'Sagas'
+import rootReducer from 'Reducers'
 
-import history from '../history'
+import history from 'History'
 
 const reducer = combineReducers({ ...rootReducer, router: routerReducer })
 const sagaMiddleware = createSagaMiddleware()

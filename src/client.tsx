@@ -3,8 +3,8 @@ import * as ReactDOM from "react-dom"
 
 import { Hello } from "./Hello"
 import Root from './containers/Root'
-import store from './store'
-import history from './history'
+import store from 'Store'
+import history from 'History'
 
 import { AppContainer } from 'react-hot-loader'
 
@@ -23,5 +23,5 @@ const render = (RootComponent: any) => {
 render(Root)
 
 // if (module.hot) {
-//   module.hot.accept('./containers/Root', () => render(Hello))
+//   module.hot.accept('Containers/Root', () => render(Hello))
 // }

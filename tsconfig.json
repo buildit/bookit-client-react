@@ -6,9 +6,22 @@
         "module": "commonjs",
         "target": "es5",
         "jsx": "react",
-        "lib": ["dom", "es2015", "esnext.asynciterable"]
-    },
-    "include": [
-        "./src/**/*"
-    ]
+        "lib": ["dom", "es2015", "esnext.asynciterable"],
+        "baseUrl": ".",
+        "paths": {
+          "ActionTypes": [ "src/constants/actionTypes" ],
+          "Actions": [ "src/actions" ],
+          "Reducers": [ "src/reducers" ],
+          "Selectors": [ "src/selectors" ],
+          "Sagas": [ "src/sagas" ],
+          "Store": [ "src/store" ],
+          "History": [ "src/history" ],
+          "Routes": [ "src/routes" ],
+          "Utils": [ "src/utils" ],
+          "Api": [ "src/api" ],
+          "Components/*": [ "src/components/*" ],
+          "Containers/*": [ "src/containers/*" ],
+          "Styles/*": [ "src/styles/*" ]
+        }
+    }
 }

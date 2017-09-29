@@ -2,7 +2,7 @@ import * as React from 'react'
 
 import { Route } from 'react-router'
 
-import App from './containers/App'
+import App from 'Containers/App'
 
 const createRoutes = () => (
   <Route path="/" component={App} />
