@@ -5,12 +5,19 @@ const webpack = require('webpack')
 const stylelint = require('stylelint')
 const postcssReporter = require('postcss-reporter')
 
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader')
 const HTMLPlugin = require('html-webpack-plugin')
 
 const babelLoaderRule = {
   test: /\.js$/,
   exclude: [ /node_modules/ ],
   loader: 'babel-loader?cacheDirectory',
+}
+
+const typescriptLoaderRule = {
+  test: /\.tsx?$/,
+  exclude: [ /node_modules/ ],
+  use: [ 'babel-loader', 'awesome-typescript-loader' ],
 }
 
 const lintStylesRule = {
@@ -41,27 +48,10 @@ const htmlRule = {
 module.exports = {
   // MAKE IMPORTS GREAT AGAIN!
   resolve: {
-    alias: {
-      ActionTypes: path.join(__dirname, 'src/constants/actionTypes'),
-      Actions: path.join(__dirname, 'src/actions'),
-      Reducers: path.join(__dirname, 'src/reducers'),
-      Selectors: path.join(__dirname, 'src/selectors'),
-      Sagas: path.join(__dirname, 'src/sagas'),
-
-      Store: path.join(__dirname, 'src/store'),
-      History: path.join(__dirname, 'src/history'),
-      Routes: path.join(__dirname, 'src/routes'),
-
-      Components: path.join(__dirname, 'src/components'),
-      Containers: path.join(__dirname, 'src/containers'),
-
-      Utils: path.join(__dirname, 'src/utils'),
-
-      Styles: path.join(__dirname, 'src/styles'),
-
-      Api: path.join(__dirname, 'src/api'),
-      // assets: path.join(__dirname, 'src/assets'),
-    },
+    plugins: [
+      new TsConfigPathsPlugin,
+    ],
+    extensions: [ '.ts', '.tsx', '.js', '.json' ],
   },
   entry: {},
   output: {},
@@ -78,6 +68,7 @@ module.exports = {
   ],
   module: {
     rules: [
+      typescriptLoaderRule,
       babelLoaderRule,
       lintJavascriptRule,
       lintStylesRule,
