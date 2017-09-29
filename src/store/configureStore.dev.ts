@@ -20,7 +20,7 @@ const newStore = (initialState = {}) => {
   // TODO: set up redux dev tools
   const store = createStoreWithMiddleware(
     makeRootReducer(rootReducer),
-    initialState,
+    initialState
     // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
   )
 

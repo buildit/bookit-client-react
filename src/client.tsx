@@ -1,7 +1,6 @@
-import * as React from "react"
-import * as ReactDOM from "react-dom"
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
-import { Hello } from "./Hello"
 import Root from './containers/Root'
 import store from 'Store'
 import history from 'History'

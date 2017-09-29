@@ -21,12 +21,12 @@ const lintStylesRule = {
   options: { plugins: () => ([ stylelint(), postcssReporter({ clearMessages: true }) ]) },
 }
 
-const lintJavascriptRule = {
-  test: /\.js$/,
+const lintTypescriptRule = {
+  test: /\.tsx?$/,
   include: [ path.join(__dirname, 'src') ],
   exclude: [ /node_modules/ ],
   enforce: 'pre',
-  use: [ 'eslint-loader' ],
+  use: [ 'tslint-loader' ],
 }
 
 const assetsRule = {
@@ -63,7 +63,7 @@ module.exports = {
   module: {
     rules: [
       typescriptLoaderRule,
-      lintJavascriptRule,
+      lintTypescriptRule,
       lintStylesRule,
       assetsRule,
       htmlRule,

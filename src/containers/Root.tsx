@@ -9,13 +9,13 @@ import createRoutes from 'Routes'
 const routes = createRoutes()
 
 // TODO: Set types correctly
-interface Props {
-  store: any;
-  history: any;
+interface RootProps {
+  store: any
+  history: any
 }
 
 /* istanbul ignore next */
-const Root = ({ store, history }: Props) => (
+const Root = ({ store, history }: RootProps) => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
       { routes }
