@@ -7,7 +7,7 @@ export function* ping() {
   try {
     yield put(pingSuccess())
   } catch (error) {
-    yield put(pingFailure(error))
+    yield put(pingFailure())
   }
 }
 
