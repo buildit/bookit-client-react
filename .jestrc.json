@@ -20,7 +20,7 @@
     "<rootDir>/(build|docs|node_modules|images)/"
   ],
   "testEnvironment": "jsdom",
-  "testRegex": "\\.test.js$",
+  "testRegex": "\\.test.ts$",
   "collectCoverageFrom": [
     "**/src/*.js",
     "**/src/**/*.js"
@@ -37,5 +37,15 @@
   "setupFiles": [
     "<rootDir>/test/__mocks__/storageMock.js"
   ],
-  "verbose": true
+  "verbose": true,
+  "moduleFileExtensions": [
+    "ts",
+    "tsx",
+    "js",
+    "jsx",
+    "json"
+  ],
+  "transform": {
+    "\\.(ts|tsx)$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+  }
 }

@@ -1,8 +1,8 @@
 import { fork, put, takeEvery } from 'redux-saga/effects'
 import { cloneableGenerator } from 'redux-saga/utils'
 
-import * as ActionTypes from 'ActionTypes'
-import { pingSuccess, pingFailure } from 'Actions'
+import * as ActionTypes from '../constants/actionTypes'
+import { pingSuccess, pingFailure } from '../actions'
 
 import app, { watchPing, ping } from './app'
 
@@ -12,8 +12,8 @@ describe('sagas/app', () => {
       const saga = app()
       const expected = fork(watchPing)
 
-      expect(saga.next().value).to.deep.equal(expected)
-      expect(saga.next().done).to.be.true
+      expect(saga.next().value).toEqual(expected)
+      expect(saga.next().done).toEqual(true)
     })
   })
 
@@ -22,8 +22,8 @@ describe('sagas/app', () => {
       const saga = watchPing()
       const expected = takeEvery(ActionTypes.PING_REQUEST, ping)
 
-      expect(saga.next().value).to.deep.equal(expected)
-      expect(saga.next().done).to.be.true
+      expect(saga.next().value).toEqual(expected)
+      expect(saga.next().done).toEqual(true)
     })
   })
 
@@ -33,13 +33,13 @@ describe('sagas/app', () => {
       const errorSaga = saga.clone()
       const error = {}
 
-      expect(saga.next().value).to.deep.equal(put(pingSuccess()))
-      expect(saga.next().done).to.be.true
+      expect(saga.next().value).toEqual(put(pingSuccess()))
+      expect(saga.next().done).toEqual(true)
 
       errorSaga.next()
 
-      expect(errorSaga.throw(error).value).to.deep.equal(put(pingFailure(error)))
-      expect(errorSaga.next().done).to.be.true
+      expect(errorSaga.throw(error).value).toEqual(put(pingFailure()))
+      expect(errorSaga.next().done).toEqual(true)
     })
   })
 })

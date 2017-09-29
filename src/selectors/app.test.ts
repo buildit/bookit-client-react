@@ -5,12 +5,12 @@ describe('selectors/app', () => {
   describe('#getPingStatus(state)', () => {
     it('returns true when state is true', () => {
       const state = { pingStatus: true }
-      expect(getPingStatus(state)).to.be.true
+      expect(getPingStatus(state)).toEqual(true)
     })
 
     it('returns false when state is false', () => {
       const state = { pingStatus: false }
-      expect(getPingStatus(state)).to.be.false
+      expect(getPingStatus(state)).toEqual(false)
     })
   })
 

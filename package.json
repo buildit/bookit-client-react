@@ -55,6 +55,10 @@
     "webpack-merge": "^4.1.0"
   },
   "dependencies": {
+    "@types/chai": "^4.0.4",
+    "@types/chai-enzyme": "^0.6.3",
+    "@types/enzyme": "^2.8.9",
+    "@types/jest": "^21.1.1",
     "@types/node": "^8.0.31",
     "@types/prop-types": "^15.5.2",
     "@types/react": "^16.0.7",
@@ -74,7 +78,8 @@
     "redux-actions": "^2.2.1",
     "redux-saga": "^0.15.6",
     "reselect": "^3.0.1",
-    "reselect-immutable-helpers": "^1.2.2"
+    "reselect-immutable-helpers": "^1.2.2",
+    "ts-jest": "^21.0.1"
   },
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server --env=development --config webpack.dev.js --hot ",
@@ -82,7 +87,7 @@
     "analyze": "NODE_ENV=production webpack --env=production --config webpack.prod.js --profile --json > webpack.stats.json",
     "lint": "eslint src/ --cache",
     "lint:style": "stylelint src/**/*.scss src/**/*.css",
-    "test": "jest -c .jestrc.json --coverage",
+    "test": "jest -c .jestrc.json",
     "test:watch": "jest -c .jestrc.json --watch"
   },
   "repository": {
