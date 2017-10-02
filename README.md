@@ -27,6 +27,11 @@ $ yarn test:watch
 ```
 To run unit tests
 
+### Run end-to-end UI testing
+```
+yarn cucumber
+```
+
 ## Linting
 
 ```
