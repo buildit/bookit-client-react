@@ -48,3 +48,6 @@ Thumbs.db
 
 # Ignore webpack stats
 webpack.stats.json
+
+# Ignore npm files since we're using yarn
+package-lock.json
