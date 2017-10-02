@@ -48,3 +48,4 @@ Thumbs.db
 
 # Ignore webpack stats
 webpack.stats.json
+
