@@ -15,7 +15,7 @@ const extractText = new ExtractText({ filename: '[name].[contenthash:8].css', di
 
 const prod = {
   entry: {
-    app: './src/client.js',
+    app: './src/client.tsx',
     vendor: [ 'react' ],
   },
   output: {

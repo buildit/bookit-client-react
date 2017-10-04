@@ -11,22 +11,25 @@ import history from 'History'
 const sagaMiddleware = createSagaMiddleware()
 
 const newStore = (initialState = {}) => {
-  const makeRootReducer = reducers => combineReducers({ ...reducers, router: routerReducer })
+  const makeRootReducer = (reducers: any) => combineReducers({ ...reducers, router: routerReducer })
 
   const createStoreWithMiddleware = compose(
     applyMiddleware(sagaMiddleware, routerMiddleware(history))
   )(createStore)
 
-  const store = createStoreWithMiddleware(
+  const enhancer = (window as any).__REDUX_DEVTOOLS_EXTENSION__
+    ? (window as any).__REDUX_DEVTOOLS_EXTENSION__()(createStoreWithMiddleware)
+    : createStoreWithMiddleware
+
+  const store = enhancer(
     makeRootReducer(rootReducer),
-    initialState,
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    initialState
   )
 
   sagaMiddleware.run(rootSagas)
 
   if (module.hot) {
-    module.hot.accept('../reducers', () => store.replaceReducer(makeRootReducer(rootReducer)))
+    module.hot.accept('Reducers', () => store.replaceReducer(makeRootReducer(rootReducer)))
   }
 
   return store
