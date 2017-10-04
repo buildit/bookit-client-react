@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import * as React from 'react'
+import * as PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
@@ -8,24 +8,19 @@ import { getBookingStatus, getRequestInProgress } from 'Selectors'
 
 import Button from './Button'
 
-export class BookingButton extends Component {
-  static propTypes = {
-    bookingRequest: PropTypes.func,
-    bookingStatus: PropTypes.bool,
-    requestInProgress: PropTypes.bool,
-  }
+interface BookingButtonProps {
+  bookingRequest: () => void;
+  bookingStatus: any;
+  requestInProgress: boolean;
+}
 
+export class BookingButton extends React.Component<BookingButtonProps, {}> {
   constructor(props) {
     super(props)
     this.handleClick = this.handleClick.bind(this)
   }
 
-  handleClick(event) {
-    event.preventDefault()
-    this.props.bookingRequest()
-  }
-
-  render() {
+  public render() {
     return (
       <div>
         { !this.props.bookingStatus &&
@@ -37,10 +32,14 @@ export class BookingButton extends Component {
       </div>
     )
   }
+
+  private handleClick() {
+    this.props.bookingRequest()
+  }
 }
 
 /* istanbul ignore next */
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   bookingStatus: getBookingStatus(state),
   requestInProgress: getRequestInProgress(state),
 })
