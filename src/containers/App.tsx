@@ -7,7 +7,7 @@ const App = () => (
     <BookingButton bookingRequest={() => {console.log("Got request")}}
                    bookingStatus={false}
                    requestInProgress={false}/>
-    <ConnectedBookingButton  bookingRequest={() => {console.log("Got connected request")}}
+    <ConnectedBookingButton bookingRequest={() => {console.log("Got connected request")}}
                              bookingStatus={false}
                              requestInProgress={false}/>
   </div>

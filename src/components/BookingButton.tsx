@@ -8,12 +8,12 @@ import { getBookingStatus, getRequestInProgress } from 'Selectors'
 import Button from './Button'
 
 interface StateFromProps {
-  bookingStatus: boolean;
-  requestInProgress: boolean;
+  bookingStatus: boolean
+  requestInProgress: boolean
 }
 
 interface DispatchFromProps {
-  bookingRequest: any;
+  bookingRequest: any
 }
 
 interface BookingButtonProps extends StateFromProps, DispatchFromProps {
@@ -42,7 +42,6 @@ export class BookingButton extends React.Component<BookingButtonProps, {}> {
     this.props.bookingRequest()
   }
 }
-
 
 /* istanbul ignore next */
 const mapStateToProps = (state) => ({
