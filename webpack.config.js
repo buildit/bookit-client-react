@@ -5,29 +5,17 @@ const webpack = require('webpack')
 const stylelint = require('stylelint')
 const postcssReporter = require('postcss-reporter')
 
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader')
 const HTMLPlugin = require('html-webpack-plugin')
 
-const babelLoaderRule = {
-  test: /\.js$/,
-  exclude: [ /node_modules/ ],
-  loader: 'babel-loader?cacheDirectory',
-}
+const { TsConfigPathsPlugin } = require('awesome-typescript-loader')
 
-const typescriptLoaderRule = {
+const sourceLoaderRule = {
   test: /\.tsx?$/,
   exclude: [ /node_modules/ ],
-  use: [ 'babel-loader', 'awesome-typescript-loader' ],
+  use: [ 'babel-loader?cacheDirectory', 'awesome-typescript-loader' ],
 }
 
-const lintStylesRule = {
-  test: /\.(sass|scss|css)$/,
-  enforce: 'pre',
-  loader: 'postcss-loader',
-  options: { plugins: () => ([ stylelint(), postcssReporter({ clearMessages: true }) ]) },
-}
-
-const lintJavascriptRule = {
+const sourceLinterRule = {
   test: /\.js$/,
   include: [ path.join(__dirname, 'src') ],
   exclude: [ /node_modules/ ],
@@ -35,12 +23,19 @@ const lintJavascriptRule = {
   use: [ 'eslint-loader' ],
 }
 
-const assetsRule = {
+const styleLinterRule = {
+  test: /\.(sass|scss|css)$/,
+  enforce: 'pre',
+  loader: 'postcss-loader',
+  options: { plugins: () => ([ stylelint(), postcssReporter({ clearMessages: true }) ]) },
+}
+
+const assetsLoaderRule = {
   test: /\.(jpg|jpeg|png|gif|eot|svg|ttf|woff|woff2)$/,
   use: [ { loader: 'url-loader', options: { limit: 20000 } } ],
 }
 
-const htmlRule = {
+const htmlLoaderRule = {
   test: /\.html$/,
   use: [ { loader: 'file-loader?name=[name].[ext]' } ],
 }
@@ -68,12 +63,11 @@ module.exports = {
   ],
   module: {
     rules: [
-      typescriptLoaderRule,
-      babelLoaderRule,
-      lintJavascriptRule,
-      lintStylesRule,
-      assetsRule,
-      htmlRule,
+      sourceLoaderRule,
+      sourceLinterRule,
+      styleLinterRule,
+      assetsLoaderRule,
+      htmlLoaderRule,
     ],
   },
 }

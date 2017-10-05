@@ -1,6 +1,11 @@
 const chai = require('chai')
 const chaiEnzyme = require('chai-enzyme')
 
+const configure = require('enzyme').configure
+const Adapter = require('enzyme-adapter-react-16')
+
+configure({ adapter: new Adapter() })
+
 // Add enzyme-aware assertions to Chai
 chai.use(chaiEnzyme())
 
