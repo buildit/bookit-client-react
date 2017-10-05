@@ -1,10 +1,15 @@
 import React from 'react'
 
-import BookingButton from 'Components/BookingButton'
+import {ConnectedBookingButton, BookingButton} from 'Components/BookingButton'
 
 const App = () => (
   <div>
-    <BookingButton />
+    <BookingButton bookingRequest={() => {console.log("Got request")}}
+                   bookingStatus={false}
+                   requestInProgress={false}/>
+    <ConnectedBookingButton  bookingRequest={() => {console.log("Got connected request")}}
+                             bookingStatus={false}
+                             requestInProgress={false}/>
   </div>
 )
 
