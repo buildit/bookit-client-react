@@ -19,7 +19,6 @@ phases:
       - yarn
       - yarn lint
       - yarn test
-      - yarn cucumber
       - yarn build
       - docker build --tag "${REPOSITORY_URI}:${TAG}" .
 
