@@ -1,11 +1,9 @@
 {
   "compilerOptions": {
-    "allowJs": true,
-    "module": "es2015",
-    "target": "ES6",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "jsx": "Preserve",
+    "module": "ES6",
+    "jsx": "React",
+    "target": "ES6",
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "paths": {
@@ -31,5 +29,10 @@
   "exclude": [
     "**/*.test.ts*",
     "node_modules"
-  ]
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "silent": false,
+    "useBabel": true,
+    "useCache": true
+  }
 }

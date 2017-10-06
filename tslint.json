@@ -19,7 +19,21 @@
           }
         }
       ],
-      "import-spacing": true
+      "max-line-length": [ true, 420 ],
+      "import-spacing": true,
+      "no-shadowed-variable": [
+        true,
+        {
+          "class": true,
+          "enum": true,
+          "function": true,
+          "import": false,
+          "interface": true,
+          "namespace": true,
+          "typeAlias": true,
+          "typeParameter": true
+        }
+      ]
     },
     "rulesDirectory": []
 }

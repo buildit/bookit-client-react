@@ -49,3 +49,5 @@ Thumbs.db
 # Ignore webpack stats
 webpack.stats.json
 
+# Ignore awesome-typescript-loader cache
+.awcache

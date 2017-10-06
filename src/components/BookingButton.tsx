@@ -1,52 +1,44 @@
-import * as React from 'react'
+import React from 'react'
 
 import { connect } from 'react-redux'
 
 import { bookingRequest } from 'Actions'
 import { getBookingStatus, getRequestInProgress } from 'Selectors'
 
-import Button from './Button'
+import Button from 'Components/Button'
 
-interface StateFromProps {
+interface StateToProps {
   bookingStatus: boolean
   requestInProgress: boolean
 }
 
-interface DispatchFromProps {
-  bookingRequest: any
+interface SFCBookingButtonProps extends StateToProps {
+  handleBookingRequest: () => void
 }
 
-interface BookingButtonProps extends StateFromProps, DispatchFromProps {
-}
+export const BookingButton: React.SFC<SFCBookingButtonProps> = (props) => {
+  const { bookingStatus, requestInProgress, handleBookingRequest } = props
 
-export class BookingButton extends React.Component<BookingButtonProps, {}> {
-  constructor(props) {
-    super(props)
-    this.handleClick = this.handleClick.bind(this)
-  }
+  const handleClick = () => { handleBookingRequest() }
 
-  public render() {
-    return (
-      <div>
-        { !this.props.bookingStatus &&
-          <Button id="bookit" disabled={this.props.requestInProgress} onClick={this.handleClick}>
-            Book a Room!!!!
-          </Button>
-        }
-        { this.props.bookingStatus && <span>Booked!</span> }
-      </div>
-    )
-  }
-
-  private handleClick() {
-    this.props.bookingRequest()
-  }
+  return (
+    <div>
+      { !bookingStatus &&
+        <Button id="bookit" disabled={requestInProgress} onClick={handleClick}>
+          Book a Room
+        </Button>
+      }
+      { bookingStatus &&
+        <span>Booked!</span>
+      }
+    </div>
+  )
 }
 
 /* istanbul ignore next */
-const mapStateToProps = (state) => ({
+const mapStateToProps = (state: StateToProps) => ({
   bookingStatus: getBookingStatus(state),
   requestInProgress: getRequestInProgress(state),
 })
 
-export const ConnectedBookingButton: React.ComponentClass<BookingButtonProps> = connect<StateFromProps, DispatchFromProps, BookingButtonProps>(mapStateToProps, { bookingRequest })(BookingButton)
+export default connect(mapStateToProps, { handleBookingRequest: bookingRequest })(BookingButton)

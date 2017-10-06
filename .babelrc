@@ -12,7 +12,7 @@
     "useBuiltIns": true,
     "modules": false,
     "loose": true,
-    "debug": false,
+    "debug": true,
   } ], "react" ],
   "plugins": [
     "react-hot-loader/babel",
