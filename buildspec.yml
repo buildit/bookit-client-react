@@ -21,6 +21,7 @@ phases:
       - yarn test
       - yarn build
       - docker build --tag "${REPOSITORY_URI}:${TAG}" .
+      # - docker run -d -p 80:4200 --name bookit-client-container bookit-client
 
   post_build:
     commands:
