@@ -3,36 +3,42 @@ import createSagaMiddleware from 'redux-saga'
 
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 
-import rootSagas from 'Sagas'
 import rootReducer from 'Reducers'
+import rootSagas from 'Sagas'
 
 import history from 'History'
 
+const makeRootReducer = (reducers: any) => combineReducers({ ...reducers, router: routerReducer })
+
 const sagaMiddleware = createSagaMiddleware()
+const middlewares = [ routerMiddleware(history), sagaMiddleware ]
+const middlewareEnhancer = applyMiddleware(...middlewares)
 
-const newStore = (initialState = {}) => {
-  const makeRootReducer = (reducers: any) => combineReducers({ ...reducers, router: routerReducer })
+const storeEnhancers = []
 
-  const createStoreWithMiddleware = compose(
-    applyMiddleware(sagaMiddleware, routerMiddleware(history))
-  )(createStore)
+storeEnhancers.unshift(middlewareEnhancer)
 
-  const enhancer = (window as any).__REDUX_DEVTOOLS_EXTENSION__
-    ? (window as any).__REDUX_DEVTOOLS_EXTENSION__()(createStoreWithMiddleware)
-    : createStoreWithMiddleware
+export default (initialState = {}) => {
+  const composer = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+    : compose
 
-  const store = enhancer(
+  const store = createStore(
     makeRootReducer(rootReducer),
-    initialState
+    initialState,
+    composer(...storeEnhancers)
   )
 
-  sagaMiddleware.run(rootSagas)
+  let sagaTask = sagaMiddleware.run(rootSagas)
 
   if (module.hot) {
     module.hot.accept('Reducers', () => store.replaceReducer(makeRootReducer(rootReducer)))
+
+    module.hot.accept('Sagas', () => {
+      sagaTask.cancel()
+      sagaTask = sagaMiddleware.run(rootSagas)
+    })
   }
 
   return store
 }
-
-export default newStore

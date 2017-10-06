@@ -12,7 +12,7 @@ const { TsConfigPathsPlugin } = require('awesome-typescript-loader')
 const sourceLoaderRule = {
   test: /\.tsx?$/,
   exclude: [ /node_modules/ ],
-  use: [ 'babel-loader?cacheDirectory', 'awesome-typescript-loader' ],
+  use: [ 'awesome-typescript-loader' ],
 }
 
 const sourceLinterRule = {

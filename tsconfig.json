@@ -1,16 +1,10 @@
 {
   "compilerOptions": {
-    "diagnostics": true,
-    "allowJs": true,
-    "module": "ES6",
-    "target": "ES6",
     "moduleResolution": "node",
-    "sourceMap": true,
-    "jsx": "react",
+    "module": "ES6",
+    "jsx": "React",
+    "target": "ES6",
     "allowSyntheticDefaultImports": true,
-    "declaration": false,
-    "emitDecoratorMetadata": true,
-    "experimentalDecorators": true,
     "baseUrl": ".",
     "paths": {
       "ActionTypes": [ "src/constants/actionTypes" ],
@@ -37,7 +31,7 @@
     "node_modules"
   ],
   "awesomeTypescriptLoaderOptions": {
-    "silent": true,
+    "silent": false,
     "useBabel": true,
     "useCache": true
   }
