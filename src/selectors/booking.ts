@@ -1,1 +1,1 @@
-export const getBookingStatus = state => state.bookingStatus
+export const getBookingStatus = (state: any) => state.bookingStatus

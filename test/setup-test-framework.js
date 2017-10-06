@@ -1,6 +1,7 @@
 const chai = require('chai')
 const chaiEnzyme = require('chai-enzyme')
 
+// Jest + React 16 hate each other, so let's polyfill in some happiness
 require('./raf-polyfill')
 
 const configure = require('enzyme').configure

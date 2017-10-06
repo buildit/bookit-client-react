@@ -21,6 +21,8 @@
       ],
       "max-line-length": [ true, 420 ],
       "import-spacing": true,
+      "no-console": false,
+      "no-var-requires": false,
       "no-shadowed-variable": [
         true,
         {

@@ -1,5 +1,3 @@
-const path = require('path')
-
 const webpack = require('webpack')
 
 const stylelint = require('stylelint')
@@ -16,11 +14,10 @@ const sourceLoaderRule = {
 }
 
 const sourceLinterRule = {
-  test: /\.js$/,
-  include: [ path.join(__dirname, 'src') ],
-  exclude: [ /node_modules/ ],
+  test: /\.tsx?$/,
   enforce: 'pre',
-  use: [ 'eslint-loader' ],
+  exclude: [ /node_modules/ ],
+  use: [ 'tslint-loader' ],
 }
 
 const styleLinterRule = {

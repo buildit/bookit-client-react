@@ -44,6 +44,25 @@ const prod = {
       name: 'runtime',
     }),
     new NameAllModules,
+
+    // This does... something "good", but is like dropping a hammer
+    // onto a faberge egg - keep it for now and unless it can
+    // explain itself better we'll ditch it.
+    new webpack.PrefetchPlugin('./node_modules/lodash-es/isEmpty.js'),
+    new webpack.PrefetchPlugin('./node_modules/redux-actions/es/index.js'),
+    new webpack.PrefetchPlugin('./node_modules/redux/es/index.js'),
+    new webpack.PrefetchPlugin('./node_modules/babel-runtime/regenerator/index.js'),
+    new webpack.PrefetchPlugin('./node_modules/react-router/es/index.js'),
+    new webpack.PrefetchPlugin('./node_modules/react-router-redux/es/index.js'),
+    new webpack.PrefetchPlugin('./node_modules/redux-saga/es/index.js'),
+    new webpack.PrefetchPlugin('./node_modules/react-dom/index.js'),
+    new webpack.PrefetchPlugin('./node_modules/react-redux/es/index.js'),
+    new webpack.PrefetchPlugin('./node_modules/react-hot-loader/lib/index.js'),
+    new webpack.PrefetchPlugin('./node_modules/history/es/index.js'),
+    new webpack.PrefetchPlugin('./src/store/configureStore.prod.ts'),
+    new webpack.PrefetchPlugin('./node_modules/react-router/es/index.js'),
+    new webpack.PrefetchPlugin('./node_modules/prop-types/factoryWithThrowingShims.js'),
+
     new webpack.optimize.UglifyJsPlugin({
       compress: { screw_ie8: true, warnings: false },
       output: { comments: false },
@@ -52,6 +71,11 @@ const prod = {
   ],
   module: {
     rules: [
+      {
+        test: /\.tsx?$/,
+        exclude: [ /node_modules/ ],
+        use: [ 'awesome-typescript-loader?silent=true' ],
+      },
       {
         test: /\.(sass|scss|css)$/,
         use: extractText.extract({

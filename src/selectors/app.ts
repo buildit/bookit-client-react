@@ -1,1 +1,1 @@
-export const getRequestInProgress = state => state.requestInProgress
+export const getRequestInProgress = (state: any) => state.requestInProgress

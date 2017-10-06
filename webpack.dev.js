@@ -16,9 +16,11 @@ const dev = {
     contentBase: './src',
     hot: true,
     port: 3001,
+    compress: true,
     historyApiFallback: { verbose: true },
-    noInfo: true,
+    noInfo: false,
     stats: { colors: true },
+    overlay: { errors: true, warnings: false },
   },
   plugins: [
     new webpack.NamedModulesPlugin,
