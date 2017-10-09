@@ -18,6 +18,7 @@ phases:
     commands:
       - yarn
       - yarn lint
+      - yarn lint:style
       - yarn test
       - yarn build
       - docker build --tag "${REPOSITORY_URI}:${TAG}" .
