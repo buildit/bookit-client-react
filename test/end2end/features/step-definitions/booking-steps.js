@@ -6,7 +6,7 @@ const url = process.env.ENDPOINT_URI || 'http://localhost:3001'
 
 defineSupportCode(function({Given, When, Then}) {
   Given('I am on the bookit website', function () {
-
+    console.log(url)
     return this.driver.get(url)
   })
 
