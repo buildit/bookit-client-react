@@ -84,8 +84,8 @@
     "start": "NODE_ENV=development webpack-dev-server --env=development --config webpack.dev.js --hot ",
     "build": "NODE_ENV=production webpack --env=production --config webpack.prod.js",
     "analyze": "NODE_ENV=production webpack --env=production --config webpack.prod.js --profile --json > webpack.stats.json",
-    "cucumber": "NODE_ENV=test node node_modules/cucumber/bin/cucumber.js test/end2end/features",
-    "lint": "eslint src/ --cache",
+    "cucumber": "NODE_ENV=test cucumber.js test/end2end/features",
+    "lint": "eslint src/ test/ --cache",
     "lint:style": "stylelint src/**/*.scss src/**/*.css",
     "test": "jest -c .jestrc.json",
     "test:watch": "jest -c .jestrc.json --watch"
