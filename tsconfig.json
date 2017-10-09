@@ -1,0 +1,38 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "ES6",
+    "jsx": "React",
+    "target": "ES6",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "ActionTypes": [ "src/constants/actionTypes" ],
+      "Actions": [ "src/actions" ],
+      "Reducers": [ "src/reducers" ],
+      "Selectors": [ "src/selectors" ],
+      "Sagas": [ "src/sagas" ],
+      "Store": [ "src/store" ],
+      "History": [ "src/history" ],
+      "Routes": [ "src/routes" ],
+      "Utils": [ "src/utils" ],
+      "Api": [ "src/api" ],
+
+      "Components": [ "src/components" ],
+      "Components/*": [ "src/components/*" ],
+      "Containers": [ "src/containers" ],
+      "Containers/*": [ "src/containers/*" ],
+      "Styles": [ "src/styles" ],
+      "Styles/*": [ "src/styles/*" ]
+    }
+  },
+  "exclude": [
+    "**/*.test.ts*",
+    "node_modules"
+  ],
+  "awesomeTypescriptLoaderOptions": {
+    "silent": false,
+    "useBabel": true,
+    "useCache": true
+  }
+}

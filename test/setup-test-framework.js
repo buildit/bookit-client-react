@@ -1,6 +1,14 @@
 const chai = require('chai')
 const chaiEnzyme = require('chai-enzyme')
 
+// Jest + React 16 hate each other, so let's polyfill in some happiness
+require('./raf-polyfill')
+
+const configure = require('enzyme').configure
+const Adapter = require('enzyme-adapter-react-16')
+
+configure({ adapter: new Adapter() })
+
 // Add enzyme-aware assertions to Chai
 chai.use(chaiEnzyme())
 

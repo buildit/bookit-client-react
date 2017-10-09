@@ -11,7 +11,8 @@
     },
     "useBuiltIns": true,
     "modules": false,
-    "debug": false,
+    "loose": true,
+    "debug": true,
   } ], "react" ],
   "plugins": [
     "react-hot-loader/babel",

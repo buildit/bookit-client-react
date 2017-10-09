@@ -1,4 +1,7 @@
 {
+  "transform": {
+    "^.+\\.tsx?$": "<rootDir>/node_modules/ts-jest/preprocessor.js"
+  },
   "moduleNameMapper": {
     "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/fileMock.js",
     "^[./a-zA-Z0-9!&$_-]+\\.(css|scss)$": "identity-obj-proxy",
@@ -16,17 +19,14 @@
     "^Styles(.*)$": "<rootDir>/src/styles$1",
     "^Api(.*)$": "<rootDir>/src/api$1"
   },
-  "testPathIgnorePatterns": [
-    "<rootDir>/(build|docs|node_modules|images)/"
-  ],
+  "moduleFileExtensions": [ "ts", "tsx", "js", "jsx", "json" ],
+  "testPathIgnorePatterns": [ "<rootDir>/(build|docs|node_modules|images)/" ],
   "testEnvironment": "jsdom",
-  "testRegex": "\\.test.js$",
+  "testRegex": "\\.test.tsx?$",
   "collectCoverageFrom": [
-    "!src/**/index.js",
-    "!src/store/*",
-    "!src/history/*",
-    "src/*.js",
-    "src/**/*.js"
+    "!src/**/index.*(ts|tsx)",
+    "!src/*(store|history)/*",
+    "src/**/*.*(ts|tsx)"
   ],
   "coverageReporters": [
     "html",

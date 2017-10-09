@@ -1,5 +1,5 @@
-import React from 'react'
-import ReactDOM from 'react-dom'
+import * as React from 'react'
+import * as ReactDOM from 'react-dom'
 
 import { AppContainer } from 'react-hot-loader'
 
@@ -10,7 +10,7 @@ import Root from 'Containers/Root'
 
 import 'Styles/client.scss'
 
-const render = (RootComponent) => {
+const render = (RootComponent: any) => {
   ReactDOM.render(
     <AppContainer>
       <RootComponent store={store} history={history} />
@@ -22,5 +22,5 @@ const render = (RootComponent) => {
 render(Root)
 
 if (module.hot) {
-  module.hot.accept('./containers/Root', () => render(Root))
+  module.hot.accept('Containers/Root', () => render(Root))
 }
