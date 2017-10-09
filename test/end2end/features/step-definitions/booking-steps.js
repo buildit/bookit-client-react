@@ -1,6 +1,6 @@
-var {defineSupportCode} = require('cucumber')
-var {By} = require('selenium-webdriver')
-var seleniumWebdriver = require('selenium-webdriver')
+const {defineSupportCode} = require('cucumber')
+const {By} = require('selenium-webdriver')
+const seleniumWebdriver = require('selenium-webdriver')
 
 defineSupportCode(function({Given, When, Then}) {
   Given('I am on the bookit website', function () {

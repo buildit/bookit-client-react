@@ -1,6 +1,6 @@
 require('chromedriver')
-var seleniumWebdriver = require('selenium-webdriver')
-var {defineSupportCode} = require('cucumber')
+const seleniumWebdriver = require('selenium-webdriver')
+const {defineSupportCode} = require('cucumber')
 
 function CustomWorld() {
   this.driver = new seleniumWebdriver.Builder()

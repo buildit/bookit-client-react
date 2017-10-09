@@ -1,5 +1,5 @@
 // features/step_definitions/hooks.js
-var {defineSupportCode} = require('cucumber')
+const {defineSupportCode} = require('cucumber')
 
 defineSupportCode(function({After}) {
   After(function() {
