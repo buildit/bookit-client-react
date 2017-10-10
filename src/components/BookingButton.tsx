@@ -1,31 +1,26 @@
 import React from 'react'
-
 import { connect } from 'react-redux'
 
-import { bookingRequest } from 'Actions'
-import { getBookingStatus, getRequestInProgress } from 'Selectors'
+import { RootState } from 'Redux'
+import { actionCreators, BookingSelectors } from 'Redux/booking'
+import { AppSelectors } from 'Redux/app'
 
 import Button from 'Components/Button'
 
-interface StateToProps {
+interface BookingButtonProps {
   bookingStatus: boolean
-  requestInProgress: boolean
+  requestInProgress: boolean,
+  handleBookingRequest: () => any
 }
 
-interface SFCBookingButtonProps extends StateToProps {
-  handleBookingRequest: () => void
-}
-
-export const BookingButton: React.SFC<SFCBookingButtonProps> = (props) => {
-  const { bookingStatus, requestInProgress, handleBookingRequest } = props
-
+export const BookingButton: React.SFC<BookingButtonProps> = ({ bookingStatus, requestInProgress, handleBookingRequest }) => {
   const handleClick = () => { handleBookingRequest() }
 
   return (
     <div>
       { !bookingStatus &&
         <Button id="bookit" disabled={requestInProgress} onClick={handleClick}>
-          Book a Room
+          Book a Room or MELONS!
         </Button>
       }
       { bookingStatus &&
@@ -36,9 +31,9 @@ export const BookingButton: React.SFC<SFCBookingButtonProps> = (props) => {
 }
 
 /* istanbul ignore next */
-const mapStateToProps = (state: StateToProps) => ({
-  bookingStatus: getBookingStatus(state),
-  requestInProgress: getRequestInProgress(state),
+const mapStateToProps = (state: RootState) => ({
+  bookingStatus: BookingSelectors.getBookingStatus(state),
+  requestInProgress: AppSelectors.getRequestInProgress(state),
 })
 
-export default connect(mapStateToProps, { handleBookingRequest: bookingRequest })(BookingButton)
+export default connect(mapStateToProps, { handleBookingRequest: actionCreators.bookingRequest })(BookingButton)

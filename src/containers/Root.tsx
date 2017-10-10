@@ -1,24 +1,21 @@
 import * as React from 'react'
 
-import * as Redux from 'react-redux'
+import { Provider } from 'react-redux'
 import { ConnectedRouter } from 'react-router-redux'
+
+import store from 'Store'
+import history from 'History'
 
 import createRoutes from 'Routes'
 
 const routes = createRoutes()
 
-interface RootProps {
-  store: any
-  history: any
-}
-
-/* istanbul ignore next */
-const Root = ({ store, history }: RootProps) => (
-  <Redux.Provider store={store}>
+const Root = () => (
+  <Provider store={store}>
     <ConnectedRouter history={history}>
       { routes }
     </ConnectedRouter>
-  </Redux.Provider>
+  </Provider>
 )
 
 export default Root

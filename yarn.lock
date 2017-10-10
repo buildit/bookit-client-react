@@ -26,11 +26,15 @@
     "@types/cheerio" "*"
     "@types/react" "*"
 
+"@types/history@*", "@types/history@^4.6.0":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/@types/history/-/history-4.6.0.tgz#093d67ed780d889c9543f6dca24ebee0b6b9fc45"
+
 "@types/jest@^21.1.2":
   version "21.1.2"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-21.1.2.tgz#05ebfa64817b626694ced56745a7949281981048"
 
-"@types/node@*", "@types/node@^8.0.32":
+"@types/node@*", "@types/node@^8.0.33":
   version "8.0.33"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-8.0.33.tgz#1126e94374014e54478092830704f6ea89df04cd"
 
@@ -38,11 +42,17 @@
   version "6.0.89"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.89.tgz#154be0e6a823760cd6083aa8c48f952e2e63e0b0"
 
-"@types/react-dom@^16.0.0":
+"@types/react-dom@^16.0.1":
   version "16.0.1"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-16.0.1.tgz#de159d00dd70050000f462e8bcff0c08ef803dee"
   dependencies:
     "@types/node" "*"
+    "@types/react" "*"
+
+"@types/react-hot-loader@^3.0.4":
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/@types/react-hot-loader/-/react-hot-loader-3.0.4.tgz#7fc081509830c64218d8a99a865e2fb4a94572ad"
+  dependencies:
     "@types/react" "*"
 
 "@types/react-redux@^5.0.10":
@@ -52,9 +62,28 @@
     "@types/react" "*"
     redux "^3.6.0"
 
-"@types/react@*", "@types/react@^16.0.9":
+"@types/react-router-redux@^5.0.8":
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/@types/react-router-redux/-/react-router-redux-5.0.8.tgz#168117d79ec5095246fb11b1fdea65ec412218d9"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    redux "^3.7.2"
+
+"@types/react-router@^4.0.15":
+  version "4.0.15"
+  resolved "https://registry.yarnpkg.com/@types/react-router/-/react-router-4.0.15.tgz#be8aaefc20afd968a5dbcffcf09060e6c2e8746e"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+
+"@types/react@*", "@types/react@^16.0.10":
   version "16.0.10"
   resolved "https://registry.yarnpkg.com/@types/react/-/react-16.0.10.tgz#a24b630f5f1f170866a148a147d4fc8636ea88e0"
+
+"@types/redux-actions@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@types/redux-actions/-/redux-actions-2.2.2.tgz#e9d488c83ce1244178956cb0580a5aec3349eb4f"
 
 "@types/webpack-env@^1.13.1":
   version "1.13.1"
@@ -337,7 +366,7 @@ autoprefixer@^6.3.1:
     postcss "^5.2.16"
     postcss-value-parser "^3.2.3"
 
-autoprefixer@^7.1.2, autoprefixer@^7.1.4:
+autoprefixer@^7.1.2, autoprefixer@^7.1.5:
   version "7.1.5"
   resolved "https://registry.yarnpkg.com/autoprefixer/-/autoprefixer-7.1.5.tgz#d65d14b83c7cd1dd7bc801daa00557addf5a06b2"
   dependencies:
@@ -1171,7 +1200,7 @@ browserslist@^1.3.6, browserslist@^1.5.2, browserslist@^1.7.6:
     caniuse-db "^1.0.30000639"
     electron-to-chromium "^1.2.7"
 
-browserslist@^2.1.2, browserslist@^2.4.0, browserslist@^2.5.0:
+browserslist@^2.1.2, browserslist@^2.5.0, browserslist@^2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-2.5.1.tgz#68e4bc536bbcc6086d62843a2ffccea8396821c6"
   dependencies:
@@ -1353,7 +1382,7 @@ chokidar@^1.6.0, chokidar@^1.7.0:
   optionalDependencies:
     fsevents "^1.0.0"
 
-chromedriver@^2.32.3:
+chromedriver@^2.33.0:
   version "2.33.0"
   resolved "https://registry.yarnpkg.com/chromedriver/-/chromedriver-2.33.0.tgz#561c84ae53cf05b0d0f6b515047ff10a4fd2d599"
   dependencies:
@@ -1825,7 +1854,7 @@ cucumber-tag-expressions@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/cucumber-tag-expressions/-/cucumber-tag-expressions-1.0.1.tgz#d6d3c43180a03f5fb4fc957fe1382ddce5cb9ac8"
 
-cucumber@^3.0.3:
+cucumber@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/cucumber/-/cucumber-3.0.4.tgz#9e3e04068da8c0acd48fdd688ffb768f368047b9"
   dependencies:
@@ -2596,7 +2625,7 @@ file-entry-cache@^2.0.0:
     flat-cache "^1.2.1"
     object-assign "^4.0.1"
 
-file-loader@^1.1.4:
+file-loader@^1.1.5:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/file-loader/-/file-loader-1.1.5.tgz#91c25b6b6fbe56dae99f10a425fd64933b5c9daa"
   dependencies:
@@ -6004,7 +6033,7 @@ select-hose@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/select-hose/-/select-hose-2.0.0.tgz#625d8658f865af43ec962bfc376a37359a4994ca"
 
-selenium-webdriver@^3.5.0:
+selenium-webdriver@^3.6.0:
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/selenium-webdriver/-/selenium-webdriver-3.6.0.tgz#2ba87a1662c020b8988c981ae62cb2a01298eafc"
   dependencies:
@@ -6499,7 +6528,7 @@ style-search@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/style-search/-/style-search-0.1.0.tgz#7958c793e47e32e07d2b5cafe5c0bf8e12e77902"
 
-stylelint@^8.1.1:
+stylelint@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/stylelint/-/stylelint-8.2.0.tgz#6a15044553fb5c3143b16d62013a370314495b0d"
   dependencies:
@@ -6731,7 +6760,7 @@ trim-right@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/trim-right/-/trim-right-1.0.1.tgz#cb2e1203067e0c8de1f614094b9fe45704ea6003"
 
-ts-jest@^21.1.0:
+ts-jest@^21.1.1:
   version "21.1.1"
   resolved "https://registry.yarnpkg.com/ts-jest/-/ts-jest-21.1.1.tgz#a63380127e59e112a113106237f302d17c72cd48"
   dependencies:
@@ -6760,6 +6789,12 @@ tslint-loader@^3.5.3:
     rimraf "^2.4.4"
     semver "^5.3.0"
 
+tslint-no-unused-expression-chai@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/tslint-no-unused-expression-chai/-/tslint-no-unused-expression-chai-0.0.3.tgz#455d57db2badf12a1434b2de578f1ffae63eca76"
+  dependencies:
+    tsutils "^2.3.0"
+
 tslint@^5.7.0:
   version "5.7.0"
   resolved "https://registry.yarnpkg.com/tslint/-/tslint-5.7.0.tgz#c25e0d0c92fa1201c2bc30e844e08e682b4f3552"
@@ -6775,7 +6810,7 @@ tslint@^5.7.0:
     tslib "^1.7.1"
     tsutils "^2.8.1"
 
-tsutils@^2.8.1:
+tsutils@^2.3.0, tsutils@^2.8.1:
   version "2.12.1"
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.12.1.tgz#f4d95ce3391c8971e46e54c4cf0edb0a21dd5b24"
   dependencies:

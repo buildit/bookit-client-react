@@ -1,9 +1,9 @@
-let createHistory
+let historyForEnv
 
 if (process.env.NODE_ENV === 'test') {
-  createHistory = require('./createHistory.testing').default
+  historyForEnv = require('./createHistory.testing').default
 } else {
-  createHistory = require('./createHistory.all').default
+  historyForEnv = require('./createHistory').default
 }
 
-export default createHistory()
+export default historyForEnv

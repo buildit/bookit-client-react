@@ -1,26 +1,23 @@
 import * as React from 'react'
-import * as ReactDOM from 'react-dom'
+import { render } from 'react-dom'
 
 import { AppContainer } from 'react-hot-loader'
-
-import store from 'Store'
-import history from 'History'
 
 import Root from 'Containers/Root'
 
 import 'Styles/client.scss'
 
-const render = (RootComponent: any) => {
-  ReactDOM.render(
+const renderRoot = (RootComponent: any) => {
+  render(
     <AppContainer>
-      <RootComponent store={store} history={history} />
+      <RootComponent />
     </AppContainer>,
     document.getElementById('root')
   )
 }
 
-render(Root)
+renderRoot(Root)
 
 if (module.hot) {
-  module.hot.accept('Containers/Root', () => render(Root))
+  module.hot.accept('Containers/Root', () => renderRoot(Root))
 }
