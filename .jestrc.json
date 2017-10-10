@@ -22,6 +22,7 @@
   "collectCoverageFrom": [
     "!src/**/index.*(ts|tsx)",
     "!src/*(store|history)/*",
+    "!src/**/*.d.(ts|tsx)",
     "src/**/*.*(ts|tsx)"
   ],
   "coverageReporters": [

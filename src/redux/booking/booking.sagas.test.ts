@@ -2,10 +2,9 @@ import { delay } from 'redux-saga'
 import { call, fork, put, takeEvery } from 'redux-saga/effects'
 import { cloneableGenerator } from 'redux-saga/utils'
 
-import * as ActionTypes from 'ActionTypes'
-import { bookingComplete, bookingSuccess, bookingFailure } from 'Actions'
+import { Actions, actionCreators, BOOKING_REQUEST, BOOKING_FAILURE, BOOKING_SUCCESS, BOOKING_COMPLETE } from './actions'
 
-import booking, { watchBooking, makeBooking } from './booking'
+import { sagas as booking, watchBooking, makeBooking } from './sagas'
 
 describe('sagas/booking', () => {
   describe('#booking()', () => {
@@ -19,9 +18,9 @@ describe('sagas/booking', () => {
   })
 
   describe('#watchBooking()', () => {
-    it('yields takeEvery(ActionTypes.BOOKING_REQUEST, makeBooking)', () => {
+    it('yields takeEvery(BOOKING_REQUEST, makeBooking)', () => {
       const saga = watchBooking()
-      const expected = takeEvery(ActionTypes.BOOKING_REQUEST, makeBooking)
+      const expected = takeEvery(BOOKING_REQUEST, makeBooking)
 
       expect(saga.next().value).to.deep.equal(expected)
       expect(saga.next().done).to.be.true
@@ -35,16 +34,16 @@ describe('sagas/booking', () => {
       const error = new Error('oops')
 
       expect(saga.next().value).to.deep.equal(call(delay, 2000))
-      expect(saga.next().value).to.deep.equal(put(bookingSuccess()))
+      expect(saga.next().value).to.deep.equal(put(actionCreators.bookingSuccess()))
       expect(saga.next().value).to.deep.equal(call(delay, 500))
-      expect(saga.next().value).to.deep.equal(put(bookingComplete()))
+      expect(saga.next().value).to.deep.equal(put(actionCreators.bookingComplete()))
       expect(saga.next().done).to.be.true
 
       errorSaga.next()
 
-      expect(errorSaga.throw(error).value).to.deep.equal(put(bookingFailure(error)))
+      expect(errorSaga.throw(error).value).to.deep.equal(put(actionCreators.bookingFailure(error)))
       expect(errorSaga.next().value).to.deep.equal(call(delay, 500))
-      expect(errorSaga.next().value).to.deep.equal(put(bookingComplete()))
+      expect(errorSaga.next().value).to.deep.equal(put(actionCreators.bookingComplete()))
       expect(errorSaga.next().done).to.be.true
     })
   })
