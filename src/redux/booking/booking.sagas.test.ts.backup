@@ -32,7 +32,7 @@ describe('sagas/booking', () => {
     it('yields BOOKING_SUCCESS when there are no errors and BOOKING_FAILURE when there are', () => {
       const saga = cloneableGenerator(makeBooking)()
       const errorSaga = saga.clone()
-      const error = {}
+      const error = new Error('oops')
 
       expect(saga.next().value).to.deep.equal(call(delay, 2000))
       expect(saga.next().value).to.deep.equal(put(bookingSuccess()))

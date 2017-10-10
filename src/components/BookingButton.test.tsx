@@ -24,7 +24,6 @@ describe('<BookingButton />', () => {
   it('calls bookingRequest on click', () => {
     const wrapper = mount(<BookingButton { ...props } />)
 
-
     wrapper.find('button').simulate('click')
     expect(props.handleBookingRequest.mock.calls.length).to.equal(1)
   })
