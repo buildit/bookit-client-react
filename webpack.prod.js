@@ -74,7 +74,12 @@ const prod = {
       {
         test: /\.tsx?$/,
         exclude: [ /node_modules/ ],
-        use: [ 'awesome-typescript-loader?silent=true' ],
+        loader: 'awesome-typescript-loader',
+        query: {
+          silent: true,
+          useBabel: true,
+          useCache: true,
+        },
       },
       {
         test: /\.(sass|scss|css)$/,

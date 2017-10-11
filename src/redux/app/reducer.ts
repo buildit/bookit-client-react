@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux'
 import { handleActions } from 'redux-actions'
 
-import { RootAction } from 'Redux'
-
 import {
   BOOKING_REQUEST,
   BOOKING_COMPLETE
