@@ -2,15 +2,24 @@ import { delay } from 'redux-saga'
 import { call, fork, put, takeEvery } from 'redux-saga/effects'
 
 import { actionCreators, BOOKING_REQUEST } from 'Redux/booking'
+import { createMeeting } from 'Api'
+import { BookingRequest } from '../../models/booking-request'
 
 export function* makeBooking() {
   try {
-    yield call(delay, 2000)
-    yield put(actionCreators.bookingSuccess())
+    const request: BookingRequest = {
+      bookableId: 1,
+      endDateTime: '2017-09-26T09:00:00.000-04:00',
+      startDateTime: '2017-09-26T09:00:00.000-04:00',
+      subject: 'My New Meeting',
+    }
+
+    const meeting = yield call(createMeeting, request)
+    const action = actionCreators.bookingSuccess(meeting)
+    yield put(action)
   } catch (error) {
     yield put(actionCreators.bookingFailure(error))
   } finally {
-    yield call(delay, 500)
     yield put(actionCreators.bookingComplete())
   }
 }

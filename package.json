@@ -50,7 +50,8 @@
     "redux-actions": "^2.2.1",
     "redux-saga": "^0.15.6",
     "reselect": "^3.0.1",
-    "reselect-immutable-helpers": "^1.2.2"
+    "reselect-immutable-helpers": "^1.2.2",
+    "wtfetch": "^1.1.0"
   },
   "devDependencies": {
     "@types/chai-enzyme": "^0.6.3",

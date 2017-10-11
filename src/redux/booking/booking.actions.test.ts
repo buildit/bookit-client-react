@@ -1,4 +1,5 @@
 import { actionCreators } from './actions'
+import {Booking} from '../../models/booking';
 
 describe('actions/booking', () => {
   describe('#bookingRequest()', () => {
@@ -15,8 +16,9 @@ describe('actions/booking', () => {
   describe('#bookingSuccess()', () => {
 
     it('returns a redux action with no payload when called', () => {
-      const expected = { type: 'BOOKING_SUCCESS' }
-      const actual = actionCreators.bookingSuccess()
+      const booking: Booking = {bookingId: 1, bookableId: 1, subject: 'booked it', startDateTime: '', endDateTime: ''}
+      const expected = { type: 'BOOKING_SUCCESS', payload: booking }
+      const actual = actionCreators.bookingSuccess(booking)
 
       expect(actual).to.deep.equal(expected)
     })

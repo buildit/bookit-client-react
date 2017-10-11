@@ -6,14 +6,16 @@ import { actionCreators, BookingSelectors } from 'Redux/booking'
 import { AppSelectors } from 'Redux/app'
 
 import Button from 'Components/Button'
+import {Booking} from '../models/booking';
 
 interface BookingButtonProps {
   bookingStatus: boolean
+  instance?: Booking
   requestInProgress: boolean,
   handleBookingRequest: () => any
 }
 
-export const BookingButton: React.SFC<BookingButtonProps> = ({ bookingStatus, requestInProgress, handleBookingRequest }) => {
+export const BookingButton: React.SFC<BookingButtonProps> = ({ bookingStatus, instance, requestInProgress, handleBookingRequest }) => {
   const handleClick = () => { handleBookingRequest() }
 
   return (
@@ -24,7 +26,7 @@ export const BookingButton: React.SFC<BookingButtonProps> = ({ bookingStatus, re
         </Button>
       }
       { bookingStatus &&
-        <span>Booked!</span>
+        <span>{instance && instance.subject}</span>
       }
     </div>
   )
@@ -33,6 +35,7 @@ export const BookingButton: React.SFC<BookingButtonProps> = ({ bookingStatus, re
 /* istanbul ignore next */
 const mapStateToProps = (state: RootState) => ({
   bookingStatus: BookingSelectors.getBookingStatus(state),
+  instance: BookingSelectors.getBookingInstance(state),
   requestInProgress: AppSelectors.getRequestInProgress(state),
 })
 

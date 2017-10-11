@@ -2,9 +2,12 @@ import { delay } from 'redux-saga'
 import { call, fork, put, takeEvery } from 'redux-saga/effects'
 import { cloneableGenerator } from 'redux-saga/utils'
 
-import { Actions, actionCreators, BOOKING_REQUEST, BOOKING_FAILURE, BOOKING_SUCCESS, BOOKING_COMPLETE } from './actions'
+import { actionCreators, BOOKING_REQUEST } from './actions'
 
 import { sagas as booking, watchBooking, makeBooking } from './sagas'
+import {Booking} from '../../models/booking';
+import {BookingRequest} from '../../models/booking-request';
+import {createMeeting} from '../../api/index';
 
 describe('sagas/booking', () => {
   describe('#booking()', () => {
@@ -33,16 +36,23 @@ describe('sagas/booking', () => {
       const errorSaga = saga.clone()
       const error = new Error('oops')
 
-      expect(saga.next().value).to.deep.equal(call(delay, 2000))
-      expect(saga.next().value).to.deep.equal(put(actionCreators.bookingSuccess()))
-      expect(saga.next().value).to.deep.equal(call(delay, 500))
+      const booking: Booking = {bookingId: 1, bookableId: 1, subject: 'booked it', startDateTime: '', endDateTime: ''}
+
+      const request: BookingRequest = {
+        bookableId: 1,
+        endDateTime: '2017-09-26T09:00:00.000-04:00',
+        startDateTime: '2017-09-26T09:00:00.000-04:00',
+        subject: 'My New Meeting',
+      }
+
+      expect(saga.next().value).to.be.deep.equal(call(createMeeting, request))
+      expect(saga.next(booking).value).to.be.deep.equal(put(actionCreators.bookingSuccess(booking)))
       expect(saga.next().value).to.deep.equal(put(actionCreators.bookingComplete()))
       expect(saga.next().done).to.be.true
 
       errorSaga.next()
 
       expect(errorSaga.throw(error).value).to.deep.equal(put(actionCreators.bookingFailure(error)))
-      expect(errorSaga.next().value).to.deep.equal(call(delay, 500))
       expect(errorSaga.next().value).to.deep.equal(put(actionCreators.bookingComplete()))
       expect(errorSaga.next().done).to.be.true
     })

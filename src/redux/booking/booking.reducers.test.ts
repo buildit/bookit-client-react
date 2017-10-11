@@ -1,6 +1,7 @@
 import { reducer as bookingStatus } from './reducer'
 
 import { actionCreators } from './actions'
+import {Booking} from '../../models/booking';
 
 describe('reducers/booking', () => {
 
@@ -11,7 +12,8 @@ describe('reducers/booking', () => {
     })
 
     it('returns true on BOOKING_SUCCESS', () => {
-      const state = bookingStatus({ bookingStatus: false }, actionCreators.bookingSuccess())
+      const booking: Booking = {bookingId: 1, bookableId: 1, subject: 'booked it', startDateTime: '', endDateTime: ''}
+      const state = bookingStatus({ bookingStatus: false }, actionCreators.bookingSuccess(booking))
       expect(state.bookingStatus).to.be.true
     })
 

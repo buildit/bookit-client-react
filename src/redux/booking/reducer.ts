@@ -1,7 +1,6 @@
 import { combineReducers } from 'redux'
 import { handleActions } from 'redux-actions'
-
-import { RootAction } from 'Redux'
+import { Booking } from '../../models/booking'
 
 import {
   BOOKING_REQUEST,
@@ -10,15 +9,21 @@ import {
 } from './'
 
 export type State = {
-  readonly bookingStatus: boolean
+  bookingStatus: boolean
+  instance?: Booking
 }
 
-const bookingStatus = handleActions({
+const bookingStatus = handleActions<boolean>({
   [BOOKING_REQUEST]: () => false,
   [BOOKING_SUCCESS]: () => true,
   [BOOKING_FAILURE]: () => false,
 }, false)
 
+const instance = handleActions<Booking>({
+  [BOOKING_SUCCESS]: (state, action) => action.payload,
+}, null)
+
 export const reducer = combineReducers<State>({
   bookingStatus,
+  instance,
 })
