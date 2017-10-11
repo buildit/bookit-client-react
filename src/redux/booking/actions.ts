@@ -1,5 +1,5 @@
 import { createAction } from 'redux-actions'
-import {Booking} from '../../models/booking';
+import {Booking} from '../../models/booking'
 
 export const BOOKING_COMPLETE = 'BOOKING_COMPLETE'
 export const BOOKING_FAILURE = 'BOOKING_FAILURE'
@@ -17,7 +17,6 @@ export interface ErrorBookingAction extends BookingAction {
 export interface SuccessBookingAction extends BookingAction {
   payload: Booking
 }
-
 
 export type Actions = {
   BOOKING_COMPLETE: BookingAction,

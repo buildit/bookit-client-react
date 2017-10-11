@@ -6,7 +6,7 @@ import { actionCreators, BookingSelectors } from 'Redux/booking'
 import { AppSelectors } from 'Redux/app'
 
 import Button from 'Components/Button'
-import {Booking} from '../models/booking';
+import {Booking} from '../models/booking'
 
 interface BookingButtonProps {
   bookingStatus: boolean
