@@ -10,14 +10,23 @@ const { TsConfigPathsPlugin } = require('awesome-typescript-loader')
 const sourceLoaderRule = {
   test: /\.tsx?$/,
   exclude: [ /node_modules/ ],
-  use: [ 'awesome-typescript-loader' ],
+  loader: 'awesome-typescript-loader',
+  query: {
+    silent: false,
+    useBabel: true,
+    useCache: true,
+    configFileName: 'tsconfig.webpack.json',
+  },
 }
 
 const sourceLinterRule = {
   test: /\.tsx?$/,
   enforce: 'pre',
   exclude: [ /node_modules/ ],
-  use: [ 'tslint-loader' ],
+  loader: 'tslint-loader',
+  options: {
+    // typeCheck: true,
+  },
 }
 
 const styleLinterRule = {

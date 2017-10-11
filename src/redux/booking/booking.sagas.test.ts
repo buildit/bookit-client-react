@@ -1,13 +1,12 @@
-import { delay } from 'redux-saga'
 import { call, fork, put, takeEvery } from 'redux-saga/effects'
 import { cloneableGenerator } from 'redux-saga/utils'
 
 import { actionCreators, BOOKING_REQUEST } from './actions'
 
 import { sagas as booking, watchBooking, makeBooking } from './sagas'
-import {Booking} from '../../models/booking';
-import {BookingRequest} from '../../models/booking-request';
-import {createMeeting} from '../../api/index';
+import {Booking} from '../../models/booking'
+import {BookingRequest} from '../../models/booking-request'
+import {createMeeting} from '../../api/index'
 
 describe('sagas/booking', () => {
   describe('#booking()', () => {
