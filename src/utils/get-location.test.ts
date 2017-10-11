@@ -21,4 +21,5 @@ describe('BookIt API URL tests', () => {
       const state = deriveAPIEndpoint('http://localhost:3001')
       expect(state).to.be.equal('http://localhost:8080')
     })
+  })
 })

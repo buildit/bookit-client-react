@@ -1,5 +1,5 @@
 import { actionCreators } from './actions'
-import {Booking} from '../../models/booking';
+import { Booking } from '../../models/booking'
 
 describe('actions/booking', () => {
   describe('#bookingRequest()', () => {

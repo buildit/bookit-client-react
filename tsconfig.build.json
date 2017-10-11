@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "moduleResolution": "node",
+    "module": "ES6",
+    "jsx": "React",
+    "target": "ES6",
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "baseUrl": ".",
+    "paths": {
+      "Store": [ "src/store" ],
+      "History": [ "src/history" ],
+      "Routes": [ "src/routes" ],
+      "Utils": [ "src/utils" ],
+      "Api": [ "src/api" ],
+      "Redux": [ "src/redux" ],
+      "Redux/*": [ "src/redux/*" ],
+      "Components": [ "src/components" ],
+      "Components/*": [ "src/components/*" ],
+      "Containers": [ "src/containers" ],
+      "Containers/*": [ "src/containers/*" ],
+      "Styles": [ "src/styles" ],
+      "Styles/*": [ "src/styles/*" ]
+    }
+  },
+  "exclude": [
+    "**/*.test.ts*",
+    "node_modules"
+  ]
+}

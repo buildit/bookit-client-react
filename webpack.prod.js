@@ -79,6 +79,7 @@ const prod = {
           silent: true,
           useBabel: true,
           useCache: true,
+          configFileName: 'tsconfig.build.json',
         },
       },
       {
