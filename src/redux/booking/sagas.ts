@@ -1,4 +1,3 @@
-import { delay } from 'redux-saga'
 import { call, fork, put, takeEvery } from 'redux-saga/effects'
 
 import { actionCreators, BOOKING_REQUEST } from 'Redux/booking'
