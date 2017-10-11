@@ -26,7 +26,7 @@ export const BookingButton: React.SFC<BookingButtonProps> = ({ bookingStatus, in
         </Button>
       }
       { bookingStatus &&
-        <span>{instance && instance.subject}</span>
+        <span>Booked '{instance && instance.subject}'</span>
       }
     </div>
   )
