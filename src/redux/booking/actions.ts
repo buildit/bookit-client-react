@@ -1,28 +1,33 @@
 import { createAction } from 'redux-actions'
-import {Booking} from '../../models/booking'
+
+import { Booking } from 'Models'
 
 export const BOOKING_COMPLETE = 'BOOKING_COMPLETE'
 export const BOOKING_FAILURE = 'BOOKING_FAILURE'
 export const BOOKING_REQUEST = 'BOOKING_REQUEST'
 export const BOOKING_SUCCESS = 'BOOKING_SUCCESS'
 
-export interface BookingAction {
-  type: string
-}
+// export interface BookingAction {
+//   type: string
+// }
 
-export interface ErrorBookingAction extends BookingAction {
-  error: Error
-}
+// export interface ErrorBookingAction extends BookingAction {
+//   error: Error
+// }
 
-export interface SuccessBookingAction extends BookingAction {
-  payload: Booking
-}
+// export interface SuccessBookingAction extends BookingAction {
+//   payload: Booking
+// }
 
 export type Actions = {
-  BOOKING_COMPLETE: BookingAction,
-  BOOKING_FAILURE: ErrorBookingAction,
-  BOOKING_REQUEST: BookingAction,
-  BOOKING_SUCCESS: SuccessBookingAction,
+  BOOKING_COMPLETE: { type: typeof BOOKING_COMPLETE },
+  BOOKING_FAILURE: { type: typeof BOOKING_FAILURE, error: Error },
+  BOOKING_REQUEST: { type: typeof BOOKING_REQUEST },
+  BOOKING_SUCCESS: { type: typeof BOOKING_SUCCESS, payload: Booking },
+  // BOOKING_COMPLETE: BookingAction,
+  // BOOKING_FAILURE: ErrorBookingAction,
+  // BOOKING_REQUEST: BookingAction,
+  // BOOKING_SUCCESS: SuccessBookingAction,
 }
 
 export const actionCreators = {

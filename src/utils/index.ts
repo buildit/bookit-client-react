@@ -1,1 +1,1 @@
-// utils go here
+export { getAPIEndpoint } from './get-location'

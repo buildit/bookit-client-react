@@ -1,7 +1,7 @@
 import { call, fork, put, takeEvery } from 'redux-saga/effects'
 
 import { actionCreators, BOOKING_REQUEST } from 'Redux/booking'
-import { createMeeting } from 'Api'
+import { createBooking } from 'Redux/api'
 import { BookingRequest } from '../../models/booking-request'
 
 export function* makeBooking() {
@@ -13,7 +13,7 @@ export function* makeBooking() {
       subject: 'My New Meeting',
     }
 
-    const meeting = yield call(createMeeting, request)
+    const meeting = yield put(createBooking, request)
     const action = actionCreators.bookingSuccess(meeting)
     yield put(action)
   } catch (error) {

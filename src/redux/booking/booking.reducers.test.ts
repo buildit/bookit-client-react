@@ -1,7 +1,8 @@
 import { reducer as bookingStatus } from './reducer'
 
 import { actionCreators } from './actions'
-import {Booking} from '../../models/booking'
+
+import { Booking } from 'Models'
 
 describe('reducers/booking', () => {
 

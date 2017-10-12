@@ -48,12 +48,14 @@
     "react-router-redux": "^5.0.0-alpha.6",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",
+    "redux-api-middleware": "^2.0.0-beta.3",
     "redux-saga": "^0.15.6",
     "reselect": "^3.0.1",
     "reselect-immutable-helpers": "^1.2.2",
     "wtfetch": "^1.1.0"
   },
   "devDependencies": {
+    "@types/chai": "^4.0.4",
     "@types/chai-enzyme": "^0.6.3",
     "@types/history": "^4.6.0",
     "@types/jest": "^21.1.2",
