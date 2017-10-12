@@ -12,8 +12,8 @@ export function* makeBooking() {
       startDateTime: '2017-09-26T09:00:00.000-04:00',
       subject: 'My New Meeting',
     }
-
-    const meeting = yield put(createBooking, request)
+    const action = createBooking(request)
+    const meeting = yield put(createBooking(request))
     const action = actionCreators.bookingSuccess(meeting)
     yield put(action)
   } catch (error) {
