@@ -39,7 +39,7 @@ export const BookingButton: React.SFC<BookingButtonProps> = ({ bookingStatus, in
   return (
     <div>
       { !bookingStatus &&
-        <Button id="bookit" disabled={requestInProgress} onClick={handleClick}>
+        <Button id="bookit" disabled={requestInProgress} onClick={handleClick} type="button">
           Book a Room or MELONS!
         </Button>
       }
