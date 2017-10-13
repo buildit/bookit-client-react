@@ -6,14 +6,12 @@ import { BookingRequest } from 'Models'
 
 const apiEndpoint = getAPIEndpoint()
 
-export const createBooking = createApiAction<BookingRequest, {}>(
-  'CREATE_BOOKING', {
-    RSAA,
-    endpoint: `${apiEndpoint}/v1/booking`,
-    headers: { 'Content-Type': 'application/json' },
-    method: 'POST',
-  }
-)
+export const createBooking = createApiAction<BookingRequest, {}>('CREATE_BOOKING', {
+  RSAA,
+  endpoint: `${apiEndpoint}/v1/booking`,
+  // headers: { 'Content-Type': 'application/json' },
+  method: 'POST',
+})
 
 // export const createBooking = (booking) => ({
 //   [RSAA]: {
