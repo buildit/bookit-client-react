@@ -3,10 +3,7 @@ import { connect } from 'react-redux'
 import { Field, reduxForm, InjectedFormProps } from 'redux-form'
 
 import Button from 'Components/Button'
-
-interface BookingFormProps {
-  handleSubmit: () => {}
-}
+import { createBooking } from 'Redux/api'
 
 interface BookingFormData {
   bookableId: number,
@@ -15,12 +12,23 @@ interface BookingFormData {
   endDateTime: string,
 }
 
-type InjectedProps = InjectedFormProps<BookingFormData, BookingFormProps>
+interface BookingFormProps {
+  createBooking: any,
+}
 
-export const BookingForm: React.StatelessComponent<BookingFormProps & InjectedProps> = (props) => {
-  const { handleSubmit } = props
+type AllBookingFormProps = BookingFormProps & InjectedFormProps<BookingFormData>
+
+export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
+  const { handleSubmit, createBooking } = props
   return (
-    <form onSubmit={ handleSubmit }>
+    <form onSubmit={ handleSubmit((values) => {
+      const booking = {
+          ...values,
+          endDateTime: new Date(values.endDateTime).toISOString(),
+          startDateTime: new Date(values.startDateTime).toISOString(),
+        }
+      createBooking(booking)
+      }) }>
       <div>
         <label>Name of Room</label>
         <Field name="bookableId" component="input" type="hidden" />
@@ -55,4 +63,9 @@ const mapStateToProps = (state) => ({
 
 const form = reduxForm<BookingFormData>({ form: 'booking' })(BookingForm)
 
-export default connect(mapStateToProps)(form)
+const connected = connect<{}, {}>(
+  mapStateToProps,
+  { createBooking }
+)(form)
+
+export default connected
