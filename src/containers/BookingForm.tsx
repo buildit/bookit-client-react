@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Field, reduxForm, InjectedFormProps } from 'redux-form'
+import { Field, reduxForm, InjectedFormProps, hasSubmitSucceeded, isSubmitting, } from 'redux-form'
+import Moment from 'moment'
 
 import Button from 'Components/Button'
 import { createBooking } from 'Redux/api'
@@ -18,47 +19,59 @@ interface BookingFormProps {
 
 type AllBookingFormProps = BookingFormProps & InjectedFormProps<BookingFormData>
 
+const renderField = ({
+  input,
+  label,
+  type,
+  meta: { touched, error, warning },
+}) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} placeholder={label} type={type} />
+      {touched &&
+        ((error && <span>{error}</span>) ||
+          (warning && <span>{warning}</span>))}
+    </div>
+  </div>
+)
+
 export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
-  const { handleSubmit, createBooking } = props
+  const { handleSubmit, createBooking, submitSucceeded, submitting } = props
+
+  const handleCreateBooking = (values) => {
+    createBooking({
+      ...values,
+      endDateTime: Moment(values.endDateTime).toISOString(),
+      startDateTime: Moment(values.startDateTime).toISOString(),
+    })
+  }
+
   return (
-    <form onSubmit={ handleSubmit((values) => {
-      const booking = {
-          ...values,
-          endDateTime: new Date(values.endDateTime).toISOString(),
-          startDateTime: new Date(values.startDateTime).toISOString(),
-        }
-      createBooking(booking)
-      }) }>
-      <div>
-        <label>Name of Room</label>
-        <Field name="bookableId" component="input" type="hidden" />
-      </div>
-      <div>
-        <label htmlFor="subject">Subject</label>
-        <Field name="subject" component="input" type="text" />
-      </div>
-      <div>
-        <label htmlFor="startDateTime">Start</label>
-        <Field name="startDateTime" component="input" type="datetime-local" />
-      </div>
-      <div>
-        <label htmlFor="endDateTime">End</label>
-        <Field name="endDateTime" component="input" type="datetime-local" />
-      </div>
-      <Button type="submit">
-        Book a Room!
-      </Button>
-    </form>
+    <div>
+      <form onSubmit={ handleSubmit(handleCreateBooking) }>
+        <Field name="bookableId" component={renderField} type="hidden" label="Name of Room" />
+        <Field name="subject" component={renderField} label="Subject" type="text" />
+        <Field name="startDateTime" component={renderField} label="Start" type="text" />
+        <Field name="endDateTime" component={renderField} label="End" type="text" />
+        <Button type="submit" disabled={submitting}>
+          Book a Room!
+        </Button>
+      </form>
+      {submitSucceeded && <h1>Booking Created!</h1>}
+    </div>
   )
 }
 
 const mapStateToProps = (state) => ({
   initialValues: {
     bookableId: 1,
-    endDateTime: '2017-09-26T09:00:00.000-04:00',
-    startDateTime: '2017-09-26T09:00:00.000-04:00',
+    endDateTime: Moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
+    startDateTime: Moment().format('YYYY-MM-DDTHH:mm'),
     subject: 'My New Meeting',
   },
+  submitSucceeded: hasSubmitSucceeded('booking')(state),
+  submitting: isSubmitting('booking')(state),
 })
 
 const form = reduxForm<BookingFormData>({ form: 'booking' })(BookingForm)
