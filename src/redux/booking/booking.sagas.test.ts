@@ -22,19 +22,6 @@ describe('sagas/booking', () => {
   })
 
   describe('#watchBooking()', () => {
-    //  while (true) {
-    //   yield take('CREATE_BOOKING_PENDING')
-    //   const { failure, success } = yield race({
-    //     failure: take('CREATE_BOOKING_FAILURE'),
-    //     success: take('CREATE_BOOKING_SUCCESS'),
-    //   })
-    //   if (success) {
-    //     yield call(doSomething, success)
-    //   }
-    //   if (failure) {
-    //     yield call(doSomething, failure)
-    //   }
-    // }
     it('logs success if successful', () => {
       const saga = cloneableGenerator(watchBooking)()
       const pendingAction = { type: 'CREATE_BOOKING_PENDING' }
@@ -48,7 +35,6 @@ describe('sagas/booking', () => {
         failure: take('CREATE_BOOKING_FAILURE'),
         success: take('CREATE_BOOKING_SUCCESS'),
       }))
-      expect(failureSaga.next(failureAction).value).to.deep.equal(call(doSomething, failureAction))
 
       // expect(saga.next(successAction).value).to.deep.equal(race({
       //   failure: take('CREATE_BOOKING_FAILURE'),

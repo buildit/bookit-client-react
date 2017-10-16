@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Field, reduxForm, InjectedFormProps, hasSubmitSucceeded, isSubmitting, } from 'redux-form'
+import { Field, reduxForm, InjectedFormProps, hasSubmitSucceeded, isSubmitting, getFormValues } from 'redux-form'
 import Moment from 'moment'
 
 import Button from 'Components/Button'
@@ -37,8 +37,7 @@ const renderField = ({
 )
 
 export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
-  const { handleSubmit, createBooking, submitSucceeded, submitting } = props
-
+  const { handleSubmit, createBooking, submitSucceeded, submitting, initialValues } = props
   const handleCreateBooking = (values) => {
     createBooking({
       ...values,
@@ -58,7 +57,7 @@ export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
           Book a Room!
         </Button>
       </form>
-      {submitSucceeded && <h1>Booking Created!</h1>}
+      {submitSucceeded && <h1>Booking Created with room {initialValues.bookableId}!</h1>}
     </div>
   )
 }
