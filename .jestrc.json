@@ -19,6 +19,7 @@
   "testPathIgnorePatterns": [ "<rootDir>/(build|docs|node_modules|images)/" ],
   "testEnvironment": "jsdom",
   "testRegex": "\\.test.tsx?$",
+  "collectCoverage": true,
   "collectCoverageFrom": [
     "!src/**/index.*(ts|tsx)",
     "!src/*(store|history)/*",
