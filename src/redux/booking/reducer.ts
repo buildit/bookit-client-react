@@ -1,4 +1,4 @@
-// import { combineReducers } from 'redux'
+import { combineReducers } from 'redux'
 import { handleAction, handleActions } from 'redux-actions'
 
 import { Booking } from 'Models'
@@ -26,7 +26,7 @@ const bookingInstance = handleAction<Booking, Booking>(
   null
 )
 
-export const reducer = {
+export const reducer = combineReducers<State>({
   bookingInstance,
   bookingStatus,
-}
+})
