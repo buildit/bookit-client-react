@@ -38,7 +38,7 @@ const renderField = ({
   </div>
 )
 
-const renderSuccessMessage = (bookingId) => <h1>Booking Created with room {bookingId}!</h1>
+const renderSuccessMessage = (bookingId) => <h1>Booking Created with booking ID {bookingId}!</h1>
 
 export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
   const { handleSubmit, createBooking, submitSucceeded, submitting, initialValues, bookingInstance } = props
