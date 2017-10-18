@@ -14,19 +14,19 @@ export type State = {
   bookingInstance?: Booking
 }
 
-const bookingStatus = handleActions<boolean, boolean>({
+export const bookingStatus = handleActions<boolean, boolean>({
   [BOOKING_REQUEST]: () => false,
   [BOOKING_SUCCESS]: () => true,
   [BOOKING_FAILURE]: () => false,
 }, false)
 
-const bookingInstance = handleAction<Booking, Booking>(
+export const bookingInstance = handleAction<Booking, Booking>(
   BOOKING_SUCCESS,
   (state, action) => action.payload,
   null
 )
 
-export const reducer = combineReducers<State>({
+export const reducer = {
   bookingInstance,
   bookingStatus,
-})
+}

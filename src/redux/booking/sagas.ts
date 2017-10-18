@@ -1,7 +1,7 @@
 import { call, fork, put, takeEvery, race, take } from 'redux-saga/effects'
 
-import { actionCreators, BOOKING_REQUEST } from 'Redux/booking'
-import { BookingRequest } from '../../models/booking-request'
+import { actionCreators } from 'Redux/booking'
+import { BookingRequest, Booking } from 'Models'
 
 export function* doSomething(action) {
   yield call(console.log, 'GOT ACTION:', action)
@@ -16,6 +16,7 @@ export function* watchBooking() {
     })
     if (success) {
       yield call(doSomething, success)
+      yield put(actionCreators.bookingSuccess(success.payload))
     }
     if (failure) {
       yield call(doSomething, failure)

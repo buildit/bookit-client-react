@@ -5,5 +5,3 @@ export * from './actions'
 // export * from './types'
 
 // import * as ApiSelectors from './selectors'
-
-// export { BookingSelectors }

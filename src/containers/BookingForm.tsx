@@ -5,6 +5,7 @@ import Moment from 'moment'
 
 import Button from 'Components/Button'
 import { createBooking } from 'Redux/api'
+import { BookingSelectors } from 'Redux/booking'
 
 interface BookingFormData {
   bookableId: number,
@@ -15,6 +16,7 @@ interface BookingFormData {
 
 interface BookingFormProps {
   createBooking: any,
+  bookingInstance: any,
 }
 
 type AllBookingFormProps = BookingFormProps & InjectedFormProps<BookingFormData>
@@ -36,8 +38,10 @@ const renderField = ({
   </div>
 )
 
+const renderSuccessMessage = (bookingId) => <h1>Booking Created with room {bookingId}!</h1>
+
 export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
-  const { handleSubmit, createBooking, submitSucceeded, submitting, initialValues } = props
+  const { handleSubmit, createBooking, submitSucceeded, submitting, initialValues, bookingInstance } = props
   const handleCreateBooking = (values) => {
     createBooking({
       ...values,
@@ -57,12 +61,13 @@ export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
           Book a Room!
         </Button>
       </form>
-      {submitSucceeded && <h1>Booking Created with room {initialValues.bookableId}!</h1>}
+      {bookingInstance && renderSuccessMessage(bookingInstance.bookingId)}
     </div>
   )
 }
 
 const mapStateToProps = (state) => ({
+  bookingInstance: BookingSelectors.getBookingInstance(state),
   initialValues: {
     bookableId: 1,
     endDateTime: Moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
