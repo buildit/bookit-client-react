@@ -1,11 +1,15 @@
 import React from 'react'
 
-import BookingButton from 'Components/BookingButton'
+import BookingForm from 'Containers/BookingForm'
 
-const App = () => (
-  <div>
-    <BookingButton />
-  </div>
-)
+const App = () => {
+  const submit = (values) => console.log(values)
+
+  return (
+    <div>
+      <BookingForm onSubmit={submit} />
+    </div>
+  )
+}
 
 export default App

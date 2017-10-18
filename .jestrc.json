@@ -8,6 +8,7 @@
     "^Store(.*)$": "<rootDir>/src/store$1",
     "^History(.*)$": "<rootDir>/src/history$1",
     "^Redux(.*)$": "<rootDir>/src/redux$1",
+    "^Models(.*)$": "<rootDir>/src/models$1",
     "^Routes(.*)$": "<rootDir>/src/routes$1",
     "^Components(.*)$": "<rootDir>/src/components$1",
     "^Containers(.*)$": "<rootDir>/src/containers$1",

@@ -13,6 +13,8 @@
       "Routes": [ "src/routes" ],
       "Utils": [ "src/utils" ],
       "Api": [ "src/api" ],
+      "Models": [ "src/models" ],
+      "Models/*": [ "src/models/*" ],
       "Redux": [ "src/redux" ],
       "Redux/*": [ "src/redux/*" ],
       "Components": [ "src/components" ],

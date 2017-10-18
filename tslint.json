@@ -29,14 +29,14 @@
       "no-shadowed-variable": [
         true,
         {
-          "class": true,
-          "enum": true,
-          "function": true,
+          "class": false,
+          "enum": false,
+          "function": false,
           "import": false,
-          "interface": true,
-          "namespace": true,
-          "typeAlias": true,
-          "typeParameter": true
+          "interface": false,
+          "namespace": false,
+          "typeAlias": false,
+          "typeParameter": false
         }
       ]
     },

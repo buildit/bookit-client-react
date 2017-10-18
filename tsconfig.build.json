@@ -12,6 +12,8 @@
       "History": [ "src/history" ],
       "Routes": [ "src/routes" ],
       "Utils": [ "src/utils" ],
+      "Models": [ "src/models" ],
+      "Models/*": [ "src/models/*" ],
       "Api": [ "src/api" ],
       "Redux": [ "src/redux" ],
       "Redux/*": [ "src/redux/*" ],

@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
-import { handleActions } from 'redux-actions'
+import { handleAction, handleActions } from 'redux-actions'
 
-import { Booking } from '../../models/booking'
+import { Booking } from 'Models'
 
 import {
   BOOKING_REQUEST,
@@ -11,20 +11,22 @@ import {
 
 export type State = {
   bookingStatus: boolean
-  instance?: Booking
+  bookingInstance?: Booking
 }
 
-const bookingStatus = handleActions<boolean>({
+export const bookingStatus = handleActions<boolean, boolean>({
   [BOOKING_REQUEST]: () => false,
   [BOOKING_SUCCESS]: () => true,
   [BOOKING_FAILURE]: () => false,
 }, false)
 
-const instance = handleActions<Booking>({
-  [BOOKING_SUCCESS]: (state, action) => action.payload,
-}, null)
+export const bookingInstance = handleAction<Booking, Booking>(
+  BOOKING_SUCCESS,
+  (state, action) => action.payload,
+  null
+)
 
-export const reducer = combineReducers<State>({
+export const reducer = {
+  bookingInstance,
   bookingStatus,
-  instance,
-})
+}

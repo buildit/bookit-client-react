@@ -1,30 +1,27 @@
-import { call, fork, put, takeEvery } from 'redux-saga/effects'
+import { call, fork, put, takeEvery, race, take } from 'redux-saga/effects'
 
-import { actionCreators, BOOKING_REQUEST } from 'Redux/booking'
-import { createMeeting } from 'Api'
-import { BookingRequest } from '../../models/booking-request'
+import { actionCreators } from 'Redux/booking'
+import { BookingRequest, Booking } from 'Models'
 
-export function* makeBooking() {
-  try {
-    const request: BookingRequest = {
-      bookableId: 1,
-      endDateTime: '2017-09-26T09:00:00.000-04:00',
-      startDateTime: '2017-09-26T09:00:00.000-04:00',
-      subject: 'My New Meeting',
-    }
-
-    const meeting = yield call(createMeeting, request)
-    const action = actionCreators.bookingSuccess(meeting)
-    yield put(action)
-  } catch (error) {
-    yield put(actionCreators.bookingFailure(error))
-  } finally {
-    yield put(actionCreators.bookingComplete())
-  }
+export function* doSomething(action) {
+  yield call(console.log, 'GOT ACTION:', action)
 }
 
 export function* watchBooking() {
-  yield takeEvery(BOOKING_REQUEST, makeBooking)
+  while (true) {
+    yield take('CREATE_BOOKING_PENDING')
+    const { failure, success } = yield race({
+      failure: take('CREATE_BOOKING_FAILURE'),
+      success: take('CREATE_BOOKING_SUCCESS'),
+    })
+    if (success) {
+      yield call(doSomething, success)
+      yield put(actionCreators.bookingSuccess(success.payload))
+    }
+    if (failure) {
+      yield call(doSomething, failure)
+    }
+  }
 }
 
 export const sagas = function* bookingSagas() {
