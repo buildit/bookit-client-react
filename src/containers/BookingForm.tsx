@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Field, reduxForm, InjectedFormProps, hasSubmitSucceeded, isSubmitting, getFormValues } from 'redux-form'
+import { Field, reduxForm, InjectedFormProps, hasSubmitSucceeded, isSubmitting } from 'redux-form'
+
 import Moment from 'moment'
 
 import Button from 'Components/Button'
@@ -8,15 +9,17 @@ import { createBooking } from 'Redux/api'
 import { BookingSelectors } from 'Redux/booking'
 
 interface BookingFormData {
-  bookableId: number,
-  subject: string,
-  startDateTime: string,
-  endDateTime: string,
+  bookableId: number
+  subject: string
+  startDateTime: string
+  endDateTime: string
 }
 
 interface BookingFormProps {
-  createBooking: any,
-  bookingInstance: any,
+  submitSucceeded: any
+  createBooking: any
+  bookingInstance: any
+  initialValues: any
 }
 
 type AllBookingFormProps = BookingFormProps & InjectedFormProps<BookingFormData>

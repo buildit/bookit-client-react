@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux'
 import { handleAction, handleActions } from 'redux-actions'
 
 import { Booking } from 'Models'
@@ -7,7 +6,7 @@ import {
   BOOKING_REQUEST,
   BOOKING_SUCCESS,
   BOOKING_FAILURE,
-} from './'
+} from './actions'
 
 export type State = {
   bookingStatus: boolean

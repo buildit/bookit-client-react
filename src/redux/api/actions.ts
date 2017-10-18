@@ -1,8 +1,9 @@
 import { RSAA } from 'redux-api-middleware'
 
 import { getAPIEndpoint } from 'Utils'
-import { createApiAction } from './types'
 import { BookingRequest } from 'Models'
+
+import { createApiAction } from './types'
 
 const apiEndpoint = getAPIEndpoint()
 

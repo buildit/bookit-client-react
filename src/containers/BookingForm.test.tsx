@@ -1,6 +1,6 @@
-import * as React from 'react'
+import React from 'react'
 import { shallow, mount } from 'enzyme'
-import { reduxForm } from 'redux-form'
+
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 

@@ -9,19 +9,6 @@ export interface Action<P> extends ReduxAction {
   payload: P
 }
 
-// export interface CreateAction<P> extends Action<P> {
-//   type: string
-//   (payload?: P): Action<P>
-//   matches(action: ReduxAction): action is Action<P>
-// }
-
-// export const createAction = <P>(type: string): CreateAction<P> => {
-//   const creator: any = <P>(payload?: P) => ({ type, payload })
-//   creator.matches = <P>(action: ReduxAction): action is Action<P> => action.type === type
-//   creator.type = type
-//   return creator as CreateAction<P>
-// }
-
 export type HttpMethod = 'GET' | 'HEAD' | 'PUT' | 'POST' | 'PATCH' | 'DELETE' | 'OPTIONS'
 
 export interface CallApiOptions {

@@ -12,10 +12,7 @@ export const getAPIEndpoint = () => {
  * this expects the URL to be something of the forms:
  * bookit-client-react.buildit.tools for production
  * <env>-bookit-client-react.buildit.tools for everything else
- * @param {string} location
- * @returns {string}
  */
-
 export const deriveAPIEndpoint = (location: string) => {
   const urlParts = location.split('.')
   if (urlParts.length === 1) {
