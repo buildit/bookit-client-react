@@ -1,7 +1,4 @@
-/* eslint-env jest */
-
 import {bookRoom}  from './bookit-api'
-//const bookitAPI = require('./bookit-api')
 
 describe('#bookRoom()', () => {
   it('booking should return expected elements', () => {
