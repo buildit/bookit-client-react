@@ -25,8 +25,7 @@
     "!src/**/index.*(ts|tsx)",
     "!src/*(store|history)/*",
     "!src/**/*.d.(ts|tsx)",
-    "src/**/*.*(ts|tsx)",
-    "test/**/*.*(ts|tsx|js)"
+    "src/**/*.*(ts|tsx)"
   ],
   "coverageReporters": [
     "html",
