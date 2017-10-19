@@ -1,11 +1,9 @@
 import { call, fork, put, take, race } from 'redux-saga/effects'
 import { cloneableGenerator } from 'redux-saga/utils'
 
-import { actionCreators, BOOKING_REQUEST } from './actions'
+import { actionCreators } from './actions'
 
 import { sagas as booking, watchBooking, doSomething } from './sagas'
-
-import { Booking, BookingRequest } from 'Models'
 
 describe('sagas/booking', () => {
   describe('#doSomething(action)', () => {

@@ -1,7 +1,6 @@
 import { call, fork, put, race, take } from 'redux-saga/effects'
 
 import { actionCreators } from 'Redux/booking'
-import { BookingRequest, Booking } from 'Models'
 
 export function* doSomething(action) {
   yield call(console.log, 'GOT ACTION:', action)

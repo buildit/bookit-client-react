@@ -44,7 +44,7 @@ const renderField = ({
 const renderSuccessMessage = (bookingId) => <h1>Booking Created with booking ID {bookingId}!</h1>
 
 export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
-  const { handleSubmit, createBooking, submitSucceeded, submitting, initialValues, bookingInstance } = props
+  const { handleSubmit, createBooking, submitting, bookingInstance } = props
   const handleCreateBooking = (values) => {
     createBooking({
       ...values,
@@ -60,7 +60,7 @@ export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
         <Field name="subject" component={renderField} label="Subject" type="text" />
         <Field name="startDateTime" component={renderField} label="Start" type="text" />
         <Field name="endDateTime" component={renderField} label="End" type="text" />
-        <Button type="submit" disabled={submitting}>
+        <Button type="submit" disabled={submitting} id="bookit">
           Book a Room!
         </Button>
       </form>

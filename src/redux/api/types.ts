@@ -22,7 +22,7 @@ export interface CallApiOptions {
   }
 }
 
-export interface ApiAction<P, R> {
+export interface ApiAction {
   [propName: string]: CallApiOptions
 }
 
@@ -38,7 +38,7 @@ export interface ApiActionOptions {
 
 export interface CreateApiAsyncAction<P, R> {
   type: string
-  (payload?: P): ApiAction<P, R>
+  (payload?: P): ApiAction
   matches(action: Action<any>): action is Action<any>
   matchesPending(action: Action<P>): action is Action<P>
   matchesSuccess(action: Action<R>): action is Action<R>
@@ -60,7 +60,7 @@ export const createApiAction =
     const successType = `${type}_SUCCESS`
     const failureType = `${type}_FAILURE`
 
-    const creator: any = (payload: P): ApiAction<P, R> => {
+    const creator: any = (payload: P): ApiAction => {
       const { RSAA, method, endpoint, credentials, headers }
         = typeof (options) === 'function' ? options(payload) : options
 
