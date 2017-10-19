@@ -19,7 +19,7 @@
   "moduleFileExtensions": [ "ts", "tsx", "js", "jsx", "json" ],
   "testPathIgnorePatterns": [ "<rootDir>/(build|docs|node_modules|images)/" ],
   "testEnvironment": "jsdom",
-  "testRegex": "\\.test.tsx?$$",
+  "testRegex": "\\.test.tsx?$",
   "collectCoverage": true,
   "collectCoverageFrom": [
     "!src/**/index.*(ts|tsx)",
