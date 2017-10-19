@@ -99,6 +99,8 @@
     "name-all-modules-plugin": "^1.0.1",
     "node-sass": "^4.5.3",
     "postcss-loader": "^2.0.6",
+    "pre-commit": "^1.2.2",
+    "pre-push": "^0.1.1",
     "react-hot-loader": "^3.0.0-beta.7",
     "react-test-renderer": "^16.0.0",
     "sass-loader": "^6.0.6",

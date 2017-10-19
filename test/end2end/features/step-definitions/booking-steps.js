@@ -14,7 +14,7 @@ defineSupportCode(function({Given, When, Then}) {
   })
 
   Then('It\'s booked', function () {
-    const xpath = "//*[contains(text(),'Booking created')]"
+    const xpath = "//*[contains(text(),'Booking Created')]"
     const condition = seleniumWebdriver.until.elementLocated({xpath: xpath})
     return this.driver.wait(condition, 2000)
   })
