@@ -4,6 +4,8 @@ import { apiMiddleware } from 'redux-api-middleware'
 import { routerMiddleware } from 'react-router-redux'
 import createSagaMiddleware, { SagaMiddleware, Task } from 'redux-saga'
 
+import { sagaApiMiddleware } from 'Redux/middleware'
+
 import { rootReducer, rootSaga, RootState } from 'Redux'
 
 import history from 'History'
@@ -16,6 +18,7 @@ export default (initialState?: RootState) => {
   const sagaMiddleware: SagaMiddleware<{}> = createSagaMiddleware()
 
   const middlewares = [
+    sagaApiMiddleware,
     apiMiddleware,
     routerMiddleware(history),
     sagaMiddleware,

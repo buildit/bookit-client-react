@@ -5,8 +5,9 @@ import { Field, reduxForm, InjectedFormProps, hasSubmitSucceeded, isSubmitting }
 import Moment from 'moment'
 
 import Button from 'Components/Button'
-import { createBooking } from 'Redux/api'
-import { BookingSelectors } from 'Redux/booking'
+// import { createBooking } from 'Redux/api'
+// import { actionCreators } from 'Redux/api'
+import { actionCreators, BookingSelectors } from 'Redux/booking'
 
 interface BookingFormData {
   bookableId: number
@@ -45,17 +46,17 @@ const renderSuccessMessage = (bookingId) => <h1>Booking Created with booking ID 
 
 export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
   const { handleSubmit, createBooking, submitting, bookingInstance } = props
-  const handleCreateBooking = (values) => {
-    createBooking({
-      ...values,
-      endDateTime: Moment(values.endDateTime).toISOString(),
-      startDateTime: Moment(values.startDateTime).toISOString(),
-    })
-  }
+  // const handleCreateBooking = (values) => {
+  //   createBooking({
+  //     ...values,
+  //     endDateTime: Moment(values.endDateTime).toISOString(),
+  //     startDateTime: Moment(values.startDateTime).toISOString(),
+  //   })
+  // }
 
   return (
     <div>
-      <form onSubmit={ handleSubmit(handleCreateBooking) }>
+      <form onSubmit={ handleSubmit(createBooking) }>
         <Field name="bookableId" component={renderField} type="hidden" label="Name of Room" />
         <Field name="subject" component={renderField} label="Subject" type="text" />
         <Field name="startDateTime" component={renderField} label="Start" type="text" />
@@ -85,7 +86,8 @@ const form = reduxForm<BookingFormData>({ form: 'booking' })(BookingForm)
 
 const connected = connect<{}, {}>(
   mapStateToProps,
-  { createBooking }
+  { createBooking: actionCreators.bookingRequest }
+  // { createBooking }
 )(form)
 
 export default connected
