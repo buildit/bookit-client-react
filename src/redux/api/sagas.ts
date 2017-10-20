@@ -1,0 +1,23 @@
+import { call, fork, put, race, select, take, takeLatest } from 'redux-saga/effects'
+
+import Moment from 'moment'
+
+import { actionCreators } from 'Redux'
+
+import { CREATE_BOOKING } from 'Redux/booking'
+
+const normalizeBody = ({ startDateTime, endDateTime, ...body }) => ({
+  ...body,
+  endDateTime: Moment(endDateTime).toISOString(),
+  startDateTime: Moment(startDateTime).toISOString(),
+})
+
+export function* createBookingApi(action) {
+  // const { startDateTime, endDateTime, ...rest } = yield select(getFormValues('booking'))  // this also works, but whatever is passed to onSubmit in the form gets passed the form values anyway
+  const body = normalizeBody(action.payload)
+  yield put(actionCreators.postCreateBooking(body))
+}
+
+export const sagas = function* apiSagas() {
+  yield takeLatest(CREATE_BOOKING, createBookingApi)
+}

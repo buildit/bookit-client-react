@@ -1,15 +1,19 @@
-import { createApiAction, SAM } from './create-saga-api-actions'
+import { createRSAA, SAM } from './create-saga-api-actions'
 
 export default ({ getState, dispatch }) => (next) => (action) => {
   if (action.type !== SAM) {
     return next(action)
   }
 
-  const { payload: { endpoint, method, types, headers = {}, credentials, bailout } } = action
-  let { payload: { body } } = action
+  const { payload: { endpoint, method, headers = {}, credentials, bailout } } = action
+  let { payload: { types, body } } = action
+
+  if (typeof (types) === 'string') {
+    types = [ `${types}_PENDING`, `${types}_SUCCESS`, `${types}_FAILURE` ]
+  }
 
   if (typeof (body) === 'function') {
-    body = body(getState())
+    body = body(action.payload, getState())
   }
 
   if (!(body instanceof FormData)) {
@@ -17,9 +21,9 @@ export default ({ getState, dispatch }) => (next) => (action) => {
     headers['content-type'] = 'application/json'
   }
 
-  const apiAction = createApiAction({ endpoint, method, types, body, headers, credentials, bailout })
-  console.log('========================[ API ACTION CREATED ]========================')
-  console.dir(apiAction, { depth: null })
-  console.log('========================[ API ACTION CREATED ]========================')
-  dispatch(apiAction)
+  const rsaa = createRSAA({ endpoint, method, types, body, headers, credentials, bailout })
+  console.log('========================[ RSAA CREATED ]========================')
+  console.dir(rsaa, { depth: null })
+  console.log('========================[ RSAA CREATED ]========================')
+  dispatch(rsaa)
 }

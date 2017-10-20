@@ -1,4 +1,9 @@
 import { RootState } from 'Redux'
 
-export const getBookingStatus = (state: RootState) => state.bookingStatus
+import { createSelector } from 'reselect'
+
 export const getBookingInstance = (state: RootState) => state.bookingInstance
+export const getBookingInstanceId = createSelector(
+  [ getBookingInstance ],
+  (bookingInstance) => bookingInstance && bookingInstance.bookingId
+)

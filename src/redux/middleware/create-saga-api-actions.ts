@@ -11,7 +11,7 @@ export type ApiCallHeaders = { [propName: string]: string }
 export interface ApiActionProps {
   endpoint: string | ((state?: State) => string)
   method: ApiCallMethods
-  types: string[]
+  types: string | string[]
   body?: any
   headers?: ApiCallHeaders | ((state?: State) => ApiCallHeaders)
   credentials?: ApiCallCredentials
@@ -20,7 +20,7 @@ export interface ApiActionProps {
 
 export const SAM = Symbol('@@saga-api-middleware')
 
-export const createApiAction = ({ endpoint, method, types, body, headers, credentials, bailout }: ApiActionProps) => ({
+export const createRSAA = ({ endpoint, method, types, body, headers, credentials, bailout }: ApiActionProps) => ({
   [RSAA]: {
     bailout,
     body,
@@ -32,7 +32,9 @@ export const createApiAction = ({ endpoint, method, types, body, headers, creden
   },
 })
 
-export const createSagaApiAction = ({ endpoint, method, types, headers, credentials, bailout }: ApiActionProps) => (body) => ({
-  payload: { endpoint, method, types, body, headers, credentials, bailout },
-  type: SAM,
-})
+export const createSagaApiAction = ({ endpoint, method, types, headers, credentials, bailout }: ApiActionProps) => {
+  return (body?: any) => ({
+    payload: { endpoint, method, types, body, headers, credentials, bailout },
+    type: SAM,
+  })
+}
