@@ -73,8 +73,8 @@ const mapStateToProps = (state) => ({
   bookingInstance: BookingSelectors.getBookingInstance(state),
   initialValues: {
     bookableId: 1,
-    endDateTime: Moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
-    startDateTime: Moment().format('YYYY-MM-DDTHH:mm'),
+    endDateTime: Moment().add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
+    startDateTime: Moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
     subject: 'My New Meeting',
   },
   submitSucceeded: hasSubmitSucceeded('booking')(state),
