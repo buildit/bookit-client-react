@@ -13,7 +13,7 @@ describe('reducers/booking', () => {
     })
 
     it('returns true on BOOKING_SUCCESS', () => {
-      const booking: Booking = {bookingId: 1, bookableId: 1, subject: 'booked it', startDateTime: '', endDateTime: ''}
+      const booking: Booking = {bookingId: 1, bookableId: 1, subject: 'booked it', start: '', end: ''}
       const state = bookingReducer.bookingStatus(false, actionCreators.bookingSuccess(booking))
       expect(state).to.be.true
     })

@@ -11,8 +11,8 @@ import { BookingSelectors } from 'Redux/booking'
 interface BookingFormData {
   bookableId: number
   subject: string
-  startDateTime: string
-  endDateTime: string
+  start: string
+  end: string
 }
 
 interface BookingFormProps {
@@ -48,8 +48,8 @@ export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
   const handleCreateBooking = (values) => {
     createBooking({
       ...values,
-      endDateTime: Moment(values.endDateTime).toISOString(),
-      startDateTime: Moment(values.startDateTime).toISOString(),
+      end: Moment(values.end).toISOString(),
+      start: Moment(values.start).toISOString(),
     })
   }
 
@@ -58,8 +58,8 @@ export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
       <form onSubmit={ handleSubmit(handleCreateBooking) }>
         <Field name="bookableId" component={renderField} type="hidden" label="Name of Room" />
         <Field name="subject" component={renderField} label="Subject" type="text" />
-        <Field name="startDateTime" component={renderField} label="Start" type="text" />
-        <Field name="endDateTime" component={renderField} label="End" type="text" />
+        <Field name="start" component={renderField} label="Start" type="text" />
+        <Field name="end" component={renderField} label="End" type="text" />
         <Button type="submit" disabled={submitting} id="bookit">
           Book a Room!
         </Button>
@@ -73,8 +73,8 @@ const mapStateToProps = (state) => ({
   bookingInstance: BookingSelectors.getBookingInstance(state),
   initialValues: {
     bookableId: 1,
-    endDateTime: Moment().add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
-    startDateTime: Moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
+    end: Moment().add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
+    start: Moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
     subject: 'My New Meeting',
   },
   submitSucceeded: hasSubmitSucceeded('booking')(state),

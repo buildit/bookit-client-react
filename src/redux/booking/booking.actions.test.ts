@@ -17,7 +17,7 @@ describe('actions/booking', () => {
   describe('#bookingSuccess()', () => {
 
     it('returns a redux action with no payload when called', () => {
-      const booking: Booking = {bookingId: 1, bookableId: 1, subject: 'booked it', startDateTime: '', endDateTime: ''}
+      const booking: Booking = {bookingId: 1, bookableId: 1, subject: 'booked it', start: '', end: ''}
       const expected = { type: 'BOOKING_SUCCESS', payload: booking }
       const actual = actionCreators.bookingSuccess(booking)
 
