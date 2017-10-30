@@ -26,6 +26,12 @@ interface BookingFormProps {
 
 type AllBookingFormProps = BookingFormProps & InjectedFormProps<BookingFormData>
 
+const errorSpan = {
+  color: 'red',
+  display: 'inline-block',
+  paddingLeft: '5px',
+}
+
 const required = (value) => (value ? undefined : 'Required')
 
 const endAfterStart = (value, {start}) => {
@@ -57,7 +63,7 @@ const renderField = ({
     <div>
       <input {...input} placeholder={label} type={type} />
       {touched &&
-        ((error && <span>{error}</span>) ||
+        ((error && <span style={errorSpan}>{error}</span>) ||
           (warning && <span>{warning}</span>))}
     </div>
   </div>

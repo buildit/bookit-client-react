@@ -11,7 +11,7 @@ export type ApiCallHeaders = { [propName: string]: string }
 export interface ApiActionProps {
   endpoint: string | ((state?: State) => string)
   method: ApiCallMethods
-  types: string | string[]
+  types: string | string[] | object
   body?: any
   headers?: ApiCallHeaders | ((state?: State) => ApiCallHeaders)
   credentials?: ApiCallCredentials
