@@ -56,6 +56,7 @@ export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
         <Field name="start" component={ renderField } label="Start" type="text" />
         <Field name="end" component={ renderField } label="End" type="text" />
         <Button type="submit" disabled={ submitting } id="bookit">
+
           Book a Room!
         </Button>
       </form>
