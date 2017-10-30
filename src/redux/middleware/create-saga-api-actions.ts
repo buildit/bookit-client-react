@@ -8,11 +8,15 @@ export type ApiCallMethods = 'GET' | 'HEAD' | 'PUT' | 'POST' | 'PATCH' | 'DELETE
 export type ApiCallCredentials = 'omit' | 'same-origin' | 'include'
 export type ApiCallHeaders = { [propName: string]: string }
 
-export interface ApiActionProps {
+export interface ApiBodyQuery {
+  body?: any
+  query?: object
+}
+
+export interface ApiActionProps extends ApiBodyQuery {
   endpoint: string | ((state?: State) => string)
   method: ApiCallMethods
   types: string | string[] | object
-  body?: any
   headers?: ApiCallHeaders | ((state?: State) => ApiCallHeaders)
   credentials?: ApiCallCredentials
   bailout?: boolean | ((state?: State) => boolean)
@@ -33,8 +37,8 @@ export const createRSAA = ({ endpoint, method, types, body, headers, credentials
 })
 
 export const createSagaApiAction = ({ endpoint, method, types, headers, credentials, bailout }: ApiActionProps) => {
-  return (body?: any) => ({
-    payload: { endpoint, method, types, body, headers, credentials, bailout },
+  return ({ body, query }: ApiBodyQuery) => ({
+    payload: { endpoint, method, types, body, query, headers, credentials, bailout },
     type: SAM,
   })
 }

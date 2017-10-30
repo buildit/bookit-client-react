@@ -23,6 +23,26 @@ export function* watchForCreateBooking() {
   }
 }
 
+export function* watchForGetAllBookables() {
+  while (true) {
+    yield take('GET_ALL_BOOKABLES_PENDING')
+
+    const { failure, success } = yield race({
+      failure: take('GET_ALL_BOOKABLES_FAILURE'),
+      success: take('GET_ALL_BOOKABLES_SUCCESS'),
+    })
+
+    if (success) {
+      yield call(doSomething, success)
+    }
+
+    if (failure) {
+      yield call(doSomething, failure)
+    }
+  }
+}
+
 export const sagas = function* bookingSagas() {
   yield fork(watchForCreateBooking)
+  yield fork(watchForGetAllBookables)
 }

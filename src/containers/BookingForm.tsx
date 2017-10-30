@@ -18,8 +18,9 @@ interface BookingFormData {
 }
 
 interface BookingFormProps {
-  submitSucceeded: any
-  createBooking: any
+  submitSucceeded: any,
+  createBooking: any,
+  getAllBookables: any,
   bookingInstanceId: any
   initialValues: any
 }
@@ -49,7 +50,7 @@ const startBeforeEnd = (value, {end}) => {
       return 'Start must be before end'
     }
   }
-  catch (error) { } // tslint:disable-line  
+  catch (error) { } // tslint:disable-line
 }
 
 const renderField = ({
@@ -71,23 +72,30 @@ const renderField = ({
 
 const renderSuccessMessage = (bookingId) => <h1>Booking Created with booking ID {bookingId}!</h1>
 
-export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
-  const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid } = props
+export class BookingForm extends React.Component<AllBookingFormProps> {
 
-  return (
-    <div>
-      <form onSubmit={ handleSubmit(createBooking) }>
-        <Field name="bookableId" component={ renderField } type="hidden" label="Name of Room" />
-        <Field name="subject" component={ renderField } label="My Booking" type="text" validate={required} />
-        <Field name="start" component={ renderField } label="Start" type="text" validate={[required, startBeforeEnd]} />
-        <Field name="end" component={ renderField } label="End" type="text" validate={[required, endAfterStart]} />
-        <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit">
-          Book a Room!
-        </Button>
-      </form>
-      { bookingInstanceId && renderSuccessMessage(bookingInstanceId) }
-    </div>
-  )
+  public componentDidMount() {
+    setTimeout(this.props.getAllBookables, 2000)
+  }
+
+  public render() {
+    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid } = this.props
+
+    return (
+      <div>
+        <form onSubmit={ handleSubmit(createBooking) }>
+          <Field name="bookableId" component={ renderField } type="hidden" label="Name of Room" />
+          <Field name="subject" component={ renderField } label="My Booking" type="text" validate={required} />
+          <Field name="start" component={ renderField } label="Start" type="text" validate={[required, startBeforeEnd]} />
+          <Field name="end" component={ renderField } label="End" type="text" validate={[required, endAfterStart]} />
+          <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit">
+            Book a Room!
+          </Button>
+        </form>
+        { bookingInstanceId && renderSuccessMessage(bookingInstanceId) }
+      </div>
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({
@@ -105,7 +113,10 @@ const formed = reduxForm<BookingFormData>({ form: 'booking' })(BookingForm)
 
 const connected = connect<{}, {}>(
   mapStateToProps,
-  { createBooking: actionCreators.createBooking }
+  {
+    createBooking: actionCreators.createBooking,
+    getAllBookables: actionCreators.getAllBookables,
+  }
 )(formed)
 
 export default connected

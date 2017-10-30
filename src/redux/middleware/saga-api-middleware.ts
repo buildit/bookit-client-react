@@ -1,3 +1,5 @@
+import qs from 'querystring'
+
 import { createRSAA, SAM } from './create-saga-api-actions'
 
 export default ({ getState, dispatch }) => (next) => (action) => {
@@ -5,18 +7,27 @@ export default ({ getState, dispatch }) => (next) => (action) => {
     return next(action)
   }
 
-  const { payload: { endpoint, method, headers = {}, credentials, bailout } } = action
-  let { payload: { types, body } } = action
+  const { payload: { query, method, headers = {}, credentials, bailout } } = action
+  let { payload: { endpoint, types, body } } = action
 
   if (typeof (types) === 'string') {
     types = [ `${types}_PENDING`, `${types}_SUCCESS`, `${types}_FAILURE` ]
+  }
+
+  if (typeof (query) === 'object') {
+    const [ endpointBase, endpointQueryString = '' ] = endpoint.split('?')
+    const q = qs.stringify({
+      ...qs.parse(endpointQueryString),
+      ...query,
+    })
+    endpoint = `${endpointBase}?${q}`
   }
 
   if (typeof (body) === 'function') {
     body = body(action.payload, getState())
   }
 
-  if (!(body instanceof FormData)) {
+  if (body && !(body instanceof FormData)) {
     body = JSON.stringify(body)
     headers['content-type'] = 'application/json'
   }
