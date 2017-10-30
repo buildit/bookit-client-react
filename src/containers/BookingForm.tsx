@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-import { Field, reduxForm, InjectedFormProps, hasSubmitSucceeded, isSubmitting } from 'redux-form'
+import { Field, reduxForm, InjectedFormProps, hasSubmitSucceeded, isSubmitting, initialize } from 'redux-form'
 
 import Moment from 'moment'
 
@@ -75,7 +75,13 @@ const renderSuccessMessage = (bookingId) => <h1>Booking Created with booking ID 
 export class BookingForm extends React.Component<AllBookingFormProps> {
 
   public componentDidMount() {
-    setTimeout(this.props.getAllBookables, 2000)
+    const values = {
+      bookableId: 1,
+      end: Moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
+      start: Moment().format('YYYY-MM-DDTHH:mm'),
+    }
+    this.props.initialize(values)
+    this.props.getAllBookables()
   }
 
   public render() {
@@ -100,11 +106,11 @@ export class BookingForm extends React.Component<AllBookingFormProps> {
 
 const mapStateToProps = (state) => ({
   bookingInstanceId: BookingSelectors.getBookingInstanceId(state),
-  initialValues: {
-    bookableId: 1,
-    end: Moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
-    start: Moment().format('YYYY-MM-DDTHH:mm'),
-  },
+  // initialValues: {
+  //   bookableId: 1,
+  //   end: Moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
+  //   start: Moment().format('YYYY-MM-DDTHH:mm'),
+  // },
   submitSucceeded: hasSubmitSucceeded('booking')(state),
   submitting: isSubmitting('booking')(state),
 })

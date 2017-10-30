@@ -33,8 +33,8 @@ export default ({ getState, dispatch }) => (next) => (action) => {
   }
 
   const rsaa = createRSAA({ endpoint, method, types, body, headers, credentials, bailout })
-  console.log('========================[ RSAA CREATED ]========================')
-  console.dir(rsaa, { depth: null })
-  console.log('========================[ RSAA CREATED ]========================')
+  // console.log('========================[ RSAA CREATED ]========================')
+  // console.dir(rsaa, { depth: null })
+  // console.log('========================[ RSAA CREATED ]========================')
   dispatch(rsaa)
 }

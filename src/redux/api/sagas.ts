@@ -15,25 +15,16 @@ const normalizeBody = ({ start, end, ...body }) => ({
 })
 
 export function* createBookingApi(action) {
-  console.log('CREATE_BOOKING_API', action)
-  // const { startDateTime, endDateTime, ...rest } = yield select(getFormValues('booking'))  // this also works, but whatever is passed to onSubmit in the form gets passed the form values anyway
   const body = normalizeBody(action.payload)
-  yield put(actionCreators.postCreateBooking({ body }))
+  yield put(actionCreators.apiPostCreateBooking({ body }))
 }
 
 export function* getAllBookablesApi(action) {
-  console.log('GET_ALL_BOOKABLES_API', action)
   const { start, end } = yield select(getFormValues('booking'))
-  const query = { start, end }
-  console.log('HALLO?', start, end)
-  console.log('PIGBUTTS!', query)
-  yield put(actionCreators.getGetAllBookables({ query }))
+  yield put(actionCreators.apiGetAllBookables({ query: { start, end } }))
 }
 
 export const sagas = function* apiSagas() {
-  console.log('ONE')
   yield takeLatest(CREATE_BOOKING, createBookingApi)
-  console.log('TWO')
   yield takeLatest(GET_ALL_BOOKABLES, getAllBookablesApi)
-  console.log('THREE')
 }

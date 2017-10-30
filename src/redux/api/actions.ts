@@ -7,13 +7,13 @@ import { getAPIEndpoint } from 'Utils'
 const apiEndpoint = getAPIEndpoint()
 
 export const actionCreators = {
-  getGetAllBookables: createSagaApiAction({
+  apiGetAllBookables: createSagaApiAction({
     endpoint: `${apiEndpoint}/v1/location/1/bookable`,
     method: 'GET',
     types: GET_ALL_BOOKABLES,
   }),
 
-  postCreateBooking: createSagaApiAction({
+  apiPostCreateBooking: createSagaApiAction({
     endpoint: `${apiEndpoint}/v1/booking`,
     method: 'POST',
     types: CREATE_BOOKING,  // inferred types
