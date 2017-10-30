@@ -1,5 +1,11 @@
 const LOCAL_SERVER_HOST = 'http://localhost:8080'
 
+// From bookit-web/super-refactor branch
+// let W = global.window
+// if (!W) W = { location: { origin: 'http://localhost:8080' } }
+//
+// const currentHostname = () => W.location.origin
+
 export const getAPIEndpoint = () => {
   if (!window.location) {
     return LOCAL_SERVER_HOST

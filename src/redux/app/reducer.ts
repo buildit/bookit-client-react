@@ -1,20 +1,15 @@
-import { combineReducers } from 'redux'
 import { handleActions } from 'redux-actions'
-
-import {
-  BOOKING_REQUEST,
-  BOOKING_COMPLETE
-} from 'Redux/booking'
 
 export type State = {
   readonly requestInProgress: boolean
 }
 
-const requestInProgress = handleActions({
-  [BOOKING_REQUEST]: () => true,
-  [BOOKING_COMPLETE]: () => false,
+export const requestInProgress = handleActions({
+  CREATE_BOOKING_FAILURE: () => false,
+  CREATE_BOOKING_PENDING: () => true,
+  CREATE_BOOKING_SUCCESS: () => false,
 }, false)
 
-export const reducer = combineReducers<State>({
+export const reducer = {
   requestInProgress,
-})
+}

@@ -1,5 +1,5 @@
 export interface Booking {
-  bookingId: number
+  id: number
   bookableId: number
   subject: string
   start: string
