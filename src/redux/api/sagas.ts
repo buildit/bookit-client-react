@@ -1,4 +1,4 @@
-import { call, fork, put, race, select, take, takeLatest } from 'redux-saga/effects'
+import { put, takeLatest } from 'redux-saga/effects'
 
 import Moment from 'moment'
 
@@ -6,10 +6,10 @@ import { actionCreators } from 'Redux'
 
 import { CREATE_BOOKING } from 'Redux/booking'
 
-const normalizeBody = ({ startDateTime, endDateTime, ...body }) => ({
+const normalizeBody = ({ start, end, ...body }) => ({
   ...body,
-  endDateTime: Moment(endDateTime).toISOString(),
-  startDateTime: Moment(startDateTime).toISOString(),
+  end: Moment(end).toISOString(),
+  start: Moment(start).toISOString(),
 })
 
 export function* createBookingApi(action) {

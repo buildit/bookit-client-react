@@ -10,7 +10,8 @@ defineSupportCode(function({Given, When, Then}) {
   })
 
   When('I book a room', function () {
-    this.driver.findElement(By.id('bookit')).click()
+    this.driver.findElement(By.name('subject')).sendKeys('My Bookable')
+    this.driver.findElement(By.tagName('button')).click()
   })
 
   Then('It\'s booked', function () {

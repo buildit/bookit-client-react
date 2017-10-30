@@ -32,8 +32,4 @@ describe('#creatSagaApiAction({ endpoint, method, types, body, headers, credenti
     expect(expected.payload.endpoint()).to.equal(endpoint)
 
   })
-
-  it('only allows GET, HEAD, PUT, POST, PATCH, DELETE, OPTIONS for the method parameter', () => {
-    const expected = createSagaApiAction({ ...requiredProps, method: 'GET' })
-  })
 })
