@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { Field, reduxForm, InjectedFormProps, hasSubmitSucceeded, isSubmitting } from 'redux-form'
 
-import Moment from 'moment'
+import Moment from 'moment-timezone'
 
 import { actionCreators } from 'Redux'
 import { BookingSelectors } from 'Redux/booking'
@@ -43,7 +43,7 @@ const renderField = ({
   </div>
 )
 
-const renderSuccessMessage = (bookingId) => <h1>Booking Created with booking ID {bookingId}!</h1>
+const renderSuccessMessage = (bookingId) => <h1 id="result">Booking Created with booking ID {bookingId}!</h1>
 
 export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
   const { handleSubmit, createBooking, submitting, bookingInstanceId } = props
@@ -69,8 +69,8 @@ const mapStateToProps = (state) => ({
   bookingInstanceId: BookingSelectors.getBookingInstanceId(state),
   initialValues: {
     bookableId: 1,
-    end: Moment().add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
-    start: Moment().format('YYYY-MM-DDTHH:mm'),
+    end: Moment().tz('America/New_York').add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
+    start: Moment().tz('America/New_York').add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
   },
   submitSucceeded: hasSubmitSucceeded('booking')(state),
   submitting: isSubmitting('booking')(state),
