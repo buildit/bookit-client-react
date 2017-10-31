@@ -1,15 +1,13 @@
 import { put, takeLatest } from 'redux-saga/effects'
 
-import Moment from 'moment'
-
 import { actionCreators } from 'Redux'
 
 import { CREATE_BOOKING } from 'Redux/booking'
 
 const normalizeBody = ({ start, end, ...body }) => ({
   ...body,
-  end: Moment(end).toISOString(),
-  start: Moment(start).toISOString(),
+  end,
+  start,
 })
 
 export function* createBookingApi(action) {
