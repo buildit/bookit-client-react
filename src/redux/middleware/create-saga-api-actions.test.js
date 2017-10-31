@@ -1,6 +1,5 @@
 import {
   createSagaApiAction,
-  ApiActionProps
 } from './create-saga-api-actions'
 
 describe('#creatSagaApiAction({ endpoint, method, types, body, headers, credentials, bailout })', () => {
@@ -12,7 +11,7 @@ describe('#creatSagaApiAction({ endpoint, method, types, body, headers, credenti
       'CREATE_FOO_SUCCESS',
       'CREATE_FOO_FAILURE',
     ],
-  } as ApiActionProps
+  }
 
   it('requires endpoint, method and types as parameters and returns a function', () => {
     const expected = createSagaApiAction(requiredProps)
@@ -21,7 +20,7 @@ describe('#creatSagaApiAction({ endpoint, method, types, body, headers, credenti
 
   it('allows endpoint parameter to be a string or a function that is passed `getState()`', () => {
     const endpoint = 'https://flibble.com'
-    const endpointFn = (state) => endpoint
+    const endpointFn = () => endpoint
 
     const apiAction = createSagaApiAction({ ...requiredProps, endpoint: endpointFn })
     const expected = apiAction()

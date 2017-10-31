@@ -1,6 +1,6 @@
 import { createRSAA, SAM } from './create-saga-api-actions'
 
-export default ({ getState, dispatch }) => (next) => (action) => {
+export default ({ getState, dispatch }) => next => (action) => {
   if (action.type !== SAM) {
     return next(action)
   }

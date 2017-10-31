@@ -1,7 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
 import { connect } from 'react-redux'
 
-import { Field, reduxForm, InjectedFormProps, hasSubmitSucceeded, isSubmitting } from 'redux-form'
+import { Field, reduxForm, hasSubmitSucceeded, isSubmitting } from 'redux-form'
 
 import Moment from 'moment-timezone'
 
@@ -10,28 +12,7 @@ import { BookingSelectors } from 'Redux/booking'
 
 import Button from 'Components/Button'
 
-interface BookingFormData {
-  bookableId: number
-  subject: string
-  start: string
-  end: string
-}
-
-interface BookingFormProps {
-  submitSucceeded: any
-  createBooking: any
-  bookingInstanceId: any
-  initialValues: any
-}
-
-type AllBookingFormProps = BookingFormProps & InjectedFormProps<BookingFormData>
-
-const renderField = ({
-  input,
-  label,
-  type,
-  meta: { touched, error, warning },
-}) => (
+const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
   <div>
     <label>{label}</label>
     <div>
@@ -43,9 +24,16 @@ const renderField = ({
   </div>
 )
 
-const renderSuccessMessage = (bookingId) => <h1>Booking Created with booking ID {bookingId}!</h1>
+renderField.propTypes = {
+  input: PropTypes.any,
+  label: PropTypes.string,
+  type: PropTypes.string,
+  meta: PropTypes.object,
+}
 
-export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
+const renderSuccessMessage = bookingId => <h1>Booking Created with booking ID {bookingId}!</h1>
+
+export const BookingForm = (props) => {
   const { handleSubmit, createBooking, submitting, bookingInstanceId } = props
 
   return (
@@ -56,7 +44,6 @@ export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
         <Field name="start" component={ renderField } label="Start" type="text" />
         <Field name="end" component={ renderField } label="End" type="text" />
         <Button type="submit" disabled={ submitting } id="bookit">
-
           Book a Room!
         </Button>
       </form>
@@ -65,7 +52,14 @@ export const BookingForm: React.SFC<AllBookingFormProps> = (props) => {
   )
 }
 
-const mapStateToProps = (state) => ({
+BookingForm.propTypes = {
+  handleSubmit: PropTypes.func,
+  createBooking: PropTypes.func,
+  submitting: PropTypes.bool,
+  bookingInstanceId: PropTypes.number,
+}
+
+const mapStateToProps = state => ({
   bookingInstanceId: BookingSelectors.getBookingInstanceId(state),
   initialValues: {
     bookableId: 1,
@@ -76,9 +70,9 @@ const mapStateToProps = (state) => ({
   submitting: isSubmitting('booking')(state),
 })
 
-const formed = reduxForm<BookingFormData>({ form: 'booking' })(BookingForm)
+const formed = reduxForm({ form: 'booking' })(BookingForm)
 
-const connected = connect<{}, {}>(
+const connected = connect(
   mapStateToProps,
   { createBooking: actionCreators.createBooking }
 )(formed)
