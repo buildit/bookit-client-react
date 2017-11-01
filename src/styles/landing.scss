@@ -1,0 +1,38 @@
+.landing {
+  background-color: white;
+  color: black;
+
+  display: flex;
+  flex-flow: column nowrap;
+  // flex-direction: column;
+  // flex-wrap: nowrap;
+  // justify-content: flex-start;
+  // align-items: stretch;
+  // align-content: stretch;
+  height: 100%;
+}
+
+.landing-row {
+  flex-direction: row;
+}
+
+.landing-row-padded {
+  padding: 20px;
+}
+
+.big-button {
+  user-select: none;
+  background-color: #f3f0f0;
+  border: 1px solid #969696;
+  border-radius: 7px;
+  color: black;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 18px;
+  padding: 20px 0;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+}
