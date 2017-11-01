@@ -74,7 +74,8 @@ const formed = reduxForm({ form: 'booking' })(BookingForm)
 
 const connected = connect(
   mapStateToProps,
-  { createBooking: actionCreators.createBooking }
+  // { createBooking: actionCreators.createBooking }
+  { createBooking: actionCreators.postCreateBooking }
 )(formed)
 
 export default connected
