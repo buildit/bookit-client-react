@@ -1,6 +1,7 @@
-const {defineSupportCode} = require('cucumber')
-const {By} = require('selenium-webdriver')
+const { defineSupportCode } = require('cucumber')
+const { By } = require('selenium-webdriver')
 const seleniumWebdriver = require('selenium-webdriver')
+const faker = require('faker')
 
 const url = process.env.ENDPOINT_URI || 'http://localhost:3001'
 
@@ -10,7 +11,15 @@ defineSupportCode(function({Given, When, Then}) {
   })
 
   When('I book a room', function () {
+    const start = faker.date.future(1)
+    const end = faker.date.future(0, start)
+    const startForForm = start.toISOString().split('.')[0]
+    const endForForm = end.toISOString().split('.')[0]
+    this.driver.findElement(By.name('start')).clear()
+    this.driver.findElement(By.name('end')).clear()
     this.driver.findElement(By.name('subject')).sendKeys('My Bookable')
+    this.driver.findElement(By.name('start')).sendKeys(startForForm)
+    this.driver.findElement(By.name('end')).sendKeys(endForForm)
     this.driver.findElement(By.tagName('button')).click()
   })
 

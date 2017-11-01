@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
-import { Field, reduxForm, hasSubmitSucceeded, isSubmitting } from 'redux-form'
+import { Field, reduxForm, isSubmitting } from 'redux-form'
 
 import Moment from 'moment-timezone'
 
@@ -11,6 +11,27 @@ import { actionCreators } from 'Redux'
 import { BookingSelectors } from 'Redux/booking'
 
 import Button from 'Components/Button'
+import styles from 'Styles/form.scss'
+
+const required = value => (value ? undefined : 'Required')
+
+const endAfterStart = (value, {start}) => {
+  try {
+    if (Moment(value).isBefore(start)) {
+      return 'End must be after start'
+    }
+  }
+  catch (error) { } // eslint-disable-line
+}
+
+const startBeforeEnd = (value, {end}) => {
+  try {
+    if (Moment(value).isAfter(end)) {
+      return 'Start must be before end'
+    }
+  }
+  catch (error) { } // eslint-disable-line
+}
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
   <div>
@@ -18,7 +39,7 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
     <div>
       <input {...input} placeholder={label} type={type} />
       {touched &&
-        ((error && <span>{error}</span>) ||
+        ((error && <span className={styles.errorSpan}>{error}</span>) ||
           (warning && <span>{warning}</span>))}
     </div>
   </div>
@@ -33,40 +54,50 @@ renderField.propTypes = {
 
 const renderSuccessMessage = bookingId => <h1>Booking Created with booking ID {bookingId}!</h1>
 
-export const BookingForm = (props) => {
-  const { handleSubmit, createBooking, submitting, bookingInstanceId } = props
+export class BookingForm extends React.Component {
+  componentDidMount() {
+    const values = {
+      bookableId: 1,
+      end: Moment().tz('America/New_York').add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
+      start: Moment().tz('America/New_York').add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
+    }
+    this.props.initialize(values)
+    this.props.getBookablesForLocation(1)
+  }
 
-  return (
-    <div>
-      <form onSubmit={ handleSubmit(createBooking) }>
-        <Field name="bookableId" component={ renderField } type="hidden" label="Name of Room" />
-        <Field name="subject" component={ renderField } label="My Booking" type="text" />
-        <Field name="start" component={ renderField } label="Start" type="text" />
-        <Field name="end" component={ renderField } label="End" type="text" />
-        <Button type="submit" disabled={ submitting } id="bookit">
-          Book a Room!
-        </Button>
-      </form>
-      { bookingInstanceId && renderSuccessMessage(bookingInstanceId) }
-    </div>
-  )
+  render() {
+    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid } = this.props
+
+    return (
+      <div>
+        <form onSubmit={ handleSubmit(createBooking) }>
+          <Field name="bookableId" component={ renderField } type="hidden" label="Name of Room" />
+          <Field name="subject" component={ renderField } label="My Booking" type="text" validate={required} />
+          <Field name="start" component={ renderField } label="Start" type="text" validate={[required, startBeforeEnd]} />
+          <Field name="end" component={ renderField } label="End" type="text" validate={[required, endAfterStart]} />
+          <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit">
+            Book a Room!
+          </Button>
+        </form>
+        { bookingInstanceId && renderSuccessMessage(bookingInstanceId) }
+      </div>
+    )
+  }
 }
 
 BookingForm.propTypes = {
   handleSubmit: PropTypes.func,
   createBooking: PropTypes.func,
+  getBookablesForLocation: PropTypes.func,
   submitting: PropTypes.bool,
   bookingInstanceId: PropTypes.number,
+  initialize: PropTypes.func,
+  pristine: PropTypes.bool,
+  invalid: PropTypes.bool,
 }
 
 const mapStateToProps = state => ({
   bookingInstanceId: BookingSelectors.getBookingInstanceId(state),
-  initialValues: {
-    bookableId: 1,
-    end: Moment().tz('America/New_York').add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
-    start: Moment().tz('America/New_York').add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
-  },
-  submitSucceeded: hasSubmitSucceeded('booking')(state),
   submitting: isSubmitting('booking')(state),
 })
 
@@ -74,8 +105,10 @@ const formed = reduxForm({ form: 'booking' })(BookingForm)
 
 const connected = connect(
   mapStateToProps,
-  // { createBooking: actionCreators.createBooking }
-  { createBooking: actionCreators.postCreateBooking }
+  {
+    createBooking: actionCreators.createBooking,
+    getBookablesForLocation: actionCreators.getBookablesForLocation,
+  }
 )(formed)
 
 export default connected
