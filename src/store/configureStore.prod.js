@@ -2,19 +2,16 @@ import { applyMiddleware, createStore, compose } from 'redux'
 
 import { apiMiddleware } from 'redux-api-middleware'
 import { routerMiddleware } from 'react-router-redux'
-import createSagaMiddleware, { SagaMiddleware } from 'redux-saga'
+import createSagaMiddleware from 'redux-saga'
 
-import { sagaApiMiddleware } from 'Redux/middleware'
-
-import { rootReducer, rootSaga, RootState } from 'Redux'
+import { rootReducer, rootSaga } from 'Redux'
 
 import history from 'History'
 
-export default (initialState?: RootState) => {
-  const sagaMiddleware: SagaMiddleware<{}> = createSagaMiddleware()
+export default (initialState = {}) => {
+  const sagaMiddleware = createSagaMiddleware()
 
   const middlewares = [
-    sagaApiMiddleware,
     apiMiddleware,
     routerMiddleware(history),
     sagaMiddleware,
@@ -24,9 +21,9 @@ export default (initialState?: RootState) => {
     applyMiddleware(...middlewares)
   )
 
-  const store = createStore<RootState>(
+  const store = createStore(
     rootReducer,
-    initialState!,
+    initialState,
     enhancer
   )
 

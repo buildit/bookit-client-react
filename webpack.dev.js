@@ -8,7 +8,7 @@ const dev = {
   entry: {
     app: [
       'react-hot-loader/patch',
-      './src/client.tsx',
+      './src/client.jsx',
     ],
   },
   devtool: 'inline-source-map',

@@ -1,12 +1,6 @@
 import { handleAction } from 'redux-actions'
 
-import { Booking } from 'Models'
-
-export type State = {
-  readonly bookingInstance?: Booking
-}
-
-export const bookingInstance = handleAction<Booking, Booking>(
+export const bookingInstance = handleAction(
   'CREATE_BOOKING_SUCCESS',
   (state, action) => action.payload,
   null

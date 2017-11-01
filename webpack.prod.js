@@ -15,7 +15,7 @@ const extractText = new ExtractText({ filename: '[name].[contenthash:8].css', di
 
 const prod = {
   entry: {
-    app: './src/client.tsx',
+    app: './src/client.jsx',
     vendor: [ 'react' ],
   },
   output: {
@@ -59,7 +59,7 @@ const prod = {
     new webpack.PrefetchPlugin('./node_modules/react-redux/es/index.js'),
     new webpack.PrefetchPlugin('./node_modules/react-hot-loader/lib/index.js'),
     new webpack.PrefetchPlugin('./node_modules/history/es/index.js'),
-    new webpack.PrefetchPlugin('./src/store/configureStore.prod.ts'),
+    new webpack.PrefetchPlugin('./src/store/configureStore.prod.js'),
     new webpack.PrefetchPlugin('./node_modules/react-router/es/index.js'),
     new webpack.PrefetchPlugin('./node_modules/prop-types/factoryWithThrowingShims.js'),
 
@@ -71,17 +71,6 @@ const prod = {
   ],
   module: {
     rules: [
-      {
-        test: /\.tsx?$/,
-        exclude: [ /node_modules/ ],
-        loader: 'awesome-typescript-loader',
-        query: {
-          silent: true,
-          useBabel: true,
-          useCache: true,
-          configFileName: 'tsconfig.build.json',
-        },
-      },
       {
         test: /\.(sass|scss|css)$/,
         use: extractText.extract({

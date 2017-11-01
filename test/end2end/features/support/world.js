@@ -5,8 +5,8 @@ const {defineSupportCode} = require('cucumber')
 
 function CustomWorld() {
   logging.installConsoleHandler()
-  const options = new chrome.Options();
-  options.addArguments('no-sandbox');
+  const options = new chrome.Options()
+  options.addArguments('no-sandbox')
   this.driver = new Builder()
     .forBrowser('chrome')
     .setChromeOptions(options)

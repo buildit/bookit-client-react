@@ -19,7 +19,7 @@ export const getAPIEndpoint = () => {
  * bookit-client-react.buildit.tools for production
  * <env>-bookit-client-react.buildit.tools for everything else
  */
-export const deriveAPIEndpoint = (location: string) => {
+export const deriveAPIEndpoint = (location) => {
   const urlParts = location.split('.')
   if (urlParts.length === 1) {
     return LOCAL_SERVER_HOST

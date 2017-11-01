@@ -1,3 +1,5 @@
+const path = require('path')
+
 const webpack = require('webpack')
 
 const stylelint = require('stylelint')
@@ -5,28 +7,19 @@ const postcssReporter = require('postcss-reporter')
 
 const HTMLPlugin = require('html-webpack-plugin')
 
-const { TsConfigPathsPlugin } = require('awesome-typescript-loader')
 
 const sourceLoaderRule = {
-  test: /\.tsx?$/,
+  test: /\.jsx?$/,
   exclude: [ /node_modules/ ],
-  loader: 'awesome-typescript-loader',
-  query: {
-    silent: false,
-    useBabel: true,
-    useCache: true,
-    configFileName: 'tsconfig.webpack.json',
-  },
+  loader: 'babel-loader?cacheDirectory',
 }
 
 const sourceLinterRule = {
-  test: /\.tsx?$/,
-  enforce: 'pre',
+  test: /\.jsx?$/,
+  include: [ path.join(__dirname, 'src') ],
   exclude: [ /node_modules/ ],
-  loader: 'tslint-loader',
-  options: {
-    // typeCheck: true,
-  },
+  enforce: 'pre',
+  use: [ 'eslint-loader' ],
 }
 
 const styleLinterRule = {
@@ -49,10 +42,29 @@ const htmlLoaderRule = {
 module.exports = {
   // MAKE IMPORTS GREAT AGAIN!
   resolve: {
-    plugins: [
-      new TsConfigPathsPlugin,
-    ],
-    extensions: [ '.ts', '.tsx', '.js', '.json' ],
+    alias: {
+      // Reducers: path.join(__dirname, 'src/reducers'),
+      // Selectors: path.join(__dirname, 'src/selectors'),
+      // Sagas: path.join(__dirname, 'src/sagas'),
+
+      Store: path.resolve(__dirname, 'src/store'),
+      History: path.resolve(__dirname, 'src/history'),
+      Routes: path.resolve(__dirname, 'src/routes'),
+
+      Redux: path.resolve(__dirname, 'src/redux'),
+      Models: path.resolve(__dirname, 'src/models'),
+
+      Components: path.resolve(__dirname, 'src/components'),
+      // "Components/": path.resolve(__dirname, 'src/components/'),
+      Containers: path.resolve(__dirname, 'src/containers'),
+
+      Utils: path.resolve(__dirname, 'src/utils'),
+
+      Styles: path.resolve(__dirname, 'src/styles'),
+
+      Api: path.resolve(__dirname, 'src/api'),
+    },
+    extensions: [ '.js', '.jsx', '.json' ],
   },
   entry: {},
   output: {},
