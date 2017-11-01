@@ -4,6 +4,7 @@ import { shallow, mount } from 'enzyme'
 import { Provider } from 'react-redux'
 import configureStore from 'redux-mock-store'
 import { apiMiddleware } from 'redux-api-middleware'
+import { MemoryRouter } from 'react-router'
 
 import Button from 'Components/Button'
 import FormedBookingForm, { BookingForm } from 'Containers/BookingForm'
@@ -28,7 +29,9 @@ describe('<BookingForm />', () => {
     props.handleSubmit.mockClear()
     const wrapper = mount(
       <Provider store={store}>
-        <FormedBookingForm { ...props } />
+        <MemoryRouter>
+          <FormedBookingForm { ...props } />
+        </MemoryRouter>
       </Provider>
     )
 
