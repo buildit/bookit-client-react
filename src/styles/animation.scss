@@ -1,19 +1,19 @@
-:global(.fade-appear),
-:global(.fade-enter) {
-  opacity: 0;
+:global(.slide-appear),
+:global(.slide-enter) {
+  transform: translate3d(425px, 0, 0);
+  transition: transform 1.0s;
 }
 
-:global(.fade-appear-active),
-:global(.fade-enter-active) {
-  transition: opacity 1.0s linear;
-  opacity: 1;
+:global(.slide-appear-active),
+:global(.slide-enter-active) {
+  transform: translate3d(0, 0, 0);
 }
 
-:global(.fade-exit) {
-  transition: opacity .2s linear;
-  opacity: 1;
+:global(.slide-exit) {
+  transform: translate3d(425px, 0, 0);
+  // transition: transform .218s;
 }
 
-:global(.fade-exit-active) {
-  opacity: 0;
+:global(.slide-exit-active) {
+  // transform: translate3d(425px, 0, 0);
 }

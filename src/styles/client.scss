@@ -16,3 +16,9 @@ body {
   padding: 0;
 }
 
+:global(#root) > div {
+  height: 100%;
+  width: 100%;
+}
+
+@import 'animation';

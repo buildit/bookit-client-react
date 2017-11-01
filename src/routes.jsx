@@ -1,15 +1,21 @@
 import React from 'react'
 
-import { Route, Switch } from 'react-router'
+import { Route, Switch, withRouter } from 'react-router'
+
+import { TransitionGroup, CSSTransition } from 'react-transition-group'
 
 import App from 'Containers/App'
 import Landing from 'Containers/Landing'
 
-const createRoutes = () => (
-  <Switch>
-    <Route path="/book" component={App} />
-    <Route path="/" component={Landing} />
-  </Switch>
-)
+const AppRoutes = withRouter(({ location }) => (
+  <TransitionGroup>
+    <CSSTransition key={location.key} classNames='slide' timeout={1000}>
+      <Switch location={location}>
+        <Route exact path="/" component={Landing} />
+        <Route exact path="/book" component={App} />
+      </Switch>
+    </CSSTransition>
+  </TransitionGroup>
+))
 
-export default createRoutes
+export default AppRoutes

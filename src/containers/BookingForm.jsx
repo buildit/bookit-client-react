@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
+import { Link } from 'react-router-dom'
+
 import { Field, reduxForm, isSubmitting } from 'redux-form'
 
 import Moment from 'moment-timezone'
@@ -11,6 +13,7 @@ import { actionCreators } from 'Redux'
 import { BookingSelectors } from 'Redux/booking'
 
 import Button from 'Components/Button'
+
 import styles from 'Styles/form.scss'
 
 const required = value => (value ? undefined : 'Required')
@@ -69,7 +72,8 @@ export class BookingForm extends React.Component {
     const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid } = this.props
 
     return (
-      <div>
+      <div className={styles.bookingForm}>
+        <Link to="/">GO HOME</Link>
         <form onSubmit={ handleSubmit(createBooking) }>
           <Field name="bookableId" component={ renderField } type="hidden" label="Name of Room" />
           <Field name="subject" component={ renderField } label="My Booking" type="text" validate={required} />
