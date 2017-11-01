@@ -3,7 +3,7 @@ const { By } = require('selenium-webdriver')
 const seleniumWebdriver = require('selenium-webdriver')
 const faker = require('faker')
 
-const url = process.env.ENDPOINT_URI || 'http://localhost:3001'
+const url = process.env.ENDPOINT_URI || 'http://localhost:3001/book'
 
 defineSupportCode(function({Given, When, Then}) {
   Given('I am on the bookit website', function () {
