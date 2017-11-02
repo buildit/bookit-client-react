@@ -3,6 +3,8 @@ import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
 
+import { Link } from 'react-router-dom'
+
 import { Field, reduxForm, isSubmitting } from 'redux-form'
 
 import Moment from 'moment-timezone'
@@ -11,6 +13,7 @@ import { actionCreators } from 'Redux'
 import { BookingSelectors } from 'Redux/booking'
 
 import Button from 'Components/Button'
+
 import styles from 'Styles/form.scss'
 
 const required = value => (value ? undefined : 'Required')
@@ -69,14 +72,18 @@ export class BookingForm extends React.Component {
     const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid } = this.props
 
     return (
-      <div>
+      <div className={styles.bookingForm}>
+        <div className={styles.heading}>
+          <h2 className={styles.title}>Book A Room</h2>
+          <Link to="/" className={styles.cancel}>X</Link>
+        </div>
         <form onSubmit={ handleSubmit(createBooking) }>
-          <Field name="bookableId" component={ renderField } type="hidden" label="Name of Room" />
-          <Field name="subject" component={ renderField } label="My Booking" type="text" validate={required} />
           <Field name="start" component={ renderField } label="Start" type="text" validate={[required, startBeforeEnd]} />
           <Field name="end" component={ renderField } label="End" type="text" validate={[required, endAfterStart]} />
-          <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit">
-            Book a Room!
+          <Field name="bookableId" component={ renderField } type="hidden" label="Name of Room" />
+          <Field name="subject" component={ renderField } label="Event Name" type="text" validate={required} />
+          <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={styles.submitButton}>
+            BookIt
           </Button>
         </form>
         { bookingInstanceId && renderSuccessMessage(bookingInstanceId) }

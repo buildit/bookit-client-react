@@ -29,6 +29,7 @@ const prod = {
       defaultAttribute: 'defer',
     }),
     new CleanPlugin([ 'build' ], { root: path.join(__dirname, '.') }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
     new webpack.NamedModulesPlugin,
     new webpack.NamedChunksPlugin((chunk) => {
       if (chunk.name) {

@@ -42,7 +42,8 @@ module.exports = {
       "exports": "always-multiline",
       "functions": "never"
     }],
-    "react/no-children-prop": 0
+    "react/no-children-prop": 0,
+    "react/prop-types": [1, { "ignore": [ "children" ] }]
   },
   "parserOptions": {
     "ecmaVersion": 6,

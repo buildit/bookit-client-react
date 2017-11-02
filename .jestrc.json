@@ -6,7 +6,6 @@
     "^History(.*)$": "<rootDir>/src/history$1",
     "^Redux(.*)$": "<rootDir>/src/redux$1",
     "^Models(.*)$": "<rootDir>/src/models$1",
-    "^Routes(.*)$": "<rootDir>/src/routes$1",
     "^Components(.*)$": "<rootDir>/src/components$1",
     "^Containers(.*)$": "<rootDir>/src/containers$1",
     "^Utils(.*)$": "<rootDir>/src/utils$1",
@@ -21,7 +20,6 @@
   "collectCoverageFrom": [
     "!src/**/index.*(js|jsx)",
     "!src/*(store|history)/*",
-    "!src/**/*.d.(js|jsx)",
     "src/**/*.*(js|jsx)"
   ],
   "coverageReporters": [
