@@ -1,31 +1,26 @@
 import React from 'react'
-import PropTypes from 'prop-types'
 
 import { CSSTransition } from 'react-transition-group'
 
-import styles from 'Styles/slide.scss'
+import {
+  slideOverAppear as appear,
+  slideOverAppearActive as appearActive,
+  slideOverEnter as enter,
+  slideOverEnterActive as enterActive,
+  slideOverExit as exit,
+  slideOverExitActive as exitActive,
+} from 'Styles/slide-over.scss'
 
-const slideClassNames = {
-  appear: styles.slideAppear,
-  appearActive: styles.slideAppearActive,
-  enter: styles.slideEnter,
-  enterActive: styles.slideEnterActive,
-  exit: styles.slideExit,
-  exitActive: styles.slideExitActive,
-}
+const slideOverClassNames = { appear, appearActive, enter, enterActive, exit, exitActive }
 
 const SlideOver = ({ children, ...props }) => (
   <CSSTransition
     { ...props }
-    classNames={slideClassNames}
-    timeout={1000}
+    classNames={slideOverClassNames}
+    timeout={500}
   >
     { children }
   </CSSTransition>
 )
-
-SlideOver.propTypes = {
-  children: PropTypes.node,
-}
 
 export default SlideOver

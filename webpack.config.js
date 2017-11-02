@@ -49,13 +49,11 @@ module.exports = {
 
       Store: path.resolve(__dirname, 'src/store'),
       History: path.resolve(__dirname, 'src/history'),
-      Routes: path.resolve(__dirname, 'src/routes'),
 
       Redux: path.resolve(__dirname, 'src/redux'),
       Models: path.resolve(__dirname, 'src/models'),
 
       Components: path.resolve(__dirname, 'src/components'),
-      // "Components/": path.resolve(__dirname, 'src/components/'),
       Containers: path.resolve(__dirname, 'src/containers'),
 
       Utils: path.resolve(__dirname, 'src/utils'),
