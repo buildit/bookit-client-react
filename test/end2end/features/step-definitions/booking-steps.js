@@ -11,8 +11,9 @@ defineSupportCode(function({Given, When, Then}) {
   })
 
   When('I book a room', function () {
-    const start = faker.date.future(1)
-    const end = faker.date.future(0, start)
+    const start = faker.date.future(2)
+    const end = new Date(start)
+    end.setMinutes(start.getMinutes() + 1)
     const startForForm = start.toISOString().split('.')[0]
     const endForForm = end.toISOString().split('.')[0]
     this.driver.findElement(By.name('start')).clear()
@@ -25,7 +26,7 @@ defineSupportCode(function({Given, When, Then}) {
 
   Then('It\'s booked', function () {
     const xpath = "//*[contains(text(),'Booking Created')]"
-    const condition = seleniumWebdriver.until.elementLocated({xpath: xpath})
+    const condition = seleniumWebdriver.until.elementLocated({ xpath: xpath })
     return this.driver.wait(condition, 2000)
   })
 })

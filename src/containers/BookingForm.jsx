@@ -73,14 +73,17 @@ export class BookingForm extends React.Component {
 
     return (
       <div className={styles.bookingForm}>
-        <Link to="/">GO HOME</Link>
+        <div className={styles.heading}>
+          <h2 className={styles.title}>Book A Room</h2>
+          <Link to="/" className={styles.cancel}>X</Link>
+        </div>
         <form onSubmit={ handleSubmit(createBooking) }>
-          <Field name="bookableId" component={ renderField } type="hidden" label="Name of Room" />
-          <Field name="subject" component={ renderField } label="My Booking" type="text" validate={required} />
           <Field name="start" component={ renderField } label="Start" type="text" validate={[required, startBeforeEnd]} />
           <Field name="end" component={ renderField } label="End" type="text" validate={[required, endAfterStart]} />
-          <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit">
-            Book a Room!
+          <Field name="bookableId" component={ renderField } type="hidden" label="Name of Room" />
+          <Field name="subject" component={ renderField } label="Event Name" type="text" validate={required} />
+          <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={styles.submitButton}>
+            BookIt
           </Button>
         </form>
         { bookingInstanceId && renderSuccessMessage(bookingInstanceId) }
