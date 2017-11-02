@@ -2,14 +2,10 @@
   background-color: white;
   color: black;
 
+  height: 100vh;
+
   display: flex;
   flex-flow: column nowrap;
-  // flex-direction: column;
-  // flex-wrap: nowrap;
-  // justify-content: flex-start;
-  // align-items: stretch;
-  // align-content: stretch;
-  height: 100%;
 }
 
 .landing-row {
