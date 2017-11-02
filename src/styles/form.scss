@@ -5,6 +5,8 @@
 
   @include page;
 
+  flex-flow: column nowrap;
+
   label {
     margin: 10px;
   }
