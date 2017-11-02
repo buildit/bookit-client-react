@@ -6,7 +6,7 @@ const faker = require('faker')
 const url = process.env.ENDPOINT_URI || 'http://localhost:3001/book'
 
 defineSupportCode(function({Given, When, Then}) {
-  Given('I am on the bookit website', function () {
+  Given('I am on the bookit website form', function () {
     return this.driver.get(url)
   })
 
