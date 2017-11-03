@@ -3,10 +3,12 @@ import PropTypes from 'prop-types'
 //
 import { connect } from 'react-redux'
 //
-// import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 //
 import { actionCreators } from 'Redux'
 import { BookingSelectors } from 'Redux/booking'
+
+import styles from 'Styles/list.scss'
 
 export class BookablesList extends React.Component {
   componentDidMount() {
@@ -15,7 +17,16 @@ export class BookablesList extends React.Component {
 
   render() {
     return (
-      <h1>HI</h1>
+      <div className={styles.bookablesList}>
+        <Link to="/book">BACK</Link>
+        {this.props.bookables && this.props.bookables.map((bookable) => {
+          return (
+            <div key={bookable.id}>
+              <h3>{bookable.name} Room</h3>
+            </div>
+          )
+        })}
+      </div>
     )
   }
 }

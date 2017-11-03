@@ -82,7 +82,9 @@ export class BookingForm extends React.Component {
         <form onSubmit={ handleSubmit(createBooking) }>
           <Field name="start" component={ renderField } label="Start" type="text" validate={[required, startBeforeEnd]} />
           <Field name="end" component={ renderField } label="End" type="text" validate={[required, endAfterStart]} />
-          <Field name="bookableId" component={ renderField } type="hidden" label="Room" />
+          <Link to="/rooms">
+            <Field name="bookableId" component={ renderField } type="hidden" label="Room" />
+          </Link>
           <Field name="subject" component={ renderField } label="Event Name" type="text" validate={required} />
           <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={styles.submitButton}>
             BookIt

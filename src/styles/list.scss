@@ -1,0 +1,10 @@
+@import './mixins/flex';
+
+.bookablesList {
+  background-color: black;
+
+  @include page;
+
+  flex-flow: column nowrap;
+  
+}
