@@ -6,6 +6,13 @@ export const bookingInstance = handleAction(
   null
 )
 
+export const error = handleAction(
+  'CREATE_BOOKING_FAILURE',
+  (state, action) => action.payload,
+  null
+)
+
 export const reducer = {
   bookingInstance,
+  error,
 }

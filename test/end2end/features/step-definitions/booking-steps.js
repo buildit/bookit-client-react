@@ -1,16 +1,20 @@
 import { defineSupportCode } from 'cucumber'
-import { By } from 'selenium-webdriver'
-import seleniumWebdriver from 'selenium-webdriver'
+import { By, until } from 'selenium-webdriver'
 import faker from 'faker'
 import { driver, url } from '../support/hooks'
+import { expect } from 'chai'
 
-defineSupportCode(({Given, When, Then}) => {
+defineSupportCode(({ Given, When, Then, Before }) => {
+  let start
+  Before(() => {
+    start = faker.date.future(2)
+  })
+
   Given('I am on the bookit website form', async () => {
     await driver.get(`${url}/book`)
   })
 
   When('I book a room', async () => {
-    const start = faker.date.future(2)
     const end = new Date(start)
     end.setMinutes(start.getMinutes() + 1)
     const startForForm = start.toISOString().split('.')[0]
@@ -24,8 +28,13 @@ defineSupportCode(({Given, When, Then}) => {
   })
 
   Then('It\'s booked', async () => {
-    const xpath = "//*[contains(text(),'Booking Created')]"
-    const condition = seleniumWebdriver.until.elementLocated({ xpath: xpath })
-    await driver.wait(condition, 2000)
+    const condition = until.elementLocated(By.name('result'))
+    const result = await driver.wait(condition)
+    expect(await result.getText()).to.have.string('Booking Created')
+  })
+
+  Then('It fails', async () => {
+    const condition = until.elementLocated(By.name('error'))
+    expect(await driver.wait(condition).getText()).to.have.string('Bookable is not available')
   })
 })
