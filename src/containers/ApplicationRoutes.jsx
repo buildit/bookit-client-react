@@ -8,6 +8,7 @@ import SlideOver from 'Components/SlideOver'
 
 import App from 'Containers/App'
 import Landing from 'Containers/Landing'
+import BookablesList from 'Containers/BookablesList'
 
 const ApplicationRoutes = () => (
   <Route render={({ location }) => (
@@ -16,6 +17,7 @@ const ApplicationRoutes = () => (
         <Switch key={location.key} location={location}>
           <Route exact path="/" component={Landing} />
           <Route exact path="/book" component={App} />
+          <Route exact path="/rooms" component={BookablesList} />
         </Switch>
       </SlideOver>
     </TransitionGroup>
