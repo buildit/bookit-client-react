@@ -1,11 +1,9 @@
 const { defineSupportCode } = require('cucumber')
 const { By } = require('selenium-webdriver')
 
-const url = process.env.ENDPOINT_URI || 'http://localhost:3001/'
-
 defineSupportCode(function({Given, When, Then}) {
   Given('I am on the landing page of Bookit', function () {
-    return this.driver.get(url)
+    return this.driver.get(this.url)
   })
 
   When('I click the Book a Room button', function () {

@@ -11,6 +11,7 @@ function CustomWorld() {
     .forBrowser('chrome')
     .setChromeOptions(options)
     .build()
+  this.url = process.env.ENDPOINT_URI || 'http://localhost:3001'
 }
 
 defineSupportCode(function({setWorldConstructor, setDefaultTimeout}) {
