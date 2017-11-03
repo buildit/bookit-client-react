@@ -16,12 +16,13 @@ export class BookablesList extends React.Component {
   }
 
   render() {
+    console.log(this.props.bookables)
     return (
       <div className={styles.bookablesList}>
         <Link to="/book">BACK</Link>
         {this.props.bookables && this.props.bookables.map((bookable) => {
           return (
-            <div key={bookable.id}>
+            <div key={bookable.id} className={styles.bookable}>
               <h3>{bookable.name} Room</h3>
             </div>
           )
