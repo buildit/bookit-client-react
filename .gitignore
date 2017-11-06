@@ -51,3 +51,6 @@ webpack.stats.json
 
 # Ignore awesome-typescript-loader cache
 .awcache
+
+reports/**
+!reports/index.html
