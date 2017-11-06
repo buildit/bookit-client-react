@@ -54,3 +54,4 @@ webpack.stats.json
 
 reports/**
 !reports/index.html
+!reports/e2e/.gitignore
