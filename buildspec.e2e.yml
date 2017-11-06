@@ -28,4 +28,4 @@ phases:
     commands:
       - chmod +x ./reporter.js
       - yarn cucumber:report
-      - aws s3 cp --recursive --acl public-read ./reports ${REPORTS_BUCKET}/e2e
+      - aws s3 cp --recursive --acl public-read ./reports ${REPORTS_BUCKET}/

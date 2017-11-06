@@ -29,7 +29,7 @@
     "start": "NODE_ENV=development webpack-dev-server --env=development --config webpack.dev.js --hot ",
     "build": "NODE_ENV=production webpack --env=production --config webpack.prod.js",
     "analyze": "NODE_ENV=production webpack --env=production --config webpack.prod.js --profile --json > webpack.stats.json",
-    "cucumber": "NODE_ENV=test cucumber.js --compiler js:babel-register --format progress --format json:reports/e2e/e2e-test-results.json test/end2end/features",
+    "cucumber": "NODE_ENV=test cucumber.js --compiler js:babel-register --format progress --format json:reports/e2e/e2e-test-results.json test/e2e/features",
     "cucumber:report": "node ./reporter.js",
     "lint": "eslint src/ test/ --cache",
     "lint:style": "stylelint src/**/*.scss src/**/*.css",

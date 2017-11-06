@@ -7,7 +7,7 @@
     ".vscode/chrome/**": true
   },
   "cucumberautocomplete.steps": [
-    "test/end2end/features/step-definitions/**/*.js"
+    "test/e2e/features/step-definitions/**/*.js"
   ],
-  "cucumberautocomplete.syncfeatures": "test/end2end/features/*feature"
+  "cucumberautocomplete.syncfeatures": "test/e2e/features/*feature"
 }
