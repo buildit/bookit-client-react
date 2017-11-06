@@ -1,6 +1,5 @@
 import { defineSupportCode } from 'cucumber'
-import { By } from 'selenium-webdriver'
-import seleniumWebdriver from 'selenium-webdriver'
+import { By, until } from 'selenium-webdriver'
 import faker from 'faker'
 import { driver, url } from '../support/hooks'
 
@@ -15,17 +14,21 @@ defineSupportCode(({Given, When, Then}) => {
     end.setMinutes(start.getMinutes() + 1)
     const startForForm = start.toISOString().split('.')[0]
     const endForForm = end.toISOString().split('.')[0]
-    await driver.findElement(By.name('start')).clear()
-    await driver.findElement(By.name('end')).clear()
-    await driver.findElement(By.name('subject')).sendKeys('My Bookable')
-    await driver.findElement(By.name('start')).sendKeys(startForForm)
-    await driver.findElement(By.name('end')).sendKeys(endForForm)
-    await driver.findElement(By.tagName('button')).click()
+    const startInput = driver.findElement(By.name('start'))
+    startInput.clear()
+    const endInput = await driver.findElement(By.name('end'))
+    await endInput.clear()
+    const subjectInput = await driver.findElement(By.name('subject'))
+    await subjectInput.sendKeys('My Bookable')
+    await startInput.sendKeys(startForForm)
+    await endInput.sendKeys(endForForm)
+    const createButton = await driver.findElement(By.tagName('button'))
+    await createButton.click()
   })
 
   Then('It\'s booked', async () => {
     const xpath = "//*[contains(text(),'Booking Created')]"
-    const condition = seleniumWebdriver.until.elementLocated({ xpath: xpath })
+    const condition = until.elementLocated({ xpath: xpath })
     await driver.wait(condition)
   })
 })
