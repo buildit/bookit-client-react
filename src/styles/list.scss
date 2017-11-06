@@ -4,7 +4,9 @@
   background-color: black;
 
   @include page;
-
+  position: fixed;
+  top: 0;
+  width: 100vw;
   flex-flow: column nowrap;
 }
 

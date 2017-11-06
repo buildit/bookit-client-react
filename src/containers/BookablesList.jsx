@@ -1,29 +1,29 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-//
+
 import { connect } from 'react-redux'
-//
-import { Link } from 'react-router-dom'
-//
-import { actionCreators } from 'Redux'
+import { change } from 'redux-form'
+
 import { BookingSelectors } from 'Redux/booking'
 
 import styles from 'Styles/list.scss'
 
 export class BookablesList extends React.Component {
-  componentDidMount() {
-    this.props.getBookablesForLocation(1)
-  }
 
   render() {
-    console.log(this.props.bookables)
     return (
       <div className={styles.bookablesList}>
-        <Link to="/book">BACK</Link>
+        <a href="#" onClick={(event) => {
+          event.preventDefault()
+          this.props.setBookablesVisible(false)}}>BACK</a>
         {this.props.bookables && this.props.bookables.map((bookable) => {
           return (
             <div key={bookable.id} className={styles.bookable}>
-              <h3>{bookable.name} Room</h3>
+              <h3 onClick={(event) => {
+                event.preventDefault()
+                this.props.dispatch(change('booking', 'bookableId', bookable.id))
+                this.props.setBookablesVisible(false)
+              }}>{bookable.name} Room</h3>
             </div>
           )
         })}
@@ -34,18 +34,16 @@ export class BookablesList extends React.Component {
 
 BookablesList.propTypes = {
   bookables: PropTypes.array,
-  getBookablesForLocation: PropTypes.func,
+  setBookablesVisible: PropTypes.func,
+  dispatch: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
-  bookables: BookingSelectors.getBookablesForLocation(state),
+  bookables: BookingSelectors.getAllBookablesForLocation(state, { locationId: 1 }),
 })
 
 const connected = connect(
-  mapStateToProps,
-  {
-    getBookablesForLocation: actionCreators.getBookablesForLocation,
-  }
+  mapStateToProps
 )(BookablesList)
 
 export default connected

@@ -71,7 +71,7 @@ export class BookingForm extends React.Component {
   }
 
   render() {
-    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid, errorMessages } = this.props
+    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid, errorMessages, setBookablesVisible } = this.props
 
     return (
       <div className={styles.bookingForm}>
@@ -82,9 +82,10 @@ export class BookingForm extends React.Component {
         <form onSubmit={ handleSubmit(createBooking) }>
           <Field name="start" component={ renderField } label="Start" type="text" validate={[required, startBeforeEnd]} />
           <Field name="end" component={ renderField } label="End" type="text" validate={[required, endAfterStart]} />
-          <Link to="/rooms">
-            <Field name="bookableId" component={ renderField } type="hidden" label="Room" />
-          </Link>
+          <a href="#" onClick={(event) => {
+            event.preventDefault()
+            setBookablesVisible(true)}}>Rooms</a>
+          <Field name="bookableId" component={ renderField } type="hidden" label="Room" />
           <Field name="subject" component={ renderField } label="Event Name" type="text" validate={required} />
           <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={styles.submitButton}>
             BookIt
@@ -107,6 +108,7 @@ BookingForm.propTypes = {
   pristine: PropTypes.bool,
   invalid: PropTypes.bool,
   errorMessages: PropTypes.arrayOf(PropTypes.string),
+  setBookablesVisible: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
