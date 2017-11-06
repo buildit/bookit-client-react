@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 
-import { Field, reduxForm, isSubmitting } from 'redux-form'
+import { Field, reduxForm, isSubmitting, getFormInitialValues } from 'redux-form'
 
 import Moment from 'moment-timezone'
 
@@ -67,6 +67,7 @@ export class BookingForm extends React.Component {
       start: Moment().tz('America/New_York').add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
     }
     this.props.initialize(values)
+    this.props.getBookablesForLocation(1)
   }
 
   render() {
@@ -100,6 +101,7 @@ export class BookingForm extends React.Component {
 BookingForm.propTypes = {
   handleSubmit: PropTypes.func,
   createBooking: PropTypes.func,
+  getBookablesForLocation: PropTypes.func,
   submitting: PropTypes.bool,
   bookingInstanceId: PropTypes.number,
   initialize: PropTypes.func,
@@ -107,11 +109,14 @@ BookingForm.propTypes = {
   invalid: PropTypes.bool,
   errorMessages: PropTypes.arrayOf(PropTypes.string),
   setBookablesVisible: PropTypes.func,
+  bookable: PropTypes.any,
 }
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state, props) => ({
+  formValues: getFormInitialValues('booking')(state),
   bookingInstanceId: BookingSelectors.getBookingInstanceId(state),
   errorMessages: AppSelectors.getErrorMessages(state),
+  bookableName: BookingSelectors.getBookableEntityFromForm(state, props),
   submitting: isSubmitting('booking')(state),
 })
 
@@ -121,6 +126,7 @@ const connected = connect(
   mapStateToProps,
   {
     createBooking: actionCreators.createBooking,
+    getBookablesForLocation: actionCreators.getBookablesForLocation,
   }
 )(formed)
 
