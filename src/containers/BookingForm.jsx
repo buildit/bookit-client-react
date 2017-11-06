@@ -67,7 +67,6 @@ export class BookingForm extends React.Component {
       start: Moment().tz('America/New_York').add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
     }
     this.props.initialize(values)
-    this.props.getBookablesForLocation(1)
   }
 
   render() {
@@ -101,7 +100,6 @@ export class BookingForm extends React.Component {
 BookingForm.propTypes = {
   handleSubmit: PropTypes.func,
   createBooking: PropTypes.func,
-  getBookablesForLocation: PropTypes.func,
   submitting: PropTypes.bool,
   bookingInstanceId: PropTypes.number,
   initialize: PropTypes.func,
@@ -123,7 +121,6 @@ const connected = connect(
   mapStateToProps,
   {
     createBooking: actionCreators.createBooking,
-    getBookablesForLocation: actionCreators.getBookablesForLocation,
   }
 )(formed)
 

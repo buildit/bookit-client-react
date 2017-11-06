@@ -9,6 +9,10 @@ import {
 } from 'redux-form'
 
 import {
+  reducer as api,
+} from './api'
+
+import {
   reducer as app,
 } from './app'
 
@@ -17,6 +21,7 @@ import {
 } from './booking'
 
 export const rootReducer = combineReducers({
+  ...api,
   ...app,
   ...booking,
   form,

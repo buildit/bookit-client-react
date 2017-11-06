@@ -18,12 +18,12 @@ export class BookablesList extends React.Component {
           this.props.setBookablesVisible(false)}}>BACK</a>
         {this.props.bookables && this.props.bookables.map((bookable) => {
           return (
-            <div key={bookable.id} className={styles.bookable}>
+            <div key={bookable.get('id')} className={styles.bookable}>
               <h3 onClick={(event) => {
                 event.preventDefault()
-                this.props.dispatch(change('booking', 'bookableId', bookable.id))
+                this.props.dispatch(change('booking', 'bookableId', bookable.get('id')))
                 this.props.setBookablesVisible(false)
-              }}>{bookable.name} Room</h3>
+              }}>{bookable.get('name')} Room</h3>
             </div>
           )
         })}
@@ -39,7 +39,7 @@ BookablesList.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  bookables: BookingSelectors.getAllBookablesForLocation(state, { locationId: 1 }),
+  bookables: BookingSelectors.getBookableEntitiesForLocation(state),
 })
 
 const connected = connect(
