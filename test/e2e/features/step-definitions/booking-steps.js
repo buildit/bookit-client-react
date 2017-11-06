@@ -8,17 +8,21 @@ defineSupportCode(({Given, When, Then}) => {
     await driver.get(`${url}/book`)
   })
 
-  When('I book a room', async () => {
+  When('I book a room', async function() {
+    let screenshot = await driver.takeScreenshot()
+    this.attach(screenshot, 'image/png')
     const start = faker.date.future(2)
     const end = new Date(start)
     end.setMinutes(start.getMinutes() + 1)
     const startForForm = start.toISOString().split('.')[0]
     const endForForm = end.toISOString().split('.')[0]
-    const startInput = driver.findElement(By.name('start'))
-    startInput.clear()
+    const startInput = await driver.findElement(By.name('start'))
+    await startInput.clear()
     const endInput = await driver.findElement(By.name('end'))
     await endInput.clear()
     const subjectInput = await driver.findElement(By.name('subject'))
+    screenshot = await driver.takeScreenshot()
+    this.attach(screenshot, 'image/png')
     await subjectInput.sendKeys('My Bookable')
     await startInput.sendKeys(startForForm)
     await endInput.sendKeys(endForForm)

@@ -2,8 +2,9 @@ import { Builder, promise, logging } from 'selenium-webdriver'
 import chrome from 'selenium-webdriver/chrome'
 import { defineSupportCode, Status } from 'cucumber'
 
-logging.installConsoleHandler()
 promise.USE_PROMISE_MANAGER = false
+logging.installConsoleHandler()
+logging.getLogger('promise.ControlFlow').setLevel(logging.Level.ALL)
 const options = new chrome.Options()
 options.addArguments('no-sandbox')
 let driver
