@@ -34,13 +34,13 @@ defineSupportCode(({ Given, When, Then, Before }) => {
   })
 
   Then('It\'s booked', async () => {
-    const condition = until.elementLocated(By.tag('h1'))
+    const condition = until.elementLocated(By.tagName('h1'))
     const element = await driver.wait(condition)
     await driver.wait(until.elementTextContains(element, 'Booking Created'))
   })
 
   Then('It fails', async () => {
-    const condition = until.elementLocated(By.tag('h1'))
+    const condition = until.elementLocated(By.tagName('h1'))
     const element = await driver.wait(condition)
     await driver.wait(until.elementTextContains(element, 'Bookable is not available'))
   })
