@@ -1,9 +1,10 @@
 import { Builder, promise, logging } from 'selenium-webdriver'
 import chrome from 'selenium-webdriver/chrome'
-import { defineSupportCode } from 'cucumber'
+import { defineSupportCode, Status } from 'cucumber'
 
-logging.installConsoleHandler()
 promise.USE_PROMISE_MANAGER = false
+logging.installConsoleHandler()
+logging.getLogger('promise.ControlFlow').setLevel(logging.Level.ALL)
 const options = new chrome.Options()
 options.addArguments('no-sandbox')
 let driver
@@ -18,8 +19,17 @@ defineSupportCode(({ Before, After }) => {
     await driver.manage().window().setSize(320, 480)
   })
 
-  After(async () => {
-    await driver.quit()
+  After(async function (testCase) {
+    try {
+      if(testCase.result.status === Status.FAILED) {
+        if (testCase.result.status === Status.FAILED) {
+          const screenshot = await driver.takeScreenshot()
+          this.attach(screenshot, 'image/png')
+        }
+      }
+    } finally {
+      await driver.quit()
+    }
   })
 })
 

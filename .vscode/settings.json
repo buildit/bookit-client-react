@@ -6,5 +6,8 @@
     "build": true,
     ".vscode/chrome/**": true
   },
-  "typescript.tsdk": "./node_modules/typescript/lib"
+  "cucumberautocomplete.steps": [
+    "test/e2e/features/step-definitions/**/*.js"
+  ],
+  "cucumberautocomplete.syncfeatures": "test/e2e/features/*feature"
 }
