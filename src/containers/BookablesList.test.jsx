@@ -2,8 +2,6 @@ import React from 'react'
 import { mount } from 'enzyme'
 
 import { fromJS } from 'immutable'
-
-// import { Link } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
 import configureStore from 'redux-mock-store'
@@ -44,6 +42,6 @@ describe('<BookablesList />', () => {
         </MemoryRouter>
       </Provider>
     )
-    // expect(wrapper.find('h3')).to.exist
+    expect(wrapper.find('h3')).to.exist
   })
 })
