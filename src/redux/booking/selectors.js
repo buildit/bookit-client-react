@@ -20,7 +20,7 @@ export const getBookables = state => state.bookables
 export const getBookableIds = state => getBookables(state).get('result').toArray()
 export const getBookableEntities = state => getBookables(state).get('entities')
 
-export const getBookableEntity = (state, props) => getBookableEntities(state).get(props.formValues.bookableId)
+export const getBookableEntity = (state, id) => getBookableEntities(state).get(String(id), null)
 
 export const getBookableId = createGetSelector(getBookableEntity, 'id', null)
 export const getBookableName = createGetSelector(getBookableEntity, 'name', null)

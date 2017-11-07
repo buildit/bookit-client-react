@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 
-import { Field, reduxForm, isSubmitting, getFormInitialValues } from 'redux-form'
+import { Field, reduxForm, isSubmitting, formValueSelector, getFormInitialValues } from 'redux-form'
 
 import Moment from 'moment-timezone'
 
@@ -71,7 +71,12 @@ export class BookingForm extends React.Component {
   }
 
   render() {
-    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid, errorMessages, setBookablesVisible } = this.props
+    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid, errorMessages, setBookablesVisible, bookable } = this.props
+
+    let bookableLabel = ''
+    if (bookable) {
+      bookableLabel = `${bookable.get('name')} Room`
+    }
 
     return (
       <div className={styles.bookingForm}>
@@ -85,7 +90,7 @@ export class BookingForm extends React.Component {
           <a href="#" onClick={(event) => {
             event.preventDefault()
             setBookablesVisible(true)}}>Rooms</a>
-          <Field name="bookableId" component={ renderField } type="hidden" label="Room" />
+          <Field name="bookableId" component={ renderField } type="hidden" label={bookableLabel} />
           <Field name="subject" component={ renderField } label="Event Name" type="text" validate={required} />
           <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={styles.submitButton}>
             BookIt
@@ -112,13 +117,18 @@ BookingForm.propTypes = {
   bookable: PropTypes.any,
 }
 
-const mapStateToProps = (state, props) => ({
-  formValues: getFormInitialValues('booking')(state),
-  bookingInstanceId: BookingSelectors.getBookingInstanceId(state),
-  errorMessages: AppSelectors.getErrorMessages(state),
-  bookableName: BookingSelectors.getBookableEntityFromForm(state, props),
-  submitting: isSubmitting('booking')(state),
-})
+const mapStateToProps = (state) => {
+  const bookableId = formValueSelector('booking')(state, 'bookableId')
+  const formValues = getFormInitialValues('booking')(state)
+  const bookable = BookingSelectors.getBookableEntity(state, bookableId)
+  return {
+    formValues,
+    bookingInstanceId: BookingSelectors.getBookingInstanceId(state),
+    errorMessages: AppSelectors.getErrorMessages(state),
+    bookable,
+    submitting: isSubmitting('booking')(state),
+  }
+}
 
 const formed = reduxForm({ form: 'booking' })(BookingForm)
 
