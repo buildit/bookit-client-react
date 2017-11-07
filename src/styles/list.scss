@@ -1,0 +1,18 @@
+@import './mixins/flex';
+
+.bookablesList {
+  background-color: black;
+
+  @include page;
+  position: fixed;
+  top: 0;
+  width: 100vw;
+  flex-flow: column nowrap;
+}
+
+.bookable {
+  border-top: 1px solid white;
+  margin-top: 10px;
+  padding-left: 10px;
+  padding-top: 10px;
+}

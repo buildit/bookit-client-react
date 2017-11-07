@@ -15,7 +15,7 @@ const ApplicationRoutes = () => (
       <SlideOver key={location.key}>
         <Switch key={location.key} location={location}>
           <Route exact path="/" component={Landing} />
-          <Route exact path="/book" component={App} />
+          <Route path="/book" component={App} />
         </Switch>
       </SlideOver>
     </TransitionGroup>
