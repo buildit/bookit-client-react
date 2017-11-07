@@ -1,7 +1,7 @@
 import { call, fork, take, race, put } from 'redux-saga/effects'
 import { cloneableGenerator } from 'redux-saga/utils'
 
-import { sagas as booking, watchForCreateBooking, watchForGetBookablesForLocation, doSomething } from './sagas'
+import { sagas as booking, watchForCreateBooking, doSomething } from './sagas'
 
 describe('sagas/booking', () => {
   describe('#doSomething(action)', () => {
@@ -42,34 +42,11 @@ describe('sagas/booking', () => {
     })
   })
 
-  describe('#watchForGetBookablesForLocation()', () => {
-    it('logs success if successful', () => {
-      const saga = cloneableGenerator(watchForGetBookablesForLocation)()
-      const pendingAction = { type: 'GET_BOOKABLES_PENDING' }
-
-      expect(saga.next(pendingAction).value).to.deep.equal(take('GET_BOOKABLES_PENDING'))
-
-      expect(saga.next().value).to.deep.equal(race({
-        failure: take('GET_BOOKABLES_FAILURE'),
-        success: take('GET_BOOKABLES_SUCCESS'),
-      }))
-
-      const failureSaga = saga.clone()
-
-      expect(saga.next({ success: true }).value).to.deep.equal(call(doSomething, true))
-      expect(saga.next(pendingAction).value).to.deep.equal(take('GET_BOOKABLES_PENDING'))
-
-      expect(failureSaga.next({ failure: true }).value).to.deep.equal(call(doSomething, true))
-      expect(failureSaga.next(pendingAction).value).to.deep.equal(take('GET_BOOKABLES_PENDING'))
-    })
-  })
-
   describe('#booking()', () => {
     it('forks watchForCreateBooking()', () => {
       const saga = booking()
 
       expect(saga.next().value).to.deep.equal(fork(watchForCreateBooking))
-      expect(saga.next().value).to.deep.equal(fork(watchForGetBookablesForLocation))
       expect(saga.next().done).to.be.true
     })
   })

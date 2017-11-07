@@ -1,13 +1,9 @@
 import React from 'react'
-import { shallow, mount } from 'enzyme'
-
-import { Provider } from 'react-redux'
-import configureStore from 'redux-mock-store'
-import { apiMiddleware } from 'redux-api-middleware'
-import { MemoryRouter } from 'react-router'
+import { shallow } from 'enzyme'
 
 import Button from 'Components/Button'
-import FormedBookingForm, { BookingForm } from 'Containers/BookingForm'
+
+import { BookingForm } from 'Containers/BookingForm'
 
 describe('<BookingForm />', () => {
   const props = {
@@ -24,18 +20,11 @@ describe('<BookingForm />', () => {
   })
 
   it('calls handleSubmit on click', () => {
-    const mockStore = configureStore([apiMiddleware])
-    const store = mockStore({})
     props.handleSubmit.mockClear()
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <FormedBookingForm { ...props } />
-        </MemoryRouter>
-      </Provider>
-    )
+    const wrapper = shallow(<BookingForm { ...props } />)
 
-    wrapper.find('button').simulate('click')
+    wrapper.find(Button).shallow().find('button').simulate('click')
+
     expect(props.handleSubmit.mock.calls.length).to.equal(1)
   })
 

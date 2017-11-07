@@ -1,5 +1,8 @@
 import React from 'react'
 import { mount } from 'enzyme'
+
+import { fromJS } from 'immutable'
+
 // import { Link } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { MemoryRouter } from 'react-router'
@@ -10,28 +13,25 @@ import BookablesList from 'Containers/BookablesList'
 
 describe('<BookablesList />', () => {
   const initialState = {
-    bookables: [
-      {
-        id: 1,
-        locationId: 1,
-        name: 'Red',
-        disposition: {
-          closed: false,
-          reason: '',
+    bookables: fromJS({
+      entities: {
+        '1': {
+          id: 1,
+          locationId: 1,
+          name: 'Red',
+          disposition: { closed: false, reason: '' },
+          bookings: [],
         },
-        bookings: [],
-      },
-      {
-        id: 2,
-        locationId: 1,
-        name: 'Blue',
-        disposition: {
-          closed: true,
-          reason: 'construction',
+        '2': {
+          id: 2,
+          locationId: 1,
+          name: 'Blue',
+          disposition: { closed: true, reason: 'construction' },
+          bookings: [],
         },
-        bookings: [],
       },
-    ],
+      result: [1, 2],
+    }),
   }
 
   it('renders a list of bookables on the page', () => {
