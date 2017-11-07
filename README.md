@@ -79,3 +79,7 @@ $ yarn add @types/chai-enzyme@beta @types/history @types/jest @types/node @types
 ## Contributing
 
 See [Contributing](./docs/CONTRIBUTING.md)
+
+
+## Design Screens & Prototypes
+* [Bookit-design](https://github.com/buildit/bookit-design) 
