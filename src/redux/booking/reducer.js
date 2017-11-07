@@ -1,10 +1,9 @@
-import { handleAction } from 'redux-actions'
+import { handleActions } from 'redux-actions'
 
-export const bookingInstance = handleAction(
-  'CREATE_BOOKING_SUCCESS',
-  (state, action) => action.payload,
-  null
-)
+export const bookingInstance = handleActions({
+  CREATE_BOOKING_SUCCESS: (state, action) => action.payload,
+  CREATE_BOOKING_PENDING: () => null,
+}, null)
 
 export const reducer = {
   bookingInstance,

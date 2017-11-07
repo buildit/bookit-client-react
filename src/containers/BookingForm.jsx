@@ -11,6 +11,7 @@ import Moment from 'moment-timezone'
 
 import { actionCreators } from 'Redux'
 import { BookingSelectors } from 'Redux/booking'
+import { AppSelectors } from 'Redux/app'
 
 import Button from 'Components/Button'
 
@@ -56,6 +57,7 @@ renderField.propTypes = {
 }
 
 const renderSuccessMessage = bookingId => <h1>Booking Created with booking ID {bookingId}!</h1>
+const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, index) => <p key={index}>{error}</p>)}</h1>
 
 export class BookingForm extends React.Component {
   componentDidMount() {
@@ -69,7 +71,7 @@ export class BookingForm extends React.Component {
   }
 
   render() {
-    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid } = this.props
+    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid, errorMessages } = this.props
 
     return (
       <div className={styles.bookingForm}>
@@ -87,6 +89,7 @@ export class BookingForm extends React.Component {
           </Button>
         </form>
         { bookingInstanceId && renderSuccessMessage(bookingInstanceId) }
+        { errorMessages && renderErrorMessages(errorMessages) }
       </div>
     )
   }
@@ -101,10 +104,12 @@ BookingForm.propTypes = {
   initialize: PropTypes.func,
   pristine: PropTypes.bool,
   invalid: PropTypes.bool,
+  errorMessages: PropTypes.arrayOf(PropTypes.string),
 }
 
 const mapStateToProps = state => ({
   bookingInstanceId: BookingSelectors.getBookingInstanceId(state),
+  errorMessages: AppSelectors.getErrorMessages(state),
   submitting: isSubmitting('booking')(state),
 })
 

@@ -3,13 +3,18 @@ import { By, until } from 'selenium-webdriver'
 import faker from 'faker'
 import { driver, url } from '../support/hooks'
 
-defineSupportCode(({Given, When, Then}) => {
+defineSupportCode(({ Given, When, Then, Before }) => {
+  let start
+
+  Before(() => {
+    start = faker.date.future(2)
+  })
+
   Given('I am on the bookit website form', async () => {
     await driver.get(`${url}/book`)
   })
 
   When('I book a room', async () => {
-    const start = faker.date.future(2)
     const end = new Date(start)
     end.setMinutes(start.getMinutes() + 1)
     const startForForm = start.toISOString().split('.')[0]
@@ -29,8 +34,14 @@ defineSupportCode(({Given, When, Then}) => {
   })
 
   Then('It\'s booked', async () => {
-    const xpath = "//*[contains(text(),'Booking Created')]"
-    const condition = until.elementLocated({ xpath: xpath })
-    await driver.wait(condition)
+    const condition = until.elementLocated(By.tagName('h1'))
+    const element = await driver.wait(condition)
+    await driver.wait(until.elementTextContains(element, 'Booking Created'))
+  })
+
+  Then('It fails', async () => {
+    const condition = until.elementLocated(By.tagName('h1'))
+    const element = await driver.wait(condition)
+    await driver.wait(until.elementTextContains(element, 'Bookable is not available'))
   })
 })
