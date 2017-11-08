@@ -55,6 +55,7 @@ module.exports = {
 
       Components: path.resolve(__dirname, 'src/components'),
       Containers: path.resolve(__dirname, 'src/containers'),
+      Hoc: path.resolve(__dirname, 'src/hoc'),
 
       Utils: path.resolve(__dirname, 'src/utils'),
 

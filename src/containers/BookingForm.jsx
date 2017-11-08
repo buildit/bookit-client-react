@@ -5,13 +5,11 @@ import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 
-import { Field, reduxForm, isSubmitting, formValueSelector, getFormInitialValues } from 'redux-form'
+import { Field, reduxForm, isSubmitting } from 'redux-form'
 
 import Moment from 'moment-timezone'
 
-import { actionCreators } from 'Redux'
-import { BookingSelectors } from 'Redux/booking'
-import { AppSelectors } from 'Redux/app'
+import { actionCreators, selectors } from 'Redux'
 
 import Button from 'Components/Button'
 
@@ -61,22 +59,16 @@ const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, in
 
 export class BookingForm extends React.Component {
   componentDidMount() {
-    const values = {
-      bookableId: 1,
-      end: Moment().tz('America/New_York').add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
-      start: Moment().tz('America/New_York').add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
-    }
-    this.props.initialize(values)
-    this.props.getBookablesForLocation(1)
+    // const values = {
+    //   bookableId: 1,
+    //   end: Moment().tz('America/New_York').add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
+    //   start: Moment().tz('America/New_York').add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
+    // }
+    this.props.initialize()
   }
 
   render() {
-    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid, errorMessages, setBookablesVisible, bookable } = this.props
-
-    let bookableLabel = ''
-    if (bookable) {
-      bookableLabel = `${bookable.get('name')} Room`
-    }
+    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid, errorMessages, setBookablesVisible, bookableName } = this.props
 
     return (
       <div className={styles.bookingForm}>
@@ -90,7 +82,7 @@ export class BookingForm extends React.Component {
           <a href="#" onClick={(event) => {
             event.preventDefault()
             setBookablesVisible(true)}} className="roomsInput">Rooms</a>
-          <Field name="bookableId" component={ renderField } type="hidden" label={bookableLabel} />
+          <Field name="bookableId" component={ renderField } type="hidden" label={bookableName || 'Pick a Room'} />
           <Field name="subject" component={ renderField } label="Event Name" type="text" validate={required} />
           <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={styles.submitButton}>
             BookIt
@@ -106,7 +98,6 @@ export class BookingForm extends React.Component {
 BookingForm.propTypes = {
   handleSubmit: PropTypes.func,
   createBooking: PropTypes.func,
-  getBookablesForLocation: PropTypes.func,
   submitting: PropTypes.bool,
   bookingInstanceId: PropTypes.number,
   initialize: PropTypes.func,
@@ -114,30 +105,18 @@ BookingForm.propTypes = {
   invalid: PropTypes.bool,
   errorMessages: PropTypes.arrayOf(PropTypes.string),
   setBookablesVisible: PropTypes.func,
-  bookable: PropTypes.any,
+  bookableName: PropTypes.string,
 }
 
-const mapStateToProps = (state) => {
-  const bookableId = formValueSelector('booking')(state, 'bookableId')
-  const formValues = getFormInitialValues('booking')(state)
-  const bookable = BookingSelectors.getBookableEntity(state, bookableId)
-  return {
-    formValues,
-    bookingInstanceId: BookingSelectors.getBookingInstanceId(state),
-    errorMessages: AppSelectors.getErrorMessages(state),
-    bookable,
-    submitting: isSubmitting('booking')(state),
-  }
-}
+const mapStateToProps = state => ({
+  bookingInstanceId: selectors.getBookingInstanceId(state),
+  errorMessages: selectors.getErrorMessages(state),
+  submitting: isSubmitting('booking')(state),
+  bookableName: selectors.getBookingBookableName(state),
+})
 
 const formed = reduxForm({ form: 'booking' })(BookingForm)
 
-const connected = connect(
-  mapStateToProps,
-  {
-    createBooking: actionCreators.createBooking,
-    getBookablesForLocation: actionCreators.getBookablesForLocation,
-  }
-)(formed)
-
-export default connected
+export default connect(mapStateToProps, {
+  createBooking: actionCreators.createBooking,
+})(formed)

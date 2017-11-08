@@ -3,6 +3,5 @@
 // export * from './sagas';
 export * from './reducer'
 
-import * as AppSelectors from './selectors'
-
-export { AppSelectors }
+import * as selectors from './selectors'
+export { selectors }

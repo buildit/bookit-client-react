@@ -3,6 +3,5 @@ export * from './actions'
 export * from './sagas'
 export * from './reducer'
 
-// import * as ApiSelectors from './selectors'
-
-// export { ApiSelectors }
+import * as selectors from './selectors'
+export { selectors }
