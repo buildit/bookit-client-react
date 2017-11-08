@@ -4,46 +4,48 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { change } from 'redux-form'
 
-import { BookingSelectors } from 'Redux/booking'
+import { selectors } from 'Redux'
+
+import withBookable from 'Hoc/with-bookable'
+import { BookableItem } from 'Components/BookableItem'
 
 import styles from 'Styles/list.scss'
 
+const SelectBookableItem = withBookable(BookableItem)
+
 export class BookablesList extends React.Component {
 
+  handleBack = (event) => {
+    event && event.preventDefault()
+    this.props.setBookablesVisible(false)
+  }
+
+  handleBookableClick = (bookableId) => {
+    this.props.dispatch(change('booking', 'bookableId', bookableId))
+    this.handleBack()
+  }
+
   render() {
+    const { bookableIds } = this.props
     return (
       <div className={styles.bookablesList}>
-        <a href="#" onClick={(event) => {
-          event.preventDefault()
-          this.props.setBookablesVisible(false)}}>BACK</a>
-        {this.props.bookables && this.props.bookables.map((bookable) => {
-          return (
-            <div key={bookable.get('id')} className={styles.bookable}>
-              <h3 onClick={(event) => {
-                event.preventDefault()
-                this.props.dispatch(change('booking', 'bookableId', bookable.get('id')))
-                this.props.setBookablesVisible(false)
-              }}>{bookable.get('name')} Room</h3>
-            </div>
-          )
-        })}
+        <a href="#" onClick={this.handleBack}>BACK</a>
+        { bookableIds.map(
+          id => <SelectBookableItem key={id} id={id} className={styles.bookable} onClick={this.handleBookableClick} />
+        )}
       </div>
     )
   }
 }
 
 BookablesList.propTypes = {
-  bookables: PropTypes.array,
+  bookableIds: PropTypes.array,
   setBookablesVisible: PropTypes.func,
   dispatch: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
-  bookables: BookingSelectors.getBookableEntitiesForLocation(state),
+  bookableIds: selectors.getBookablesForLocation(state, 1),  // Cheating on the locationId a bit
 })
 
-const connected = connect(
-  mapStateToProps
-)(BookablesList)
-
-export default connected
+export default connect(mapStateToProps)(BookablesList)

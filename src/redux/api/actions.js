@@ -1,3 +1,5 @@
+import QS from 'querystring'
+
 import { RSAA, getJSON } from 'redux-api-middleware'
 
 import {
@@ -32,20 +34,24 @@ export const getAllLocations = () => ({
   },
 })
 
-export const getAllBookables = (locationId = 1) => ({
-  [RSAA]: {
-    endpoint: `${apiEndpoint}/location/${locationId}/bookable`,
-    method: 'GET',
-    types: [
-      'GET_BOOKABLES_PENDING',
-      {
-        type: 'GET_BOOKABLES_SUCCESS',
-        payload: (action, state, res) => getJSON(res).then(json => normalizeBookables(json)),
-      },
-      'GET_BOOKABLES_FAILURE',
-    ],
-  },
-})
+export const getAllBookables = (locationId = 1, options = {}) => {
+  const { start, end } = options
+  const qs = QS.stringify({ start, end, expand: 'bookings' })
+  return {
+    [RSAA]: {
+      endpoint: `${apiEndpoint}/location/${locationId}/bookable?${qs}`,
+      method: 'GET',
+      types: [
+        'GET_BOOKABLES_PENDING',
+        {
+          type: 'GET_BOOKABLES_SUCCESS',
+          payload: (action, state, res) => getJSON(res).then(json => normalizeBookables(json)),
+        },
+        'GET_BOOKABLES_FAILURE',
+      ],
+    },
+  }
+}
 
 export const getAllBookings = () => ({
   [RSAA]: {

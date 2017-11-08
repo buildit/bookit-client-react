@@ -1,4 +1,4 @@
-import { fromJS } from 'immutable'
+import { List, Map, fromJS } from 'immutable'
 
 import { handleAction, handleActions } from 'redux-actions'
 
@@ -6,9 +6,10 @@ export const locations = handleAction(
   'GET_LOCATIONS_SUCCESS',
   (state, action) => {
     const { entities: { locations }, result } = action.payload
-    return state
-      .update('entities', map => map.mergeDeep(locations))
-      .update('result', list => list.toOrderedSet().concat(result).toList())
+    return state.withMutations((map) => {
+      map.set('result', List(result))
+      result.forEach(id => map.setIn(['entities', id], Map(locations[id])))
+    })
   },
   fromJS({ entities: {}, result: [] })
 )
@@ -17,9 +18,10 @@ export const bookables = handleAction(
   'GET_BOOKABLES_SUCCESS',
   (state, action) => {
     const { entities: { bookables }, result } = action.payload
-    return state
-      .update('entities', map => map.mergeDeep(bookables))
-      .update('result', list => list.toOrderedSet().concat(result).toList())
+    return state.withMutations((map) => {
+      map.set('result', List(result))
+      result.forEach(id => map.setIn(['entities', id], Map(bookables[id])))
+    })
   },
   fromJS({ entities: {}, result: [] })
 )
@@ -28,9 +30,10 @@ export const bookings = handleAction(
   'GET_BOOKINGS_SUCCESS',
   (state, action) => {
     const { entities: { bookings }, result } = action.payload
-    return state
-      .update('entities', map => map.mergeDeep(bookings))
-      .update('result', list => list.toOrderedSet().concat(result).toList())
+    return state.withMutations((map) => {
+      map.set('result', List(result))
+      result.forEach(id => map.setIn(['entities', id], Map(bookings[id])))
+    })
   },
   fromJS({ entities: {}, result: [] })
 )

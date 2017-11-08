@@ -1,47 +1,22 @@
 import React from 'react'
-import { mount } from 'enzyme'
+import { shallow } from 'enzyme'
 
-import { fromJS } from 'immutable'
-import { Provider } from 'react-redux'
-import { MemoryRouter } from 'react-router'
-import configureStore from 'redux-mock-store'
-import { apiMiddleware } from 'redux-api-middleware'
-
-import BookablesList from 'Containers/BookablesList'
+import { BookablesList } from 'Containers/BookablesList'
 
 describe('<BookablesList />', () => {
-  const initialState = {
-    bookables: fromJS({
-      entities: {
-        '1': {
-          id: 1,
-          locationId: 1,
-          name: 'Red',
-          disposition: { closed: false, reason: '' },
-          bookings: [],
-        },
-        '2': {
-          id: 2,
-          locationId: 1,
-          name: 'Blue',
-          disposition: { closed: true, reason: 'construction' },
-          bookings: [],
-        },
-      },
-      result: [1, 2],
-    }),
-  }
-
   it('renders a list of bookables on the page', () => {
-    const mockStore = configureStore([apiMiddleware])
-    const store = mockStore(initialState)
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <BookablesList />
-        </MemoryRouter>
-      </Provider>
+    const setBookablesVisible = jest.fn()
+    const dispatch = jest.fn()
+
+    const wrapper = shallow(
+      <BookablesList
+        bookableIds={[1, 2]}
+        setBookablesVisible={setBookablesVisible}
+        dispatch={dispatch}
+      />
     )
-    expect(wrapper.find('h3')).to.exist
+
+    console.log(wrapper.find('Connect(BookableItem)'))
+    expect(wrapper.find('Connect(BookableItem)')).to.have.length(2)
   })
 })
