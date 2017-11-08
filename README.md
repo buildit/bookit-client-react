@@ -64,12 +64,14 @@ $ yarn add @types/chai-enzyme@beta @types/history @types/jest @types/node @types
 ```
 
 ## Build information
+
 * [Build Pipeline](https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/view/buildit-bookit-build-bookit-client-react-master-pipeline)
 * [Build Reports](http://rig.buildit.bookit.us-east-1.build.s3-website-us-east-1.amazonaws.com/buildit-bookit-build-bookit-client-react-master/reports)
 
 ## Operational information
 
 ### Logging
+
 * [Integration](https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logStream:group=buildit-bookit-integration-app-bookit-client-react-master)
 * [Staging](https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logStream:group=buildit-bookit-staging-app-bookit-client-react-master)
 * [Production](https://console.aws.amazon.com/cloudwatch/home?region=us-east-1#logStream:group=buildit-bookit-production-app-bookit-client-react-master)
