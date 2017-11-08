@@ -7,8 +7,8 @@ export const findOverlap = (start, end) => {
 
 export const buildBookingsIntervalTree = (bookings = []) => {
   const intervalTree = new IntervalTree()
-  bookings.forEach(({ id, start, end }) => {
-    intervalTree.insert(start, end, id)
+  bookings.forEach(({ start, end, obj }) => {
+    intervalTree.insert(start, end, obj)
   })
   return intervalTree
 }

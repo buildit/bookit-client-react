@@ -1,6 +1,10 @@
 import { createSelector } from 'reselect'
 import { createGetSelector } from 'reselect-immutable-helpers'
 
+import isSameDay from 'date-fns/is_same_day'
+
+import { buildBookingsIntervalTree, getIntervalInMinutes } from 'Utils'
+
 // ### Locations -------------------------------------------------------------
 
 export const getLocations = state => state.locations
@@ -56,3 +60,25 @@ export const getBookingSubject = createGetSelector(getBookingEntity, 'subject', 
 export const getBookingStart = createGetSelector(getBookingEntity, 'start', null)
 export const getBookingEnd = createGetSelector(getBookingEntity, 'end', null)
 export const getBookingBookable = createGetSelector(getBookingEntity, 'bookable', null)
+
+// WELCOME TO UGLYTOWN!
+export const getBookingIntervalTreeForDate = createSelector(
+  [
+    (state, date) => date,
+    getBookingIds,
+    getBookingEntities,
+  ],
+  (date, bookingIds, bookings) => {
+    return buildBookingsIntervalTree(
+      bookingIds
+        .filter(id => isSameDay(bookings.getIn([id, 'start']), date))
+        .map((id) => {
+          const [ start, end ] = getIntervalInMinutes(
+            bookings.getIn([id, 'start']),
+            bookings.getIn([id, 'end'])
+          )
+          return { start, end, obj: { id, subject: bookings.getIn([id, 'subject']) } }
+        })
+    )
+  }
+)

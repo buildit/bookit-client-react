@@ -11,12 +11,12 @@ describe('#findOverlap(start, end)', () => {
 describe('#buildBookingsIntervalTree(bookings)', () => {
   const bookings = [
     {
-      id: 'foo',
+      obj: { id: 'foo' },
       start: 10,
       end: 20,
     },
     {
-      id: 'bar',
+      obj: { id: 'bar' },
       start: 25,
       end: 35,
     },
@@ -38,7 +38,7 @@ describe('#buildBookingsIntervalTree(bookings)', () => {
     const intervalTree = buildBookingsIntervalTree(bookings)
     const overlap = intervalTree.search(11, 15)
     expect(overlap).to.have.lengthOf(1)
-    expect(overlap[0]).to.equal('foo')
+    expect(overlap[0].id).to.equal('foo')
   })
 
   it('returns empty overlap when search is before start and end interval', () => {
@@ -69,6 +69,7 @@ describe('#buildBookingsIntervalTree(bookings)', () => {
     const intervalTree = buildBookingsIntervalTree(bookings)
     const overlap = intervalTree.search(1, 50)
     expect(overlap).to.have.lengthOf(2)
-    expect(overlap).to.have.ordered.members(['foo', 'bar'])
+    expect(overlap[0].id).to.equal('foo')
+    expect(overlap[1].id).to.equal('bar')
   })
 })

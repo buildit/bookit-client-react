@@ -20,7 +20,7 @@ export const bookables = handleAction(
     const { entities: { bookables }, result } = action.payload
     return state.withMutations((map) => {
       map.set('result', List(result))
-      result.forEach(id => map.setIn(['entities', id], Map(bookables[id])))
+      result.forEach(id => map.setIn(['entities', id], fromJS(bookables[id])))
     })
   },
   fromJS({ entities: {}, result: [] })
