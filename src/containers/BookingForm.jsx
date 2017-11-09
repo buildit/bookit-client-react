@@ -59,8 +59,6 @@ renderField.propTypes = {
 const renderSuccessMessage = bookingId => <h1>Booking Created with booking ID {bookingId}!</h1>
 const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, index) => <p key={index}>{error}</p>)}</h1>
 
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
-
 export class BookingForm extends React.Component {
   componentDidMount() {
     // TODO: Use bookingIntervalTree (somehow) to find earliest free
@@ -74,7 +72,7 @@ export class BookingForm extends React.Component {
   }
 
   submitBookingForm = (values) => {
-    return sleep(1000).then(() => {
+    return Promise.resolve().then(() => {
       const { start, end } = values
       const [ low, high ] = getIntervalInMinutes(start, end)
 
