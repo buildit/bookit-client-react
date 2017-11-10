@@ -1,9 +1,9 @@
 import { createSelector } from 'reselect'
 import { createGetSelector } from 'reselect-immutable-helpers'
 
-import isSameDay from 'date-fns/is_same_day'
+// import isSameDay from 'date-fns/is_same_day'
 
-import { buildBookingsIntervalTree, getIntervalInMinutes } from 'Utils'
+import { doesRangeOverlap } from 'Utils'
 
 // ### Locations -------------------------------------------------------------
 
@@ -30,17 +30,24 @@ export const getBookableName = createGetSelector(getBookableEntity, 'name', null
 export const isBookableClosed = (state, props) => {
   const id = props.id
   const bookables = state.bookables.toJS().entities
-  console.log(bookables[id])
   return bookables[id].disposition.closed
 }
 export const isBookableBooked = (state, props) => {
   const id = props.id
   const bookables = state.bookables.toJS().entities
-  console.log(bookables[id])
-  if (bookables[id].bookings.length === 0) {
-    return false
+  const bookingIds = bookables[id].bookings
+  const newBookingRange = {
+    end: state.form.booking.values.end,
+    start: state.form.booking.values.start,
   }
-  return true
+  const existingBookingRanges = bookingIds.map((id) => {
+    const bookings = state.bookings.toJS().entities
+    return {
+      end: bookings[id].end,
+      start: bookings[id].start,
+    }
+  })
+  return doesRangeOverlap(newBookingRange, existingBookingRanges)
 }
 export const getBookableLocation = createGetSelector(getBookableEntity, 'location', null)
 
@@ -75,25 +82,3 @@ export const getBookingSubject = createGetSelector(getBookingEntity, 'subject', 
 export const getBookingStart = createGetSelector(getBookingEntity, 'start', null)
 export const getBookingEnd = createGetSelector(getBookingEntity, 'end', null)
 export const getBookingBookable = createGetSelector(getBookingEntity, 'bookable', null)
-
-// WELCOME TO UGLYTOWN!
-export const getBookingIntervalTreeForDate = createSelector(
-  [
-    (state, date) => date,
-    getBookingIds,
-    getBookingEntities,
-  ],
-  (date, bookingIds, bookings) => {
-    return buildBookingsIntervalTree(
-      bookingIds
-        .filter(id => isSameDay(bookings.getIn([id, 'start']), date))
-        .map((id) => {
-          const [ start, end ] = getIntervalInMinutes(
-            bookings.getIn([id, 'start']),
-            bookings.getIn([id, 'end'])
-          )
-          return { start, end, obj: { id, subject: bookings.getIn([id, 'subject']) } }
-        })
-    )
-  }
-)

@@ -5,15 +5,13 @@ import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 
-import { Field, reduxForm, isSubmitting, SubmissionError } from 'redux-form'
+import { Field, reduxForm, isSubmitting } from 'redux-form'
 
 import Moment from 'moment-timezone'
 
 import { actionCreators, selectors } from 'Redux'
 
 import Button from 'Components/Button'
-
-import { getIntervalInMinutes } from 'Utils'
 
 import styles from 'Styles/form.scss'
 
@@ -39,7 +37,7 @@ const startBeforeEnd = (value, {end}) => {
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
   <div>
-    <label>{label}</label>
+    <label id={label.replace(' ', '-').toLowerCase()}>{label}</label>
     <div>
       <input {...input} placeholder={label} type={type} />
       {touched &&
@@ -73,19 +71,7 @@ export class BookingForm extends React.Component {
 
   submitBookingForm = (values) => {
     return Promise.resolve().then(() => {
-      const { start, end } = values
-      const [ low, high ] = getIntervalInMinutes(start, end)
-
-      const overlaps = this.props.bookingIntervalTree.search(low, high)
-
-      if (overlaps.length) {
-        console.log('OVERLAPS:', overlaps)
-        throw new SubmissionError({
-          _error: 'Booking time overlaps with other booking!',
-        })
-      } else {
-        this.props.createBooking(values)
-      }
+      this.props.createBooking(values)
     })
   }
 
@@ -143,7 +129,6 @@ BookingForm.propTypes = {
   error: PropTypes.string,
   setBookablesVisible: PropTypes.func,
   bookableName: PropTypes.string,
-  bookingIntervalTree: PropTypes.object,
 }
 
 const mapStateToProps = state => ({
@@ -151,7 +136,6 @@ const mapStateToProps = state => ({
   errorMessages: selectors.getErrorMessages(state),
   submitting: isSubmitting('booking')(state),
   bookableName: selectors.getBookingBookableName(state),
-  bookingIntervalTree: selectors.getBookingIntervalTreeForDate(state, '2017-11-08'),
 })
 
 const formed = reduxForm({ form: 'booking' })(BookingForm)

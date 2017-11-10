@@ -6,13 +6,15 @@ const clickHandler = (handler, value) => (event) => {
   handler(value)
 }
 
-export const BookableItem = ({ id, name, className, onClick, closed, booked }) => (
-  <div className={className} onClick={clickHandler(onClick, id)}>
-    <h3>{ name } Room</h3>
-    <p>Open: {closed ? 'No' : 'Yes'}</p>
-    <p>Booked: {booked ? 'Yes' : 'No'}</p>
-  </div>
-)
+export const BookableItem = ({ id, name, className, onClick, closed, booked }) => {
+  const available = !closed && !booked
+  return (
+    <div id={id} className={className} onClick={available ? clickHandler(onClick, id) : null}>
+      <h3>{ name } Room</h3>
+      <p>Available: {available ? 'Yes' : 'No'}</p>
+    </div>
+  )
+}
 
 BookableItem.propTypes = {
   id: PropTypes.number,
