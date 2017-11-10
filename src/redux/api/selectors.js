@@ -27,6 +27,21 @@ export const getBookableEntity = (state, props) => getBookableEntities(state).ge
 
 // export const getBookableId = createGetSelector(getBookableEntity, 'id', null)
 export const getBookableName = createGetSelector(getBookableEntity, 'name', null)
+export const isBookableClosed = (state, props) => {
+  const id = props.id
+  const bookables = state.bookables.toJS().entities
+  console.log(bookables[id])
+  return bookables[id].disposition.closed
+}
+export const isBookableBooked = (state, props) => {
+  const id = props.id
+  const bookables = state.bookables.toJS().entities
+  console.log(bookables[id])
+  if (bookables[id].bookings.length === 0) {
+    return false
+  }
+  return true
+}
 export const getBookableLocation = createGetSelector(getBookableEntity, 'location', null)
 
 const getBookableLocationEntity = createSelector(
