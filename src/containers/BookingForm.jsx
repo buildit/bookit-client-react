@@ -59,8 +59,6 @@ const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, in
 
 export class BookingForm extends React.Component {
   componentDidMount() {
-    // TODO: Use bookingIntervalTree (somehow) to find earliest free
-    // slot for a bookable and set the result into `values` below.
     const values = {
       bookableId: 1,
       end: Moment().tz('America/New_York').add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
