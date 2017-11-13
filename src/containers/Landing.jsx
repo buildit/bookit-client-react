@@ -6,8 +6,6 @@ import Button from 'Components/Button'
 
 import styles from 'Styles/landing.scss'
 
-// #f3f0f0
-
 export const Landing = () => (
   <div className={styles.landing}>
     <div className={[styles.landingRow, styles.landingRowPadded].join(' ')}>
@@ -18,11 +16,6 @@ export const Landing = () => (
         <Button className={styles.bigButton}>View Your Bookings</Button>
       </Link>
     </div>
-    {/*
-    <div className={styles.landingRow}>
-      <p>Hello thar!</p>
-    </div>
-    */}
   </div>
 )
 

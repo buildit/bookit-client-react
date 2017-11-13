@@ -27,12 +27,12 @@ export const getBookableEntity = (state, props) => getBookableEntities(state).ge
 
 // export const getBookableId = createGetSelector(getBookableEntity, 'id', null)
 export const getBookableName = createGetSelector(getBookableEntity, 'name', null)
-export const isBookableClosed = (state, props) => {
-  const id = props.id
-  const bookables = state.bookables.toJS().entities
-  return bookables[id].disposition.closed
-}
-export const isBookableBooked = (state, props) => {
+export const getBookableDisposition = createGetSelector(getBookableEntity, 'disposition', new Map())
+export const isBookableClosed = createSelector(
+  [ getBookableDisposition ],
+  disposition => disposition.get('closed')
+)
+export const isBookableBookedOld = (state, props) => {
   const id = props.id
   const bookables = state.bookables.toJS().entities
   const bookingIds = bookables[id].bookings
@@ -49,6 +49,13 @@ export const isBookableBooked = (state, props) => {
   })
   return doesRangeOverlap(newBookingRange, existingBookingRanges)
 }
+export const isBookableBooked = createSelector(
+  [ getBookableEntities ],
+  (bookables) => {
+    console.log(bookables)
+    return true
+  }
+)
 export const getBookableLocation = createGetSelector(getBookableEntity, 'location', null)
 
 const getBookableLocationEntity = createSelector(
