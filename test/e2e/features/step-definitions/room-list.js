@@ -1,6 +1,6 @@
 import { defineSupportCode } from 'cucumber'
 import { By, until } from 'selenium-webdriver'
-import faker from 'faker'
+// import faker from 'faker'
 import { driver, url } from '../support/hooks'
 
 defineSupportCode(({ Given, When, Then }) => {

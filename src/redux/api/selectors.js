@@ -67,6 +67,11 @@ export const isBookableBooked = createSelector(
   }
 )
 
+export const isBookableAvailable = createSelector(
+  [ isBookableClosed, isBookableBooked ],
+  (closed, booked) => !closed && !booked
+)
+
 export const getBookableLocation = createGetSelector(getBookableEntity, 'location', null)
 
 const getBookableLocationEntity = createSelector(
@@ -86,4 +91,3 @@ export const getBookablesForLocation = createSelector(
   (locationId, bookableIds, bookables) => bookableIds.filter(id => bookables.getIn([id, 'location']) === locationId)
 
 )
-
