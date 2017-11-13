@@ -133,7 +133,7 @@ const mapStateToProps = state => ({
   bookingInstanceId: selectors.getBookingInstanceId(state),
   errorMessages: selectors.getErrorMessages(state),
   submitting: isSubmitting('booking')(state),
-  bookableName: selectors.getBookingBookableName(state),
+  bookableName: selectors.getBookingBookableNameFromForm(state),
 })
 
 const formed = reduxForm({ form: 'booking' })(BookingForm)

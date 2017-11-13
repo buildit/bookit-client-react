@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import withBooking from 'Hoc/with-booking'
 import { BookingItem as BaseBookingItem } from 'Components/BookingItem'
 
-import styles from 'Styles/bookings.scss'
+import styles from 'Styles/grouped-bookings.scss'
 
 const BookingItem = withBooking(BaseBookingItem)
 

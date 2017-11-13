@@ -13,7 +13,7 @@ export const getBookingInstanceId = createSelector(
   bookingInstance => bookingInstance && bookingInstance.id
 )
 
-export const getBookingBookableName = createSelector(
+export const getBookingBookableNameFromForm = createSelector(
   [
     state => formValueSelector('booking')(state, 'bookableId'),
     getBookableEntities,
