@@ -5,7 +5,8 @@ import { formValueSelector } from 'redux-form'
 import { createSelector } from 'reselect'
 import { createGetSelector } from 'reselect-immutable-helpers'
 
-// import isSameDay from 'date-fns/is_same_day'
+import startOfDay from 'date-fns/start_of_day'
+// import format from 'date-fns/format'
 
 import { doesRangeOverlap } from 'Utils'
 
@@ -25,13 +26,33 @@ export const getBookableEntities = state => getBookables(state).get('entities', 
 
 // ### Bookings --------------------------------------------------------------
 
-export const getBookingEntity = (state, props) => getBookableEntities(state).get(props.id, null)
+export const getBookingEntity = (state, props) => getBookingEntities(state).get(props.id, null)
 
 // export const getBookingId = createGetSelector(getBookingEntity, 'id', null)
 export const getBookingSubject = createGetSelector(getBookingEntity, 'subject', null)
 export const getBookingStart = createGetSelector(getBookingEntity, 'start', null)
 export const getBookingEnd = createGetSelector(getBookingEntity, 'end', null)
 export const getBookingBookable = createGetSelector(getBookingEntity, 'bookable', null)
+export const getBookingBookableEntity = createSelector(
+  [ getBookingBookable, getBookableEntities ],
+  (bookable, bookables) => bookables.get(bookable)
+)
+export const getBookingBookableName = createGetSelector(getBookingBookableEntity, 'name', null)
+export const getBookingsGroupedByDay = createSelector(
+  [ getBookingEntities ],
+  (bookings) => {
+    const groupedBookings = bookings.groupBy(booking => startOfDay(booking.get('start')))
+    groupedBookings.map((value, key) => {
+      const newObj = {
+        date: key,
+        bookings: value.map(v => v.get('id')).toArray(),
+      }
+      console.log('newObj', newObj)
+      return newObj
+    })
+    return groupedBookings
+  }
+)
 
 // ### Locations -------------------------------------------------------------
 
