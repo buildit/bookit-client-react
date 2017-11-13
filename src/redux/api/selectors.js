@@ -6,7 +6,7 @@ import { createSelector } from 'reselect'
 import { createGetSelector } from 'reselect-immutable-helpers'
 
 import startOfDay from 'date-fns/start_of_day'
-// import format from 'date-fns/format'
+import format from 'date-fns/format'
 
 import { doesRangeOverlap } from 'Utils'
 
@@ -38,19 +38,16 @@ export const getBookingBookableEntity = createSelector(
   (bookable, bookables) => bookables.get(bookable)
 )
 export const getBookingBookableName = createGetSelector(getBookingBookableEntity, 'name', null)
+
 export const getBookingsGroupedByDay = createSelector(
   [ getBookingEntities ],
   (bookings) => {
-    const groupedBookings = bookings.groupBy(booking => startOfDay(booking.get('start')))
-    groupedBookings.map((value, key) => {
-      const newObj = {
-        date: key,
-        bookings: value.map(v => v.get('id')).toArray(),
-      }
-      console.log('newObj', newObj)
-      return newObj
-    })
-    return groupedBookings
+    return bookings
+      .groupBy(booking => format(startOfDay(booking.get('start')), 'YYYY-MM-DD'))
+      .map((bookings, date) => ({
+        date,
+        bookingIds: bookings.map(booking => booking.get('id')).toArray(),
+      })).toList().toJS()
   }
 )
 

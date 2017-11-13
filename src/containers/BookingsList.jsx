@@ -6,18 +6,14 @@ import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { selectors } from 'Redux'
 
-import withBooking from 'Hoc/with-booking'
-import { BookingItem as BaseBookingItem } from 'Components/BookingItem'
+import GroupedBookingsList from 'Components/GroupedBookingsList'
 
 import styles from 'Styles/bookings.scss'
 
-const BookingItem = withBooking(BaseBookingItem)
-
 export class BookingsList extends React.Component {
-
   render() {
-    const { bookingIds, groupedBookings } = this.props
-    console.log(groupedBookings)
+    const { groupedBookings } = this.props
+    console.log('GROUPEDBOOKINGS:', groupedBookings)
     return (
       <div className={styles.bookings}>
         <div className={styles.heading}>
@@ -25,8 +21,8 @@ export class BookingsList extends React.Component {
           <Link to="/" className={styles.cancel}>X</Link>
         </div>
         <div>
-          { bookingIds.map(
-            id => <BookingItem key={id} id={id} />
+          { groupedBookings.map(
+            ({ date, bookingIds }) => <GroupedBookingsList key={date} date={date} bookingIds={bookingIds} />
           )}
         </div>
       </div>
@@ -35,12 +31,11 @@ export class BookingsList extends React.Component {
 }
 
 BookingsList.propTypes = {
-  bookingIds: PropTypes.array,
-  groupedBookings: PropTypes.Object,
+  groupedBookings: PropTypes.array,
 }
 
+
 const mapStateToProps = state => ({
-  bookingIds: selectors.getBookingIds(state),  // Cheating on the locationId a bit
   groupedBookings: selectors.getBookingsGroupedByDay(state),
 })
 
