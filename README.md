@@ -68,6 +68,13 @@ $ yarn add @types/chai-enzyme@beta @types/history @types/jest @types/node @types
 * [Build Pipeline](https://console.aws.amazon.com/codepipeline/home?region=us-east-1#/view/buildit-bookit-build-bookit-client-react-master-pipeline)
 * [Build Reports](http://rig.buildit.bookit.us-east-1.build.s3-website-us-east-1.amazonaws.com/buildit-bookit-build-bookit-client-react-master/reports)
 
+## Deployment information
+
+### Deployments
+* [Integration](https://integration-bookit-client-react.buildit.tools)
+* [Staging](https://staging-bookit-client-react.buildit.tools)
+* [Production](https://bookit-client-react.buildit.tools)
+
 ## Operational information
 
 ### Logging
