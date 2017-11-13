@@ -1,0 +1,24 @@
+@import './mixins/flex';
+
+.bookings {
+  background-color: white;
+  color: black;
+
+  @include page;
+
+  flex-flow: column nowrap;
+
+}
+
+.heading {
+  padding: 20px 10px 20px 10px;
+  .title {
+    width: 90%;
+    float: left;
+    color: black;
+  }
+  .cancel {
+    width: 10%;
+    float: right;
+  }
+}

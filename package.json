@@ -41,6 +41,7 @@
     "url": "git+ssh://git@github.com/buildit/bookit-client-react.git"
   },
   "dependencies": {
+    "date-fns": "^1.29.0",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "isomorphic-fetch": "^2.2.1",

@@ -37,7 +37,7 @@ const startBeforeEnd = (value, {end}) => {
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
   <div>
-    <label>{label}</label>
+    <label id={label.replace(' ', '-').toLowerCase()}>{label}</label>
     <div>
       <input {...input} placeholder={label} type={type} />
       {touched &&
@@ -67,8 +67,25 @@ export class BookingForm extends React.Component {
     this.props.initialize(values)
   }
 
+  submitBookingForm = (values) => {
+    return Promise.resolve().then(() => {
+      this.props.createBooking(values)
+    })
+  }
+
   render() {
-    const { handleSubmit, createBooking, submitting, bookingInstanceId, pristine, invalid, errorMessages, setBookablesVisible, bookableName } = this.props
+    const {
+      handleSubmit,
+      submitting,
+      bookingInstanceId,
+      pristine,
+      invalid,
+      error,
+      errorMessages,
+      setBookablesVisible,
+      bookableName,
+    } = this.props
+
 
     return (
       <div className={styles.bookingForm}>
@@ -76,7 +93,10 @@ export class BookingForm extends React.Component {
           <h2 className={styles.title}>Book A Room</h2>
           <Link to="/" className={styles.cancel}>X</Link>
         </div>
-        <form onSubmit={ handleSubmit(createBooking) }>
+
+        { error && <strong>{ error }</strong> }
+
+        <form onSubmit={ handleSubmit(this.submitBookingForm) }>
           <Field name="start" component={ renderField } label="Start" type="text" validate={[required, startBeforeEnd]} />
           <Field name="end" component={ renderField } label="End" type="text" validate={[required, endAfterStart]} />
           <a href="#" onClick={(event) => {
@@ -104,6 +124,7 @@ BookingForm.propTypes = {
   pristine: PropTypes.bool,
   invalid: PropTypes.bool,
   errorMessages: PropTypes.arrayOf(PropTypes.string),
+  error: PropTypes.string,
   setBookablesVisible: PropTypes.func,
   bookableName: PropTypes.string,
 }

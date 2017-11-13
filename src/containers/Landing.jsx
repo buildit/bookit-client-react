@@ -12,6 +12,9 @@ export const Landing = () => (
       <Link to="/book">
         <Button className={styles.bigButton}>Book A Room</Button>
       </Link>
+      <Link to="/bookings">
+        <Button className={styles.bigButton}>View Your Bookings</Button>
+      </Link>
     </div>
   </div>
 )

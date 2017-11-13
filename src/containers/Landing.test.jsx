@@ -14,6 +14,16 @@ describe('<Landing />', () => {
     )
     const link = wrapper.find(Link)
     expect(link).to.exist
-    expect(link.find('a').prop('href')).to.equal('/book')
+    expect(link.find('a').first().prop('href')).to.equal('/book')
+  })
+
+  it('renders itself with an a tag to the bookings page', () => {
+    const wrapper = mount(
+      <MemoryRouter>
+        <Landing />
+      </MemoryRouter>
+    )
+    const link = wrapper.find(Link)
+    expect(link.find('a').last().prop('href')).to.equal('/bookings')
   })
 })
