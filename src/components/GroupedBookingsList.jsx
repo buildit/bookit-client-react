@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { selectors } from 'Redux'
 
-import { formatDate } from 'Utils'
+import { formatDate, isToday } from 'Utils'
 
 import withBooking from 'Hoc/with-booking'
 import BaseBookingItem from 'Components/BaseBookingItem'
@@ -20,7 +20,10 @@ export class GroupedBookingsList extends React.Component {
     return (
       <div className={styles.groupedBookingList}>
         <div className={styles.heading}>
-          <h2 className={styles.title}>{ formatDate(date, 'ddd MMM D').toUpperCase() }</h2>
+          <h2 className={styles.title}>
+            { isToday(date) && 'TODAY - ' }
+            { formatDate(date, 'ddd MMM D').toUpperCase() }
+          </h2>
         </div>
         { bookingIds.map(id => <BookingItem key={id} id={id} />) }
       </div>

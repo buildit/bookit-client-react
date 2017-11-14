@@ -3,6 +3,7 @@ import format from 'date-fns/format'
 
 import startOfDay from 'date-fns/start_of_day'
 import isSameDay from 'date-fns/is_same_day'
+import isToday from 'date-fns/is_today'
 
 import differenceInMinutes from 'date-fns/difference_in_minutes'
 
@@ -19,3 +20,4 @@ export const getIntervalInMinutes = (low, high) => {
 
 // "Re-export" functions from `date-fns` to reduce overall import statements
 export { isSameDay }
+export { isToday }

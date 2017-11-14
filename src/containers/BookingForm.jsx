@@ -36,11 +36,11 @@ const startBeforeEnd = (value, {end}) => {
 }
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-  <div>
+  <div className={ styles.field }>
     <label id={label.replace(' ', '-').toLowerCase()}>{label}</label>
-    <div>
+    <div className={ styles.fieldInput }>
       <input {...input} placeholder={label} type={type} />
-      {touched &&
+      { touched &&
         ((error && <span className={styles.errorSpan}>{error}</span>) ||
           (warning && <span>{warning}</span>))}
     </div>
@@ -107,9 +107,11 @@ export class BookingForm extends React.Component {
           <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } />
           <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
 
-          <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={ styles.submitButton }>
-            BookIt
-          </Button>
+          <div className={ styles.field }>
+            <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={ styles.submitButton }>
+              BookIt
+            </Button>
+          </div>
         </form>
 
         { bookingInstanceId && renderSuccessMessage(bookingInstanceId) }
