@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { Link } from 'react-router-dom'
-
 import { connect } from 'react-redux'
 import { selectors } from 'Redux'
+
+import { Link } from 'react-router-dom'
 
 import GroupedBookingsList from 'Components/GroupedBookingsList'
 
@@ -12,8 +12,8 @@ import styles from 'Styles/bookings.scss'
 
 export class BookingsList extends React.Component {
   render() {
-    const { groupedBookings } = this.props
-    console.log('GROUPEDBOOKINGS:', groupedBookings)
+    const { bookingDates } = this.props
+
     return (
       <div className={styles.bookings}>
         <div className={styles.heading}>
@@ -21,9 +21,7 @@ export class BookingsList extends React.Component {
           <Link to="/" className={styles.cancel}>X</Link>
         </div>
         <div>
-          { groupedBookings.map(
-            ({ date, bookingIds }) => <GroupedBookingsList key={date} date={date} bookingIds={bookingIds} />
-          )}
+          { bookingDates.map(date => <GroupedBookingsList key={date} date={date} />) }
         </div>
       </div>
     )
@@ -31,12 +29,12 @@ export class BookingsList extends React.Component {
 }
 
 BookingsList.propTypes = {
-  groupedBookings: PropTypes.array,
+  bookingDates: PropTypes.array,
 }
 
 
 const mapStateToProps = state => ({
-  groupedBookings: selectors.getBookingsGroupedByDay(state),
+  bookingDates: selectors.getBookingDates(state),
 })
 
 export default connect(mapStateToProps)(BookingsList)

@@ -7,11 +7,12 @@ import { change } from 'redux-form'
 import { selectors } from 'Redux'
 
 import withBookable from 'Hoc/with-bookable'
-import { BookableItem } from 'Components/BookableItem'
+import { BaseBookableItem } from 'Components/BaseBookableItem'
 
 import styles from 'Styles/list.scss'
 
-const SelectBookableItem = withBookable(BookableItem)
+
+const SelectBookableItem = withBookable(BaseBookableItem)
 
 export class BookablesList extends React.Component {
 
@@ -27,6 +28,7 @@ export class BookablesList extends React.Component {
 
   render() {
     const { bookableIds } = this.props
+
     return (
       <div className={styles.bookablesList}>
         <a href="#" onClick={this.handleBack}>BACK</a>

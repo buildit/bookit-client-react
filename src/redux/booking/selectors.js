@@ -4,7 +4,7 @@ import { formValueSelector } from 'redux-form'
 
 import { getBookableEntities } from '../api/selectors'
 
-const bookingFormSelector = formValueSelector('booking')
+// ### Booking Instance ------------------------------------------------------
 
 export const getBookingInstance = state => state.bookingInstance
 
@@ -13,21 +13,20 @@ export const getBookingInstanceId = createSelector(
   bookingInstance => bookingInstance && bookingInstance.id
 )
 
-export const getBookingBookableNameFromForm = createSelector(
-  [
-    state => formValueSelector('booking')(state, 'bookableId'),
-    getBookableEntities,
-  ],
-  (bookableId, bookables) => {
-    const name = bookableId && bookables.getIn([bookableId, 'name'], null)
-    return name && `${name} Room` || null
-  }
+// ### Booking Form ----------------------------------------------------------
+
+const bookingFormSelector = formValueSelector('booking')
+
+const getBookingFormBookableId = state => bookingFormSelector(state, 'bookableId')
+const getBookingFormStart = state => bookingFormSelector(state, 'start')
+const getBookingFormEnd = state => bookingFormSelector(state, 'end')
+
+export const getBookingFormBookableName = createSelector(
+  [ getBookingFormBookableId, getBookableEntities ],
+  (bookableId, bookables) => bookableId && bookables.getIn([bookableId, 'name'], null)
 )
 
-export const getBookingDateRange = createSelector(
-  [
-    state => bookingFormSelector(state, 'end'),
-    state => bookingFormSelector(state, 'start'),
-  ],
+export const getBookingFormDateRange = createSelector(
+  [ getBookingFormStart, getBookingFormEnd ],
   (start, end) => ({ end, start })
 )
