@@ -1,13 +1,11 @@
-import { Map, List } from 'immutable'
+import { Map, List, Set } from 'immutable'
 
 import { formValueSelector } from 'redux-form'
 
 import { createSelector } from 'reselect'
 import { createGetSelector } from 'reselect-immutable-helpers'
 
-// import isSameDay from 'date-fns/is_same_day'
-
-import { doesRangeOverlap } from 'Utils'
+import { doesRangeOverlap, formatDate, isSameDay, compareDates } from 'Utils'
 
 // ### Baseline selectors ----------------------------------------------------
 
@@ -25,13 +23,38 @@ export const getBookableEntities = state => getBookables(state).get('entities', 
 
 // ### Bookings --------------------------------------------------------------
 
-export const getBookingEntity = (state, props) => getBookableEntities(state).get(props.id, null)
+export const getBookingEntity = (state, props) => getBookingEntities(state).get(props.id, null)
 
 // export const getBookingId = createGetSelector(getBookingEntity, 'id', null)
 export const getBookingSubject = createGetSelector(getBookingEntity, 'subject', null)
 export const getBookingStart = createGetSelector(getBookingEntity, 'start', null)
 export const getBookingEnd = createGetSelector(getBookingEntity, 'end', null)
 export const getBookingBookable = createGetSelector(getBookingEntity, 'bookable', null)
+
+// Private helper for relating a bookable entity to a booking via the booking' bookable id
+const getBookingBookableEntity = createSelector(
+  [ getBookingBookable, getBookableEntities ],
+  (bookingBookable, bookables) => bookables.find((value, key) => key === bookingBookable)
+)
+
+export const getBookingBookableName = createGetSelector(getBookingBookableEntity, 'name', null)
+
+export const getBookingDates = createSelector(
+  [ getBookingIds, getBookingEntities ],
+  (bookingIds, bookings) => Set(bookingIds.map(id => formatDate(bookings.getIn([id, 'start'])))).sort().toArray()
+)
+
+// Private helper for selecting bookings for a given date (ie. GroupedBookingsList)
+const getDateForBookings = (state, props) => props.date
+
+export const getBookingsForDate = createSelector(
+  [ getDateForBookings, getBookingIds, getBookingEntities ],
+  (date, bookingIds, bookings) => {
+    return bookingIds.filter(id => isSameDay(bookings.getIn([id, 'start']), date)).sort((a, b) => {
+      return compareDates(bookings.getIn([a, 'start']), bookings.getIn([b, 'start']))
+    })
+  }
+)
 
 // ### Locations -------------------------------------------------------------
 
@@ -55,15 +78,15 @@ export const isBookableClosed = createSelector(
   disposition => disposition.get('closed')
 )
 
-// Support selectors for isBookableBooked
-const bookingFormSelector = formValueSelector('booking')
-const getBookingDateRange = state => bookingFormSelector(state, 'start', 'end')
+// Support selector for isBookableBooked
+const getBookingFormDateRange = state => formValueSelector('booking')(state, 'start', 'end')
 
+// TODO: make `existingBookingRanges` its own selector to memoize and SAVE TIME!
 export const isBookableBooked = createSelector(
-  [ getBookableBookings, getBookingEntities, getBookingDateRange ],
-  (bookingIds, bookings, bookingDateRange) => {
+  [ getBookableBookings, getBookingEntities, getBookingFormDateRange ],
+  (bookingIds, bookings, bookingFormDateRange) => {
     const existingBookingRanges = bookingIds.map(id => ({ end: bookings.getIn([id, 'end']), start: bookings.getIn([id, 'start']) }))
-    return doesRangeOverlap(bookingDateRange, existingBookingRanges)
+    return doesRangeOverlap(bookingFormDateRange, existingBookingRanges)
   }
 )
 

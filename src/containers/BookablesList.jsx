@@ -6,17 +6,18 @@ import { change } from 'redux-form'
 
 import { selectors } from 'Redux'
 
+import ActionLink from 'Components/ActionLink'
+import BaseBookableItem from 'Components/BaseBookableItem'
+
 import withBookable from 'Hoc/with-bookable'
-import { BookableItem } from 'Components/BookableItem'
 
 import styles from 'Styles/list.scss'
 
-const SelectBookableItem = withBookable(BookableItem)
+const SelectBookableItem = withBookable(BaseBookableItem)
 
 export class BookablesList extends React.Component {
 
-  handleBack = (event) => {
-    event && event.preventDefault()
+  handleBack = () => {
     this.props.setBookablesVisible(false)
   }
 
@@ -27,11 +28,17 @@ export class BookablesList extends React.Component {
 
   render() {
     const { bookableIds } = this.props
+
     return (
       <div className={styles.bookablesList}>
-        <a href="#" onClick={this.handleBack}>BACK</a>
-        { bookableIds.map(
-          id => <SelectBookableItem key={id} id={id} className={styles.bookable} onClick={this.handleBookableClick} />
+        <ActionLink onClick={this.handleBack}>BACK</ActionLink>
+        { bookableIds.map(id => (
+          <SelectBookableItem
+            key={id}
+            id={id}
+            className={styles.bookable}
+            onClick={this.handleBookableClick}
+          />)
         )}
       </div>
     )

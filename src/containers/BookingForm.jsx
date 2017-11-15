@@ -36,11 +36,11 @@ const startBeforeEnd = (value, {end}) => {
 }
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
-  <div>
+  <div className={ styles.field }>
     <label id={label.replace(' ', '-').toLowerCase()}>{label}</label>
-    <div>
+    <div className={ styles.fieldInput }>
       <input {...input} placeholder={label} type={type} />
-      {touched &&
+      { touched &&
         ((error && <span className={styles.errorSpan}>{error}</span>) ||
           (warning && <span>{warning}</span>))}
     </div>
@@ -86,28 +86,34 @@ export class BookingForm extends React.Component {
       bookableName,
     } = this.props
 
-
     return (
-      <div className={styles.bookingForm}>
-        <div className={styles.heading}>
-          <h2 className={styles.title}>Book A Room</h2>
-          <Link to="/" className={styles.cancel}>X</Link>
+      <div className={ styles.bookingForm }>
+        <div className={ styles.heading }>
+          <h2 className={ styles.title }>Book A Room</h2>
+          <Link to="/" className={ styles.cancel }>X</Link>
         </div>
 
         { error && <strong>{ error }</strong> }
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
-          <Field name="start" component={ renderField } label="Start" type="text" validate={[required, startBeforeEnd]} />
-          <Field name="end" component={ renderField } label="End" type="text" validate={[required, endAfterStart]} />
+          <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } />
+          <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } />
+
           <a href="#" onClick={(event) => {
             event.preventDefault()
-            setBookablesVisible(true)}} className="roomsInput">Rooms</a>
-          <Field name="bookableId" component={ renderField } type="hidden" label={bookableName || 'Pick a Room'} />
-          <Field name="subject" component={ renderField } label="Event Name" type="text" validate={required} />
-          <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={styles.submitButton}>
-            BookIt
-          </Button>
+            setBookablesVisible(true)
+          }} className="roomsInput">Rooms</a>
+
+          <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } />
+          <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
+
+          <div className={ styles.field }>
+            <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={ styles.submitButton }>
+              BookIt
+            </Button>
+          </div>
         </form>
+
         { bookingInstanceId && renderSuccessMessage(bookingInstanceId) }
         { errorMessages && renderErrorMessages(errorMessages) }
       </div>
@@ -133,7 +139,7 @@ const mapStateToProps = state => ({
   bookingInstanceId: selectors.getBookingInstanceId(state),
   errorMessages: selectors.getErrorMessages(state),
   submitting: isSubmitting('booking')(state),
-  bookableName: selectors.getBookingBookableName(state),
+  bookableName: selectors.getBookingFormBookableName(state),
 })
 
 const formed = reduxForm({ form: 'booking' })(BookingForm)

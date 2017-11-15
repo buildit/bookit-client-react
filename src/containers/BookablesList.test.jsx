@@ -16,7 +16,6 @@ describe('<BookablesList />', () => {
       />
     )
 
-    console.log(wrapper.find('Connect(BookableItem)'))
-    expect(wrapper.find('Connect(BookableItem)')).to.have.length(2)
+    expect(wrapper.find('Connect(BaseBookableItem)')).to.have.length(2)
   })
 })
