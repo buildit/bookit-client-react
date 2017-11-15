@@ -1,48 +1,50 @@
-import { List, Map, fromJS } from 'immutable'
+import { Map, Set, fromJS } from 'immutable'
 
-import { handleAction, handleActions } from 'redux-actions'
+import { handleActions } from 'redux-actions'
 
-export const locations = handleAction(
-  'GET_LOCATIONS_SUCCESS',
-  (state, action) => {
-    const { entities: { locations }, result } = action.payload
-    return state.withMutations((map) => {
-      map.set('result', List(result))
-      result.forEach(id => map.setIn(['entities', id], Map(locations[id])))
-    })
+const entityState = Map({
+  locations: Map({
+    entities: Map(),
+    result: Set(),
+  }),
+  bookables: Map({
+    entities: Map(),
+    result: Set(),
+  }),
+  bookings: Map({
+    entities: Map(),
+    result: Set(),
+  }),
+})
+
+const updateEntitySlice = (slice, entities, result) => {
+  return slice.withMutations((state) => {
+    state.update('result', set => set.union(result))
+    result.forEach(id => state.setIn(['entities', id], fromJS(entities[id])))
+  })
+}
+
+const updateEntities = entity => (entityState, action) => {
+  const { entities: { [entity]: entities }, result } = action.payload
+  return entityState.update(entity, slice => updateEntitySlice(slice, entities, result))
+}
+
+// TODO: IMPLEMENT ME
+// const removeEntity = entity => (entityState, action) => {}
+
+const entities = handleActions({
+  GET_LOCATIONS_SUCCESS: updateEntities('locations'),
+  GET_BOOKABLES_SUCCESS: updateEntities('bookables'),
+  GET_BOOKINGS_SUCCESS: updateEntities('bookings'),
+  CREATE_BOOKING_SUCCESS: updateEntities('bookings'),
+  DELETE_BOOKING_SUCCESS: (state, action) => {
+    // TODO: remove booking from entityState using id
+    console.log('[DELETE BOOKING] STATE:', state, 'ACTION:', action)
+    return state
   },
-  fromJS({ entities: {}, result: [] })
-)
+}, entityState)
 
-export const bookables = handleAction(
-  'GET_BOOKABLES_SUCCESS',
-  (state, action) => {
-    const { entities: { bookables }, result } = action.payload
-    return state.withMutations((map) => {
-      map.set('result', List(result))
-      result.forEach(id => map.setIn(['entities', id], fromJS(bookables[id])))
-    })
-  },
-  fromJS({ entities: {}, result: [] })
-)
-
-export const bookings = handleAction(
-  'GET_BOOKINGS_SUCCESS',
-  (state, action) => {
-    const { entities: { bookings }, result } = action.payload
-    return state.withMutations((map) => {
-      map.set('result', List(result))
-      result.forEach(id => map.setIn(['entities', id], Map(bookings[id])))
-    })
-  },
-  fromJS({ entities: {}, result: [] })
-)
-
-export const bookingInstance = handleAction(
-  'CREATE_BOOKING_SUCCESS',
-  (state, action) => action.payload,
-  null
-)
+// XXX: DEAD CODE. KILL. KILL. KILL.
 export const requestInProgress = handleActions({
   CREATE_BOOKING_FAILURE: () => false,
   CREATE_BOOKING_PENDING: () => true,
@@ -50,8 +52,6 @@ export const requestInProgress = handleActions({
 }, false)
 
 export const reducer = {
-  locations,
-  bookables,
-  bookings,
+  entities,
   requestInProgress,
 }

@@ -6,6 +6,7 @@ import {
   normalizeLocations,
   normalizeBookables,
   normalizeBookings,
+  normalizeBooking,
 } from './schema'
 
 import { getAPIEndpoint } from 'Utils'
@@ -72,7 +73,14 @@ export const createBooking = booking => ({
   [RSAA]: {
     endpoint: `${apiEndpoint}/booking`,
     method: 'POST',
-    types: [ 'CREATE_BOOKING_PENDING', 'CREATE_BOOKING_SUCCESS', 'CREATE_BOOKING_FAILURE' ],
+    types: [
+      'CREATE_BOOKING_PENDING',
+      {
+        type: 'CREATE_BOOKING_SUCCESS',
+        payload: (action, state, res) => getJSON(res).then(json => normalizeBooking(json)),
+      },
+      'CREATE_BOOKING_FAILURE',
+    ],
     body: JSON.stringify(booking),
     headers: { 'Content-Type': 'application/json' },
   },
@@ -82,7 +90,15 @@ export const deleteBooking = bookingId => ({
   [RSAA]: {
     endpoint: `${apiEndpoint}/booking/${bookingId}`,
     method: 'DELETE',
-    types: [ 'DELETE_BOOKING_PENDING', 'DELETE_BOOKING_SUCCESS', 'DELETE_BOOKING_FAILURE' ],
+    types: [
+      'DELETE_BOOKING_PENDING',
+      {
+        type: 'DELETE_BOOKING_SUCCESS',
+        // This is enough for our reducer to know which booking to remove from the entities state slice
+        payload: () => bookingId,
+      },
+      'DELETE_BOOKING_FAILURE',
+    ],
   },
 })
 
@@ -90,9 +106,6 @@ export const actionCreators = {
   getAllLocations,
   getAllBookables,
   getAllBookings,
-
   createBooking,
   deleteBooking,
-
-  getBookablesForLocation: getAllBookables,
 }

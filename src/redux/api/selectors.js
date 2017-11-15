@@ -1,4 +1,4 @@
-import { Map, List, Set } from 'immutable'
+import { Map, Set } from 'immutable'
 
 import { formValueSelector } from 'redux-form'
 
@@ -9,15 +9,17 @@ import { doesRangeOverlap, formatDate, isSameDay, compareDates } from 'Utils'
 
 // ### Baseline selectors ----------------------------------------------------
 
-export const getBookings = state => state.bookings
+export const getEntities = state => state.entities
+
+export const getBookings = state => getEntities(state).get('bookings')
 export const getBookingIds = state => getBookings(state).get('result').toArray()
 export const getBookingEntities = state => getBookings(state).get('entities', Map())
 
-export const getLocations = state => state.locations
+export const getLocations = state => getEntities(state).get('locations')
 export const getLocationIds = state => getLocations(state).get('result').toArray()
 export const getLocationEntities = state => getLocations(state).get('entities', Map())
 
-export const getBookables = state => state.bookables
+export const getBookables = state => getEntities(state).get('bookables')
 export const getBookableIds = state => getBookables(state).get('result').toArray()
 export const getBookableEntities = state => getBookables(state).get('entities', Map())
 
@@ -68,10 +70,14 @@ export const getLocationTimezone = createGetSelector(getLocationEntity, 'timeZon
 
 export const getBookableEntity = (state, props) => getBookableEntities(state).get(props.id, null)
 
-// export const getBookableId = createGetSelector(getBookableEntity, 'id', null)
+export const getBookableId = createGetSelector(getBookableEntity, 'id', null)
 export const getBookableName = createGetSelector(getBookableEntity, 'name', null)
 export const getBookableDisposition = createGetSelector(getBookableEntity, 'disposition', Map())
-export const getBookableBookings = createGetSelector(getBookableEntity, 'bookings', List())
+
+export const getBookableBookings = createSelector(
+  [ getBookableId, getBookingIds, getBookingEntities ],
+  (bookableId, bookingIds, bookings) => bookingIds.filter(id => bookings.getIn([id, 'bookable']) === bookableId)
+)
 
 export const isBookableClosed = createSelector(
   [ getBookableDisposition ],
