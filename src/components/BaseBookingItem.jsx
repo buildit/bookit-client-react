@@ -10,7 +10,7 @@ export const BaseBookingItem = ({ id, subject, start, end, bookableName }) => {
     <div className={styles.bookingItem} id={ `booking-${id}` }>
       <p>{ formatTime(start) } - { formatTime(end) }</p>
       <p>{ subject }</p>
-      <h3>{ bookableName }</h3>
+      <h3>{ bookableName } Room</h3>
     </div>
   )
 }

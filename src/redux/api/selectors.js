@@ -5,7 +5,7 @@ import { formValueSelector } from 'redux-form'
 import { createSelector } from 'reselect'
 import { createGetSelector } from 'reselect-immutable-helpers'
 
-import { doesRangeOverlap, formatDate, isSameDay } from 'Utils'
+import { doesRangeOverlap, formatDate, isSameDay, compareDates } from 'Utils'
 
 // ### Baseline selectors ----------------------------------------------------
 
@@ -37,11 +37,11 @@ const getBookingBookableEntity = createSelector(
   (bookingBookable, bookables) => bookables.find((value, key) => key === bookingBookable)
 )
 
-export const getBookingBookableName = createGetSelector(getBookingBookableEntity, 'name', 'horse meat')
+export const getBookingBookableName = createGetSelector(getBookingBookableEntity, 'name', null)
 
 export const getBookingDates = createSelector(
   [ getBookingIds, getBookingEntities ],
-  (bookingIds, bookings) => Set(bookingIds.map(id => formatDate(bookings.getIn([id, 'start'])))).toArray()
+  (bookingIds, bookings) => Set(bookingIds.map(id => formatDate(bookings.getIn([id, 'start'])))).sort().toArray()
 )
 
 // Private helper for selecting bookings for a given date (ie. GroupedBookingsList)
@@ -50,7 +50,9 @@ const getDateForBookings = (state, props) => props.date
 export const getBookingsForDate = createSelector(
   [ getDateForBookings, getBookingIds, getBookingEntities ],
   (date, bookingIds, bookings) => {
-    return bookingIds.filter(id => isSameDay(bookings.getIn([id, 'start']), date))
+    return bookingIds.filter(id => isSameDay(bookings.getIn([id, 'start']), date)).sort((a, b) => {
+      return compareDates(bookings.getIn([a, 'start']), bookings.getIn([b, 'start']))
+    })
   }
 )
 

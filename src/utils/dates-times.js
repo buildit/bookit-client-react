@@ -4,6 +4,8 @@ import format from 'date-fns/format'
 import startOfDay from 'date-fns/start_of_day'
 import isSameDay from 'date-fns/is_same_day'
 import isToday from 'date-fns/is_today'
+import isBefore from 'date-fns/is_before'
+import isAfter from 'date-fns/is_after'
 
 import differenceInMinutes from 'date-fns/difference_in_minutes'
 
@@ -18,6 +20,18 @@ export const getIntervalInMinutes = (low, high) => {
   ]
 }
 
+export const compareDates = (dateA, dateB) => {
+  if (isBefore(dateA, dateB)) {
+    return -1
+  }
+  if (isAfter(dateA, dateB)) {
+    return 1
+  }
+  return 0
+}
+
 // "Re-export" functions from `date-fns` to reduce overall import statements
 export { isSameDay }
 export { isToday }
+export { isBefore }
+export { isAfter }
