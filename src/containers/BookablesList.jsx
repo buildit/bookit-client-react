@@ -52,7 +52,7 @@ BookablesList.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  bookableIds: selectors.getBookablesForLocation(state, 1),  // Cheating on the locationId a bit
+  bookableIds: selectors.getBookablesForLocation(state, 'b1177996-75e2-41da-a3e9-fcdd75d1ab31'),  // Cheating on the locationId a bit
 })
 
 export default connect(mapStateToProps)(BookablesList)

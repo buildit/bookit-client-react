@@ -16,7 +16,7 @@ export const BaseBookableItem = ({ id, name, className, onClick, available }) =>
 }
 
 BaseBookableItem.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   name: PropTypes.string,
   className: PropTypes.string,
   onClick: PropTypes.func,

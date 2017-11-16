@@ -35,7 +35,7 @@ export const getAllLocations = () => ({
   },
 })
 
-export const getAllBookables = (locationId = 1, options = {}) => {
+export const getAllBookables = (locationId = 'b1177996-75e2-41da-a3e9-fcdd75d1ab31', options = {}) => {
   const { start, end } = options
   const qs = QS.stringify({ start, end, expand: 'bookings' })
   return {
