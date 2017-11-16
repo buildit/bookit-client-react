@@ -20,4 +20,29 @@ describe('dates-times', () => {
       expect(next).to.equal(nextWeekStart)
     })
   })
+
+  describe('#formatWeek(date = new Date)', () => {
+    it('should return the month on both start and end when the week overlaps two months', () => {
+      const theDate = new Date(2017, 9, 30)
+      const expected = 'Oct 30 - Nov 3 2017'
+
+      const actual = DT.formatWeek(theDate)
+      expect(actual).to.equal(expected)
+    })
+
+    it('should return the year on both start and end when the week overlaps the year', () => {
+      const theDate = new Date(2015, 11, 28)
+      const expected = 'Dec 28 2015 - Jan 1 2016'
+      const actual = DT.formatWeek(theDate)
+      expect(actual).to.equal(expected)
+    })
+
+    it('should return the month on just the start and year on just the end when there is no overlap for the week', () => {
+      const theDate = new Date(2017, 10, 16)
+      const expected = 'Nov 13 - 17 2017'
+
+      const actual = DT.formatWeek(theDate)
+      expect(actual).to.equal(expected)
+    })
+  })
 })
