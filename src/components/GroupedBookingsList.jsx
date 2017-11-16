@@ -26,6 +26,7 @@ export class GroupedBookingsList extends React.Component {
           </h2>
         </div>
         { bookingIds.map(id => <BookingItem key={id} id={id} />) }
+        { !bookingIds.length && <p>No Bookings</p> }
       </div>
     )
   }

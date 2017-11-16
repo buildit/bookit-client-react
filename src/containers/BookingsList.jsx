@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import ActionLink from 'Components/ActionLink'
 import GroupedBookingsList from 'Components/GroupedBookingsList'
 
-import { getWeekDaysRange } from 'Utils'
+import { getPreviousAndNextWeekDates, getWeekDaysRange } from 'Utils'
 
 import styles from 'Styles/bookings.scss'
 
@@ -21,16 +21,18 @@ export class BookingsList extends React.Component {
       viewingDate: new Date,
     }
 
-    this.updateViewDate = this.updateViewDate.bind(this)
+    this.updateViewingDate = this.updateViewingDate.bind(this)
   }
 
-  updateViewDate = (date) => {
+  updateViewingDate = (date) => {
     this.setState({ viewingDate: date })
   }
 
   render() {
     const { viewingDate } = this.state
+
     const bookingDaysRange = getWeekDaysRange(viewingDate)
+    const [ previousWeek, nextWeek ] = getPreviousAndNextWeekDates(viewingDate)
 
     return (
       <div className={styles.bookings}>
@@ -40,9 +42,9 @@ export class BookingsList extends React.Component {
         </div>
 
         <div>
-          <ActionLink onClick={() => this.updateViewDate('2017-11-06')}>PREVIOUS</ActionLink>
+          <ActionLink onClick={() => this.updateViewingDate(previousWeek)}>PREVIOUS</ActionLink>
           { ' | ' }
-          <ActionLink onClick={() => this.updateViewDate('2017-11-20')}>NEXT</ActionLink>
+          <ActionLink onClick={() => this.updateViewingDate(nextWeek)}>NEXT</ActionLink>
         </div>
 
         {/* THIS IS WHERE THE WEEK CONTROLS WILL GO */}
