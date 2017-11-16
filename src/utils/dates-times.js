@@ -42,13 +42,13 @@ const weekOptions = { weekStartsOn: 1 }
 export const getWeekDaysRange = (date = new Date, excludeWeekend = true) => {
   const weekStart = startOfWeek(date, weekOptions)
   const weekEnd = addDays(lastDayOfWeek(date, weekOptions), excludeWeekend ? -2 : 0)
-  return eachDay(weekStart, weekEnd, 1)
+  return eachDay(weekStart, weekEnd, 1).map(day => formatDate(day))
 }
 
 export const getPreviousAndNextWeekDates = (date = new Date) => {
   const previous = addWeeks(startOfWeek(date, weekOptions), -1)
   const next = addWeeks(startOfWeek(date, weekOptions), 1)
-  return [ previous, next ]
+  return [ formatDate(previous), formatDate(next) ]
 }
 
 // "Re-export" functions from `date-fns` to reduce overall import statements

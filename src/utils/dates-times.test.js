@@ -11,13 +11,13 @@ describe('dates-times', () => {
   describe('#getPreviousAndNextWeekDates(date = new Date)', () => {
     it('should return an array of the start days of the next and previous weeks from a given date', () => {
       const theDate = new Date(2017, 10, 16)
-      const nextWeekStart = new Date(2017, 10, 20)
-      const previousWeekStart = new Date(2017, 10, 6)
+      const previousWeekStart = '2017-11-06'
+      const nextWeekStart = '2017-11-20'
 
       const [ previous, next ] = DT.getPreviousAndNextWeekDates(theDate)
 
-      expect(next.toDateString()).to.equal(nextWeekStart.toDateString())
-      expect(previous.toDateString()).to.equal(previousWeekStart.toDateString())
+      expect(previous).to.equal(previousWeekStart)
+      expect(next).to.equal(nextWeekStart)
     })
   })
 })
