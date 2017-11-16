@@ -29,14 +29,18 @@ const updateEntities = entity => (entityState, action) => {
   return entityState.update(entity, slice => updateEntitySlice(slice, entities, result))
 }
 
+export const updateLocationEntities = updateEntities('locations')
+export const updateBookableEntities = updateEntities('bookables')
+export const updateBookingEntities = updateEntities('bookings')
+
 // TODO: IMPLEMENT ME
 // const removeEntity = entity => (entityState, action) => {}
 
 const entities = handleActions({
-  GET_LOCATIONS_SUCCESS: updateEntities('locations'),
-  GET_BOOKABLES_SUCCESS: updateEntities('bookables'),
-  GET_BOOKINGS_SUCCESS: updateEntities('bookings'),
-  CREATE_BOOKING_SUCCESS: updateEntities('bookings'),
+  GET_LOCATIONS_SUCCESS: updateLocationEntities,
+  GET_BOOKABLES_SUCCESS: updateBookableEntities,
+  GET_BOOKINGS_SUCCESS: updateBookingEntities,
+  CREATE_BOOKING_SUCCESS: updateBookingEntities,
   DELETE_BOOKING_SUCCESS: (state, action) => {
     // TODO: remove booking from entityState using id
     console.log('[DELETE BOOKING] STATE:', state, 'ACTION:', action)

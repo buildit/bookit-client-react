@@ -7,6 +7,13 @@ import isToday from 'date-fns/is_today'
 import isBefore from 'date-fns/is_before'
 import isAfter from 'date-fns/is_after'
 
+import addDays from 'date-fns/add_days'
+import eachDay from 'date-fns/each_day'
+
+import addWeeks from 'date-fns/add_weeks'
+import startOfWeek from 'date-fns/start_of_week'
+import lastDayOfWeek from 'date-fns/last_day_of_week'
+
 import differenceInMinutes from 'date-fns/difference_in_minutes'
 
 export const formatTime = datetime => format(datetime, 'h:mm A')
@@ -28,6 +35,20 @@ export const compareDates = (dateA, dateB) => {
     return 1
   }
   return 0
+}
+
+const weekOptions = { weekStartsOn: 1 }
+
+export const getWeekDaysRange = (date = new Date, excludeWeekend = true) => {
+  const weekStart = startOfWeek(date, weekOptions)
+  const weekEnd = addDays(lastDayOfWeek(date, weekOptions), excludeWeekend ? -2 : 0)
+  return eachDay(weekStart, weekEnd, 1)
+}
+
+export const getPreviousAndNextWeekDates = (date = new Date) => {
+  const previous = addWeeks(startOfWeek(date, weekOptions), -1)
+  const next = addWeeks(startOfWeek(date, weekOptions), 1)
+  return [ previous, next ]
 }
 
 // "Re-export" functions from `date-fns` to reduce overall import statements
