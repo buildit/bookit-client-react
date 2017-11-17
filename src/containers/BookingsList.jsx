@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import GroupedBookingsList from 'Components/GroupedBookingsList'
 import WeekSpinner from 'Components/WeekSpinner'
 
-import { getWeekDaysRange } from 'Utils'
+import { getWeekDaysRange, formatDate } from 'Utils'
 
 import styles from 'Styles/bookings.scss'
 
@@ -14,7 +14,7 @@ export default class BookingsList extends React.Component {
     super(props)
 
     this.state = {
-      viewingDate: new Date,
+      viewingDate: formatDate(new Date),
     }
 
     this.updateViewingDate = this.updateViewingDate.bind(this)

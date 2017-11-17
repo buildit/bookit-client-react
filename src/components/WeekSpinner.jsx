@@ -28,7 +28,7 @@ const WeekSpinner = ({ weekOf, onClick }) => {
 }
 
 WeekSpinner.propTypes = {
-  weekOf: PropTypes.any,
+  weekOf: PropTypes.string,
   onClick: PropTypes.func,
 }
 
