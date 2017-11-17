@@ -1,18 +1,33 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-
-import { connect } from 'react-redux'
-import { selectors } from 'Redux'
 
 import { Link } from 'react-router-dom'
 
 import GroupedBookingsList from 'Components/GroupedBookingsList'
+import WeekSpinner from 'Components/WeekSpinner'
+
+import { getWeekDaysRange, formatDate } from 'Utils'
 
 import styles from 'Styles/bookings.scss'
 
-export class BookingsList extends React.Component {
+export default class BookingsList extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      viewingDate: formatDate(new Date),
+    }
+
+    this.updateViewingDate = this.updateViewingDate.bind(this)
+  }
+
+  updateViewingDate = (date) => {
+    this.setState({ viewingDate: date })
+  }
+
   render() {
-    const { bookingDates } = this.props
+    const { viewingDate } = this.state
+
+    const bookingDaysRange = getWeekDaysRange(viewingDate)
 
     return (
       <div className={styles.bookings}>
@@ -20,21 +35,13 @@ export class BookingsList extends React.Component {
           <h2 className={styles.title}>All Bookings</h2>
           <Link to="/" className={styles.cancel}>X</Link>
         </div>
+
+        <WeekSpinner weekOf={viewingDate} onClick={this.updateViewingDate} />
+
         <div>
-          { bookingDates.map(date => <GroupedBookingsList key={date} date={date} />) }
+          { bookingDaysRange.map(d => <GroupedBookingsList key={d} date={d} />) }
         </div>
       </div>
     )
   }
 }
-
-BookingsList.propTypes = {
-  bookingDates: PropTypes.array,
-}
-
-
-const mapStateToProps = state => ({
-  bookingDates: selectors.getBookingDates(state),
-})
-
-export default connect(mapStateToProps)(BookingsList)
