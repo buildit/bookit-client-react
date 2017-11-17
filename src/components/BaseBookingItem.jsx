@@ -9,7 +9,7 @@ export const BaseBookingItem = ({ id, subject, start, end, bookableName }) => {
   return (
     <div className={styles.bookingItem} id={ `booking-${id}` }>
       <p>{ formatTime(start) } - { formatTime(end) }</p>
-      <p>{ subject }</p>
+      <p id={`booking-${subject.replace(/\s/g, '-').toLowerCase()}`}>{ subject }</p>
       <h3>{ bookableName }</h3>
     </div>
   )

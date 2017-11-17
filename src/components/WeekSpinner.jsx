@@ -14,14 +14,14 @@ const WeekSpinner = ({ weekOf, onClick }) => {
   return (
     <div className={styles.container}>
       <div className={styles.controls}>
-        <ActionLink onClick={() => onClick(previousWeek)}>&#12296;</ActionLink>
+        <ActionLink onClick={() => onClick(previousWeek)} id="previous">&#12296;</ActionLink>
       </div>
       <div className={styles.week}>
         <p>Week of</p>
         <h3>{formatWeek(weekOf)}</h3>
       </div>
       <div className={styles.controls}>
-        <ActionLink onClick={() => onClick(nextWeek)}>&#12297;</ActionLink>
+        <ActionLink onClick={() => onClick(nextWeek)} id="next">&#12297;</ActionLink>
       </div>
     </div>
   )

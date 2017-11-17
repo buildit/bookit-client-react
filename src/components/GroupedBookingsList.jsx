@@ -20,13 +20,13 @@ export class GroupedBookingsList extends React.Component {
     return (
       <div className={styles.groupedBookingList}>
         <div className={styles.heading}>
-          <h2 className={styles.title}>
+          <h4 className={styles.title}>
             { isToday(date) && 'TODAY - ' }
             { formatDate(date, 'ddd MMM D').toUpperCase() }
-          </h2>
+          </h4>
         </div>
         { bookingIds.map(id => <BookingItem key={id} id={id} />) }
-        { !bookingIds.length && <p>No Bookings</p> }
+        { !bookingIds.length && <p>No bookings to show</p> }
       </div>
     )
   }

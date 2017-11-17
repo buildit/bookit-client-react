@@ -16,7 +16,7 @@ defineSupportCode(({ Before, After }) => {
       .forBrowser('chrome')
       .setChromeOptions(options)
       .build()
-    await driver.manage().window().setSize(320, 480)
+    await driver.manage().window().setSize(412, 732)
   })
 
   After(async function (testCase) {
