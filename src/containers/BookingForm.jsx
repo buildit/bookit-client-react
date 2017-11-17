@@ -60,7 +60,7 @@ const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, in
 export class BookingForm extends React.Component {
   componentDidMount() {
     const values = {
-      bookableId: 1,
+      bookableId: 'aab6d676-d3cb-4b9b-b285-6e63058aeda8',
       end: Moment().tz('America/New_York').add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
       start: Moment().tz('America/New_York').add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
     }
@@ -125,7 +125,7 @@ BookingForm.propTypes = {
   handleSubmit: PropTypes.func,
   createBooking: PropTypes.func,
   submitting: PropTypes.bool,
-  bookingInstanceId: PropTypes.number,
+  bookingInstanceId: PropTypes.string,
   initialize: PropTypes.func,
   pristine: PropTypes.bool,
   invalid: PropTypes.bool,

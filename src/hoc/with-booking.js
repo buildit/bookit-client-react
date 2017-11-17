@@ -24,7 +24,7 @@ export default (WrappedComponent) => {
   const withBooking = connect(mapStateToProps, {}, mergeProps)(WrappedComponent)
 
   withBooking.propTypes = {
-    id: PropTypes.number.isRequired,
+    id: PropTypes.string.isRequired,
   }
 
   return withBooking

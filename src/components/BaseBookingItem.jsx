@@ -16,7 +16,7 @@ export const BaseBookingItem = ({ id, subject, start, end, bookableName }) => {
 }
 
 BaseBookingItem.propTypes = {
-  id: PropTypes.number,
+  id: PropTypes.string,
   subject: PropTypes.string,
   start: PropTypes.string,
   end: PropTypes.string,
