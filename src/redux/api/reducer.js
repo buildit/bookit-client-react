@@ -50,14 +50,4 @@ const entities = handleActions({
   DELETE_BOOKING_SUCCESS: removeBookingEntity,
 }, entityState)
 
-// XXX: DEAD CODE. KILL. KILL. KILL.
-export const requestInProgress = handleActions({
-  CREATE_BOOKING_FAILURE: () => false,
-  CREATE_BOOKING_PENDING: () => true,
-  CREATE_BOOKING_SUCCESS: () => false,
-}, false)
-
-export const reducer = {
-  entities,
-  requestInProgress,
-}
+export const reducer = { entities }

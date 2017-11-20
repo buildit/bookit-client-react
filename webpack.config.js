@@ -43,25 +43,14 @@ module.exports = {
   // MAKE IMPORTS GREAT AGAIN!
   resolve: {
     alias: {
-      // Reducers: path.join(__dirname, 'src/reducers'),
-      // Selectors: path.join(__dirname, 'src/selectors'),
-      // Sagas: path.join(__dirname, 'src/sagas'),
-
       Store: path.resolve(__dirname, 'src/store'),
       History: path.resolve(__dirname, 'src/history'),
-
       Redux: path.resolve(__dirname, 'src/redux'),
-      Models: path.resolve(__dirname, 'src/models'),
-
       Components: path.resolve(__dirname, 'src/components'),
       Containers: path.resolve(__dirname, 'src/containers'),
       Hoc: path.resolve(__dirname, 'src/hoc'),
-
       Utils: path.resolve(__dirname, 'src/utils'),
-
       Styles: path.resolve(__dirname, 'src/styles'),
-
-      Api: path.resolve(__dirname, 'src/api'),
     },
     extensions: [ '.js', '.jsx', '.json' ],
   },
