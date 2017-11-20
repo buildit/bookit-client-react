@@ -9,7 +9,7 @@
     "^Containers(.*)$": "<rootDir>/src/containers$1",
     "^Hoc(.*)$": "<rootDir>/src/hoc$1",
     "^Utils(.*)$": "<rootDir>/src/utils$1",
-    "^Styles(.*)$": "<rootDir>/src/styles$1",
+    "^Styles(.*)$": "<rootDir>/src/styles$1"
   },
   "moduleFileExtensions": [ "js", "jsx", "json" ],
   "testPathIgnorePatterns": [ "<rootDir>/(build|docs|node_modules|images)/" ],
