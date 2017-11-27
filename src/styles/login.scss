@@ -13,17 +13,23 @@
   height: 33%;
   background: lightgray;
   color: white;
+  display: flex;
+  justify-content: center;
 
   h1 {
     text-align: center;
     font-size: 5em;
+    align-self: flex-end;
+    margin-bottom: 5px;
   }
 }
 
 .bottom {
   height: 67%;
   text-align: center;
-  margin-top: 33%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .big-button {
@@ -35,7 +41,7 @@
   font-size: 18px;
   line-height: 18px;
   padding: 20px 0;
-  width: 100%;
+  width: 90%;
 
   &:focus {
     outline: none;
