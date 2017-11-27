@@ -1,0 +1,43 @@
+@import './mixins/flex';
+
+.login {
+  background-color: white;
+  color: black;
+
+  @include page;
+
+  flex-flow: column nowrap;
+}
+
+.top {
+  height: 33%;
+  background: lightgray;
+  color: white;
+
+  h1 {
+    text-align: center;
+    font-size: 5em;
+  }
+}
+
+.bottom {
+  height: 67%;
+  text-align: center;
+  margin-top: 33%;
+}
+
+.big-button {
+  user-select: none;
+  background-color: #f3f0f0;
+  border: 1px solid #969696;
+  color: black;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 18px;
+  padding: 20px 0;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+}
