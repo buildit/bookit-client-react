@@ -1,0 +1,49 @@
+@import './mixins/flex';
+
+.login {
+  background-color: white;
+  color: black;
+
+  @include page;
+
+  flex-flow: column nowrap;
+}
+
+.top {
+  height: 33%;
+  background: lightgray;
+  color: white;
+  display: flex;
+  justify-content: center;
+
+  h1 {
+    text-align: center;
+    font-size: 5em;
+    align-self: flex-end;
+    margin-bottom: 5px;
+  }
+}
+
+.bottom {
+  height: 67%;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.big-button {
+  user-select: none;
+  background-color: #f3f0f0;
+  border: 1px solid #969696;
+  color: black;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 18px;
+  padding: 20px 0;
+  width: 90%;
+
+  &:focus {
+    outline: none;
+  }
+}
