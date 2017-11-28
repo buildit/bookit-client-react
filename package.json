@@ -26,7 +26,7 @@
     }
   ],
   "scripts": {
-    "start": "NODE_ENV=development webpack-dev-server --env=development --config webpack.dev.js --hot ",
+    "start": "NODE_ENV=development webpack-dashboard -- webpack-dev-server --env=development --config webpack.dev.js --hot --watch",
     "build": "NODE_ENV=production webpack --env=production --config webpack.prod.js",
     "analyze": "NODE_ENV=production webpack --env=production --config webpack.prod.js --profile --json > webpack.stats.json",
     "cucumber": "NODE_ENV=test cucumber.js --compiler js:babel-register --format progress --format json:reports/e2e/e2e-test-results.json test/e2e/features",
@@ -60,7 +60,9 @@
     "redux-form": "^7.1.1",
     "redux-saga": "^0.15.6",
     "reselect": "^3.0.1",
-    "reselect-immutable-helpers": "^1.2.2"
+    "reselect-immutable-helpers": "^1.2.2",
+    "url": "^0.11.0",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.5",

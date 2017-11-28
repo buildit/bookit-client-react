@@ -1,8 +1,7 @@
 import React from 'react'
 
-import { Link } from 'react-router-dom'
-
 import Button from 'Components/Button'
+import LoginWindowOpener from './LoginWindowOpener'
 
 import styles from 'Styles/login.scss'
 
@@ -12,9 +11,9 @@ export const Login = () => (
       <h1>BookIt</h1>
     </div>
     <div className={styles.bottom}>
-      <Link to="/" className={styles.bigButton}>
-        <Button>Sign in with Microsoft Credentials</Button>
-      </Link>
+      <LoginWindowOpener>
+        <Button className={styles.bigButton}>Sign in with Microsoft Credentials</Button>
+      </LoginWindowOpener>
     </div>
   </div>
 )
