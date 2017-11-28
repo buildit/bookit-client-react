@@ -10,6 +10,7 @@
     "^Containers(.*)$": "<rootDir>/src/containers$1",
     "^Hoc(.*)$": "<rootDir>/src/hoc$1",
     "^Utils(.*)$": "<rootDir>/src/utils$1",
+    "^Constants(.*)$": "<rootDir>/src/constants$1",
     "^Styles(.*)$": "<rootDir>/src/styles$1",
     "^Api(.*)$": "<rootDir>/src/api$1"
   },

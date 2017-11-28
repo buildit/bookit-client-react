@@ -1,6 +1,11 @@
-// import { createGetSelector } from 'reselect-immutable-helpers'
+import { createGetSelector } from 'reselect-immutable-helpers'
 
 export const getUserEmail = () => 'email@email'
+
+export const getTokens = state => state.tokens
+
+export const getAuthenticationToken = createGetSelector(getTokens, 'authn', null)
+export const getAuthorizationToken = createGetSelector(getTokens, 'authz', null)
 
 // export const getUserName = createGetSelector(getUser, 'name', null)
 // export const getUserEmail = createGetSelector(getUser, 'email', null)

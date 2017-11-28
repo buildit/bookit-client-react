@@ -32,7 +32,7 @@ export class LoginWindowOpener extends Component {
   static propTypes = {
     children: PropTypes.node,
     userEmail: PropTypes.string,
-    loginRequest: PropTypes.func,
+    authRequest: PropTypes.func,
   }
 
   handleWindowLoaded(loginWindow) {
@@ -47,13 +47,13 @@ export class LoginWindowOpener extends Component {
 
   pollWindowLocation() {
     const { loginWindow } = this.state
-    const { loginRequest } = this.props
+    const { authRequest } = this.props
 
     if (!loginWindow || loginWindow.closed || loginWindow.closed === undefined) this.handleWindowUnloaded()
 
     try {
       if (loginWindow.location.href.indexOf(authenticationRedirectUrl()) != -1) {
-        loginRequest(loginWindow.location.hash)
+        authRequest(loginWindow.location.hash)
         this.handleWindowUnloaded()
       }
     } catch (error) {} // eslint-disable-line no-empty
@@ -93,4 +93,4 @@ const mapStateToProps = createPropsSelector({
   userEmail: selectors.getUserEmail,
 })
 
-export default connect(mapStateToProps, { loginRequest: actionCreators.loginRequest })(LoginWindowOpener)
+export default connect(mapStateToProps, { authRequest: actionCreators.authRequest })(LoginWindowOpener)

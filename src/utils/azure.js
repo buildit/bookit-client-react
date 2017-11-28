@@ -1,7 +1,7 @@
 import url from 'url'
 import { v4 as uuid } from 'uuid'
 
-import { getAuthentication, decodeJWT } from 'Utils'
+import { getStoredAuthentication, decodeJWT } from 'Utils'
 
 let W = global.window
 if (!W) W = { location: { origin: 'http://localhost:3001' } }
@@ -72,6 +72,6 @@ export const signinRequestUrl = (prompt = 'login', login_hint, domain_hint) => {
 }
 
 export const refreshRequestUrl = (login_hint, domain_hint) => {
-  domain_hint = domain_hint || getDomainHint(getAuthentication())
+  domain_hint = domain_hint || getDomainHint(getStoredAuthentication())
   return signinRequestUrl('none', login_hint, domain_hint)
 }

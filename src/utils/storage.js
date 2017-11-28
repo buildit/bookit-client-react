@@ -19,6 +19,6 @@ export const clearItem = (...items) => {
   }
 }
 
-export const storeAuthentication = authn => storeItem('authn', authn)
-export const getAuthentication = () => getItem('authn')
-export const clearAuthentication = () => clearItem('authn')
+export const setStoredAuthentication = authn => storeItem('authn', authn)
+export const getStoredAuthentication = () => getItem('authn')
+export const clearStoredAuthentication = () => clearItem('authn')
