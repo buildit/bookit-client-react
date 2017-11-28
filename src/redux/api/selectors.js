@@ -9,19 +9,18 @@ import { doesRangeOverlap, formatDate, isSameDay, compareDates } from 'Utils'
 
 // ### Baseline selectors ----------------------------------------------------
 
-export const getEntities = state => state.entities
+// export const getBookingIds = state => state.entities.getIn(['bookings', 'result'], Set())
+export const getBookingEntities = state => state.entities.getIn(['bookings', 'entities'], Map())
 
-export const getBookings = state => getEntities(state).get('bookings')
-export const getBookingIds = state => getBookings(state).get('result').toArray()
-export const getBookingEntities = state => getBookings(state).get('entities', Map())
+// export const getLocationIds = state => state.entities.getIn(['locations', 'result'], Set())
+export const getLocationEntities = state => state.entities.getIn(['locations', 'entities'], Map())
 
-export const getLocations = state => getEntities(state).get('locations')
-export const getLocationIds = state => getLocations(state).get('result').toArray()
-export const getLocationEntities = state => getLocations(state).get('entities', Map())
+// export const getBookableIds = state => state.entities.getIn(['bookables', 'result'], Set())
+export const getBookableEntities = state => state.entities.getIn(['bookables', 'entities'], Map())
 
-export const getBookables = state => getEntities(state).get('bookables')
-export const getBookableIds = state => getBookables(state).get('result').toArray()
-export const getBookableEntities = state => getBookables(state).get('entities', Map())
+export const getBookingIds = state => state.entities2.bookings.byIds || Set()  // Dubious need.
+// export const getBookingIds = state => state.bookings.get('allIds', Set())  // Dubious need.
+export const getBookingsByDate = state => state.bookings.get('byDate', Map())
 
 // ### Bookings --------------------------------------------------------------
 
@@ -114,9 +113,10 @@ export const getBookableLocationTimezone = createGetSelector(getBookableLocation
 export const getBookablesForLocation = createSelector(
   [
     (state, locationId) => locationId,
-    getBookableIds,
+    // getBookableIds,
     getBookableEntities,
   ],
-  (locationId, bookableIds, bookables) => bookableIds.filter(id => bookables.getIn([id, 'location']) === locationId)
+  // (locationId, bookableIds, bookables) => bookableIds.filter(id => bookables.getIn([id, 'location']) === locationId)
+  (locationId, bookables) => bookables.filter(bookable => bookable.get('location') === locationId).map(bookable => bookable.get('id'))
 
 )

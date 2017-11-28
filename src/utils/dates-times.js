@@ -41,6 +41,11 @@ export const compareDates = (dateA, dateB) => {
 
 const weekOptions = { weekStartsOn: 1 }
 
+export const getStartEnd = (date = new Date) => ({
+  start: formatDate(date),
+  end: formatDate(addDays(date, 1)),
+})
+
 export const getWeekStartAndEnd = (date = new Date, excludeWeekend = true) => {
   const weekStart = startOfWeek(date, weekOptions)
   const weekEnd = addDays(lastDayOfWeek(date, weekOptions), excludeWeekend ? -2 : 0)
@@ -74,6 +79,7 @@ export const formatWeek = (date = new Date, excludeWeekend = true) => {
 }
 
 // "Re-export" functions from `date-fns` to reduce overall import statements
+export { addDays }
 export { isSameDay }
 export { isToday }
 export { isBefore }

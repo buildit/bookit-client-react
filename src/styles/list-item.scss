@@ -1,0 +1,45 @@
+.ListItem--wrapper {
+  align-items: center;
+  background: white;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+
+  border-color: #ccc;
+  border-style: solid none;
+  border-width: 0 0 1px;
+
+  &.ListItem--booked {
+    background: #f0f0f0;
+  }
+
+  & + & {
+    border-width: 0 0 1px;
+  }
+}
+
+.ListItem--item {
+  align-items: center;
+  color: black;
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+  padding: 20px;
+  width: 90vw;
+
+  p {
+    font-family: 'HelveticaNeueLTStd-Roman';
+    font-size: 12px;
+  }
+
+  .ListItem--title {
+    color: #2e2e2e;
+    font-family: 'HelveticaNeueLTStd-Md';
+    font-size: 18px;
+  }
+
+  .ListItem--features {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+}

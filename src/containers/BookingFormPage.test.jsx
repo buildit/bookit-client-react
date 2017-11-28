@@ -1,12 +1,12 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import App from './App'
+import BookingFormPage from './BookingFormPage'
 import BookingForm from 'Containers/BookingForm'
 
-describe('<App />', () => {
+describe('<BookingFormPage />', () => {
   it('has a single <BookingForm /> component', () => {
-    const wrapper = shallow(<App />)
+    const wrapper = shallow(<BookingFormPage />)
     expect(wrapper.find(BookingForm)).to.exist
   })
 })

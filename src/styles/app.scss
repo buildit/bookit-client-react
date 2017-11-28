@@ -1,0 +1,15 @@
+.Page--container {
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100vh;
+}
+
+.Page--header {
+  flex: 0 0;
+}
+
+.Page--main {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+

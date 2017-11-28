@@ -5,14 +5,12 @@ import { AppContainer } from 'react-hot-loader'
 
 import Root from 'Containers/Root'
 
-import 'Styles/client.scss'
-
 const renderRoot = (RootComponent: any) => {
   render(
     <AppContainer>
       <RootComponent />
     </AppContainer>,
-    document.getElementById('root')
+    document.getElementById('app-root')
   )
 }
 

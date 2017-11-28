@@ -1,5 +1,7 @@
 import { normalize, schema } from 'normalizr'
 
+import { formatDate } from 'Utils'
+
 export const location = new schema.Entity('locations', {})
 
 export const bookable = new schema.Entity('bookables', {}, {
@@ -17,6 +19,7 @@ export const booking = new schema.Entity('bookings', {}, {
     subject,
     start,
     end,
+    date: formatDate(start),
     bookable: bookableId,
   }),
 })

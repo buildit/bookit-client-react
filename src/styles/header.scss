@@ -1,0 +1,35 @@
+.Header--wrapper {
+  align-items: center;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
+
+.Header--item {
+  align-items: center;
+  background: white;
+  display: flex;
+  height: 40px;
+  justify-content: space-between;
+  padding: 20px;
+  width: 90vw;
+
+  .Header--item_title {
+    color: #2e2e2e;
+
+    font-family: 'HelveticaNeueLTStd-Md';
+    font-size: 18px;
+
+    order: 1;
+  }
+
+  .Header--item_action {
+    height: 44px;
+    order: 2;
+    width: 44px;
+
+    &.Header--item_action_back {
+      order: 0;
+    }
+  }
+}

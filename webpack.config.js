@@ -7,7 +7,6 @@ const postcssReporter = require('postcss-reporter')
 
 const HTMLPlugin = require('html-webpack-plugin')
 
-
 const sourceLoaderRule = {
   test: /\.jsx?$/,
   exclude: [ /node_modules/ ],
@@ -30,7 +29,7 @@ const styleLinterRule = {
 }
 
 const assetsLoaderRule = {
-  test: /\.(jpg|jpeg|png|gif|eot|svg|ttf|woff|woff2)$/,
+  test: /\.(jpg|jpeg|png|gif|eot|svg|ttf|woff|woff2|otf)$/,
   use: [ { loader: 'url-loader', options: { limit: 20000 } } ],
 }
 

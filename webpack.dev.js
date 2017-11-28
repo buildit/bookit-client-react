@@ -1,6 +1,8 @@
 const autoprefixer = require('autoprefixer')
 const webpack = require('webpack')
 
+const DashboardPlugin = require('webpack-dashboard/plugin')
+
 const merge = require('webpack-merge')
 const webpackConfig = require('./webpack.config')
 
@@ -11,18 +13,21 @@ const dev = {
       './src/client.jsx',
     ],
   },
-  devtool: 'inline-source-map',
+  // devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   devServer: {
     contentBase: './src',
     hot: true,
     port: 3001,
     compress: true,
+    inline: true,
     historyApiFallback: { verbose: true },
     noInfo: false,
     stats: { colors: true },
     overlay: { errors: true, warnings: false },
   },
   plugins: [
+    new DashboardPlugin,
     new webpack.NamedModulesPlugin,
   ],
   module: {
