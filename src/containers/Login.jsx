@@ -12,7 +12,7 @@ export const Login = () => (
     </div>
     <div className={styles.bottom}>
       <LoginWindowOpener>
-        <Button className={styles.bigButton}>Sign in with Microsoft Credentials</Button>
+        <Button className={styles.bigButton} id="login">Sign in with Microsoft Credentials</Button>
       </LoginWindowOpener>
     </div>
   </div>

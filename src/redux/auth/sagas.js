@@ -69,7 +69,6 @@ export function* retrieveAuthenticationToken() {
 export function* awaitAuthentication() {
   const { payload } = yield take('AUTH_REQUEST')
   const authnToken = yield call(parseOauthFragment, payload, 'access_token')
-
   yield call(settleAuthenticationToken, authnToken)
   return authnToken
 }
