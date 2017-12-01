@@ -3,7 +3,7 @@ import { cloneableGenerator } from 'redux-saga/utils'
 
 import history from 'History'
 import { clearStoredAuthentication, getStoredAuthentication, setStoredAuthentication, parseOauthFragment } from 'Utils'
-import { actionCreators } from './actions'
+import { actionCreators } from 'Redux'
 import { sagas as auth, loadLocalAuthenticationIntoState, clearAllAuth, settleAuthenticationToken, awaitLogout, authFlow, awaitAuthentication, retrieveAuthenticationToken, watchForAuthentication } from './sagas'
 
 describe('sagas/auth', () => {
@@ -66,7 +66,7 @@ describe('sagas/auth', () => {
       const saga = awaitAuthentication()
 
       expect(saga.next().value).toEqual(take('AUTH_REQUEST'))
-      expect(saga.next({ payload }).value).toEqual(call(parseOauthFragment, payload, 'access_token'))
+      expect(saga.next({ payload }).value).toEqual(call(parseOauthFragment, payload, 'id_token'))
       expect(saga.next(authnToken).value).toEqual(call(settleAuthenticationToken, authnToken))
 
       const next = saga.next()
@@ -88,6 +88,12 @@ describe('sagas/auth', () => {
       expect(failureSaga.next(null).value).toEqual(call(awaitAuthentication))
 
       expect(saga.next('authnToken').value).toEqual(put(actionCreators.loginSuccess()))
+      const expected = all([
+        put(actionCreators.getAllLocations()),
+        put(actionCreators.getAllBookables()),
+        put(actionCreators.getAllBookings()),
+      ])
+      expect(saga.next().value).toEqual(expected)
       expect(saga.next().value).toEqual(call(history.replace, '/home'))
       expect(saga.next().value).toEqual(call(awaitLogout))
       expect(saga.next().done).toBeTruthy()

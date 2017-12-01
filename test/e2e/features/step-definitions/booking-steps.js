@@ -12,6 +12,10 @@ defineSupportCode(({ Given, When, Then, Before }) => {
 
   Given('I am on the bookit website form', async () => {
     await driver.get(`${url}/book`)
+    await driver.executeScript(function() {
+      window.localStorage.setItem('_bookit|authn', 'FAKE')
+    })
+    await driver.pause()
   })
 
   When('I book a room', async () => {
