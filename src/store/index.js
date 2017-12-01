@@ -1,7 +1,5 @@
 let configureStore
 
-import { actionCreators } from 'Redux'
-
 if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {
   configureStore = require('./configureStore.prod').default
 } else {
@@ -9,9 +7,5 @@ if (process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'test') {
 }
 
 const store = configureStore()
-
-store.dispatch(actionCreators.getAllLocations())
-store.dispatch(actionCreators.getAllBookables())
-store.dispatch(actionCreators.getAllBookings())
 
 export default store

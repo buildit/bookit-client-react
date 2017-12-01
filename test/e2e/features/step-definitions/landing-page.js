@@ -4,7 +4,7 @@ import { driver, url } from '../support/hooks'
 
 defineSupportCode(({ Given, When, Then }) => {
   Given('I am on the landing page of Bookit', async () => {
-    await driver.get(url)
+    await driver.get(`${url}/home`)
   })
 
   When('I click the Book a Room button', async () => {

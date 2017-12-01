@@ -13,7 +13,8 @@ defineSupportCode(({ Given, When, Then }) => {
   })
 
   Then('I see a list of rooms and their availability', async () => {
-    await driver.findElement(By.tagName('h3'))
+    const roomTitleCondition = until.elementLocated(By.tagName('h3'))
+    await driver.wait(roomTitleCondition)
     const condition = until.elementLocated(By.tagName('p'))
     const element = await driver.wait(condition)
     await driver.wait(until.elementTextContains(element, 'Available'))

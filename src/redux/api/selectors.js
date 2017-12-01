@@ -36,7 +36,7 @@ export const getBookingBookable = createGetSelector(getBookingEntity, 'bookable'
 // Private helper for relating a bookable entity to a booking via the booking' bookable id
 const getBookingBookableEntity = createSelector(
   [ getBookingBookable, getBookableEntities ],
-  (bookingBookable, bookables) => bookables.find((value, key) => key === bookingBookable)
+  (bookingBookable, bookables) => bookables.find((value, key) => key === bookingBookable) || Map()
 )
 
 export const getBookingBookableName = createGetSelector(getBookingBookableEntity, 'name', null)

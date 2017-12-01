@@ -22,8 +22,8 @@ const tokens = handleActions({
 const user = handleActions({
   SET_AUTHENTICATION_TOKEN: (state, action) => {
     const user = decodeJWT(action.payload)
-    if (user && user.unique_name) {
-      return user.unique_name
+    if (user && user.preferred_username) {
+      return user.preferred_username
     }
     return null
   },

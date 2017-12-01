@@ -2,7 +2,7 @@ import { fork, call, take, put, select, race, all } from 'redux-saga/effects'
 
 import history from 'History'
 
-import { actionCreators } from './actions'
+import { actionCreators } from 'Redux'
 import { getAuthenticationToken } from './selectors'
 
 import * as tokenStates from 'Constants/token-states'
@@ -65,7 +65,7 @@ export function* retrieveAuthenticationToken() {
     })
 
     if (success) {
-      refreshedAuthnToken = yield call(parseOauthFragment, success.payload, 'access_token')
+      refreshedAuthnToken = yield call(parseOauthFragment, success.payload, 'id_token')
       yield call(settleAuthenticationToken, refreshedAuthnToken)
     } else {
       yield call(console.log, 'FAILED TO REFRESH:', failure.payload)
@@ -77,7 +77,7 @@ export function* retrieveAuthenticationToken() {
 
 export function* awaitAuthentication() {
   const { payload } = yield take('AUTH_REQUEST')
-  const authnToken = yield call(parseOauthFragment, payload, 'access_token')
+  const authnToken = yield call(parseOauthFragment, payload, 'id_token')
   yield call(settleAuthenticationToken, authnToken)
   return authnToken
 }
@@ -89,7 +89,19 @@ export function* authFlow() {
     authnToken = yield call(awaitAuthentication)
   }
   yield put(actionCreators.loginSuccess())
-  yield call(history.replace, '/home')
+
+  yield all([
+    put(actionCreators.getAllLocations()),
+    put(actionCreators.getAllBookables()),
+    put(actionCreators.getAllBookings()),
+  ])
+
+  const location = yield select(state => state.router.location)
+
+  if (location && location.pathname === '/') {
+    yield call(history.replace, '/home')
+  }
+
   yield call(awaitLogout)
 }
 

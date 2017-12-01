@@ -33,7 +33,7 @@ export default class BookingsList extends React.Component {
       <div className={styles.bookings}>
         <div className={styles.heading}>
           <h2 className={styles.title}>All Bookings</h2>
-          <Link to="/" className={styles.cancel}>X</Link>
+          <Link to="/home" className={styles.cancel}>X</Link>
         </div>
 
         <WeekSpinner weekOf={viewingDate} onClick={this.updateViewingDate} />

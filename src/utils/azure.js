@@ -25,7 +25,7 @@ export const getDomainHint = (jwt) => {
 
 const tenant = 'common'  // can be 'common', 'organizations', 'consumers' or an actual tenantId
 const client_id = '9a8b8181-afb1-48f8-a839-a895d39f9db0'
-const response_type = 'token'  // 'id_token token'
+const response_type = 'id_token token'  // 'id_token token'
 const scope = [
   'openid',
   'profile',
