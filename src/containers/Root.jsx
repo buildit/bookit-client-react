@@ -6,12 +6,12 @@ import { ConnectedRouter } from 'react-router-redux'
 import store from 'Store'
 import history from 'History'
 
-import ApplicationRoutes from 'Containers/ApplicationRoutes'
+import App from 'Containers/App'
 
 const Root = () => (
   <Provider store={store}>
     <ConnectedRouter history={history}>
-      <ApplicationRoutes />
+      <App />
     </ConnectedRouter>
   </Provider>
 )

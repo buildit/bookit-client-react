@@ -1,10 +1,19 @@
 import { fork, call, take, put, select, race, all } from 'redux-saga/effects'
 
-import { parseOauthFragment, clearStoredAuthentication, getStoredAuthentication, setStoredAuthentication, validateToken } from 'Utils'
+import history from 'History'
+
 import { actionCreators } from './actions'
 import { getAuthenticationToken } from './selectors'
+
 import * as tokenStates from 'Constants/token-states'
-import history from 'History'
+
+import {
+  parseOauthFragment,
+  clearStoredAuthentication,
+  getStoredAuthentication,
+  setStoredAuthentication,
+  validateToken,
+} from 'Utils'
 
 export function* loadLocalAuthenticationIntoState() {
   const authnToken = yield call(getStoredAuthentication)
@@ -76,10 +85,11 @@ export function* awaitAuthentication() {
 export function* authFlow() {
   let authnToken = yield call(retrieveAuthenticationToken)
   while (!authnToken) {
+    yield call(history.replace, '/login')
     authnToken = yield call(awaitAuthentication)
   }
   yield put(actionCreators.loginSuccess())
-  yield call(history.replace, '/')
+  yield call(history.replace, '/home')
   yield call(awaitLogout)
 }
 

@@ -1,29 +1,23 @@
 import React from 'react'
 
-import { Route, Switch } from 'react-router'
+import { Route } from 'react-router'
 
-import { TransitionGroup } from 'react-transition-group'
+import TransitionSwitch from 'Components/TransitionSwitch'
 
-import SlideOver from 'Components/SlideOver'
-
-import App from 'Containers/App'
+import Loading from 'Components/Loading'
+import BookingFormContainer from 'Containers/BookingFormContainer'
 import Landing from 'Containers/Landing'
 import BookingsList from 'Containers/BookingsList'
 import Login from 'Containers/Login'
 
 const ApplicationRoutes = () => (
-  <Route render={({ location }) => (
-    <TransitionGroup className="app-container">
-      <SlideOver key={location.key}>
-        <Switch key={location.key} location={location}>
-          <Route exact path="/" component={Landing} />
-          <Route path="/login" component={Login} />
-          <Route path="/book" component={App} />
-          <Route path="/bookings" component={BookingsList} />
-        </Switch>
-      </SlideOver>
-    </TransitionGroup>
-  )}/>
+  <TransitionSwitch>
+    <Route exact path="/" render={Loading} />
+    <Route exact path="/home" component={Landing} />
+    <Route path="/login" component={Login} />
+    <Route path="/book" component={BookingFormContainer} />
+    <Route path="/bookings" component={BookingsList} />
+  </TransitionSwitch>
 )
 
 export default ApplicationRoutes
