@@ -84,10 +84,11 @@ describe('sagas/auth', () => {
       const failureSaga = saga.clone()
 
       // calling next on failureSaga after this point will yield the exact same call
+      expect(failureSaga.next().value).toEqual(call(history.replace, '/login'))
       expect(failureSaga.next(null).value).toEqual(call(awaitAuthentication))
 
       expect(saga.next('authnToken').value).toEqual(put(actionCreators.loginSuccess()))
-      expect(saga.next().value).toEqual(call(history.replace, '/'))
+      expect(saga.next().value).toEqual(call(history.replace, '/home'))
       expect(saga.next().value).toEqual(call(awaitLogout))
       expect(saga.next().done).toBeTruthy()
     })
