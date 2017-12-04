@@ -1,18 +1,17 @@
-import { defineSupportCode } from 'cucumber'
+import { Given, When, Then } from 'cucumber'
 import { By } from 'selenium-webdriver'
 
-import { driver, url } from '../support/hooks'
+import { url } from '../support/hooks'
 
-defineSupportCode(({ Given, When, Then }) => {
-  Given('I am on the login page in testing', async () => {
-    await driver.get(`${url}/login?access_token=fake`)
-  })
+Given('I am on the login page in testing', async function() {
+  await this.getAnonymously(`${url}/login`)
+})
 
-  When('I click the login button', async () => {
-    await driver.findElement(By.id('login')).click()
-  })
+When('I click the login button', async function() {
+  await this.driver.findElement(By.id('login')).click()
+})
 
-  Then('I am on the landing page', async () => {
-    await driver.findElement(By.id('landing'))
-  })
+Then('I am on the landing page', async function() {
+  await this.getWithLogin(`${url}/home`)
+  await this.driver.findElement(By.id('landing'))
 })
