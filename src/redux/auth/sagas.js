@@ -101,7 +101,7 @@ export function* authFlow() {
 
   const location = yield select(selectors.getRouterLocation)
 
-  if (location && location.pathname === '/') {
+  if (location && ['/', '/login'].includes(location.pathname)) {
     yield call(history.replace, '/home')
   }
 
