@@ -1,5 +1,6 @@
 const autoprefixer = require('autoprefixer')
 const webpack = require('webpack')
+const DashboardPlugin = require('webpack-dashboard/plugin')
 
 const merge = require('webpack-merge')
 const webpackConfig = require('./webpack.config')
@@ -23,6 +24,7 @@ const dev = {
     overlay: { errors: true, warnings: false },
   },
   plugins: [
+    new DashboardPlugin,
     new webpack.NamedModulesPlugin,
   ],
   module: {

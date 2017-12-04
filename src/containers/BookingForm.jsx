@@ -90,7 +90,7 @@ export class BookingForm extends React.Component {
       <div className={ styles.bookingForm }>
         <div className={ styles.heading }>
           <h2 className={ styles.title }>Book A Room</h2>
-          <Link to="/" className={ styles.cancel }>X</Link>
+          <Link to="/home" className={ styles.cancel }>X</Link>
         </div>
 
         { error && <strong>{ error }</strong> }

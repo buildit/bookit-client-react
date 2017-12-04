@@ -1,27 +1,26 @@
-import { defineSupportCode } from 'cucumber'
+import { Given, When, Then } from 'cucumber'
 import { By, until } from 'selenium-webdriver'
-import { driver, url } from '../support/hooks'
 
-defineSupportCode(({ Given, When, Then }) => {
-  Given('I am on the landing page of Bookit', async () => {
-    await driver.get(url)
-  })
+import { url } from '../support/hooks'
 
-  When('I click the Book a Room button', async () => {
-    await driver.findElement(By.linkText('Book A Room')).click()
-  })
+Given('I am on the landing page of Bookit', async function() {
+  await this.getWithLogin(`${url}/home`)
+})
 
-  When('I click the View Your Bookings button', async () => {
-    await driver.findElement(By.linkText('View Your Bookings')).click()
-  })
+When('I click the Book a Room button', async function() {
+  await this.driver.findElement(By.linkText('Book A Room')).click()
+})
 
-  Then('I am on the booking form', async () => {
-    await driver.findElement(By.tagName('form'))
-  })
+When('I click the View Your Bookings button', async function() {
+  await this.driver.findElement(By.linkText('View Your Bookings')).click()
+})
 
-  Then('I am on the view bookings page', async () => {
-    const condition = until.elementLocated(By.tagName('h2'))
-    const element = await driver.wait(condition)
-    await driver.wait(until.elementTextContains(element, 'All Bookings'))
-  })
+Then('I am on the booking form', async function() {
+  await this.driver.findElement(By.tagName('form'))
+})
+
+Then('I am on the view bookings page', async function() {
+  const condition = until.elementLocated(By.tagName('h2'))
+  const element = await this.driver.wait(condition)
+  await this.driver.wait(until.elementTextContains(element, 'All Bookings'))
 })

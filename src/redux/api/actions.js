@@ -9,6 +9,8 @@ import {
   normalizeBooking,
 } from './schema'
 
+import { selectors } from 'Redux'
+
 import { getAPIEndpoint } from 'Utils'
 
 const apiBaseURI = getAPIEndpoint()
@@ -19,6 +21,21 @@ const apiEndpoint = `${apiBaseURI}/${apiVersion}`
 // TODO: Most of these are near-duplicates of each other, so we can
 // create a function factory that will emit all the common parts
 // for each type of `getAllXYZ`
+
+const makeHeaders = (withAuth = true, withJSON = false) => (state) => {
+  const headers = {}
+
+  if (withAuth) {
+    const authorizationBearerToken = selectors.getAuthenticationToken(state)
+    headers['Authorization'] = `Bearer ${authorizationBearerToken}`
+  }
+
+  if (withJSON) {
+    headers['Content-Type'] = 'application/json'
+  }
+
+  return headers
+}
 
 export const getAllLocations = () => ({
   [RSAA]: {
@@ -32,6 +49,7 @@ export const getAllLocations = () => ({
       },
       'GET_LOCATIONS_FAILURE',
     ],
+    headers: makeHeaders(true, false),
   },
 })
 
@@ -50,6 +68,7 @@ export const getAllBookables = (locationId = 'b1177996-75e2-41da-a3e9-fcdd75d1ab
         },
         'GET_BOOKABLES_FAILURE',
       ],
+      headers: makeHeaders(true, false),
     },
   }
 }
@@ -66,6 +85,7 @@ export const getAllBookings = () => ({
       },
       'GET_BOOKINGS_FAILURE',
     ],
+    headers: makeHeaders(true, false),
   },
 })
 
@@ -82,7 +102,7 @@ export const createBooking = booking => ({
       'CREATE_BOOKING_FAILURE',
     ],
     body: JSON.stringify(booking),
-    headers: { 'Content-Type': 'application/json' },
+    headers: makeHeaders(true, true),
   },
 })
 
@@ -99,6 +119,7 @@ export const deleteBooking = bookingId => ({
       },
       'DELETE_BOOKING_FAILURE',
     ],
+    headers: makeHeaders(true, false),
   },
 })
 

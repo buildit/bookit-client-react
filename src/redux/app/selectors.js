@@ -2,6 +2,8 @@ import { createSelector } from 'reselect'
 
 export const getRequestInProgress = state => state.requestInProgress
 
+export const getRouterLocation = state => state.router.location
+
 export const getErrors = state => state.errors
 
 export const getErrorMessages = createSelector(

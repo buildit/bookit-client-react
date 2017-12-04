@@ -7,7 +7,7 @@ import Button from 'Components/Button'
 import styles from 'Styles/landing.scss'
 
 export const Landing = () => (
-  <div className={styles.landing}>
+  <div className={styles.landing} id="landing">
     <div className={[styles.landingRow, styles.landingRowPadded].join(' ')}>
       <Link to="/book">
         <Button className={styles.bigButton}>Book A Room</Button>

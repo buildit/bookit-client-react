@@ -17,12 +17,17 @@ import {
 } from './app'
 
 import {
+  reducer as auth,
+} from './auth'
+
+import {
   reducer as booking,
 } from './booking'
 
 export const rootReducer = combineReducers({
   ...api,
   ...app,
+  ...auth,
   ...booking,
   form,
   router,
