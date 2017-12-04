@@ -2,8 +2,7 @@ import { fork, call, take, put, select, race, all } from 'redux-saga/effects'
 
 import history from 'History'
 
-import { actionCreators } from 'Redux'
-import { getAuthenticationToken } from './selectors'
+import { actionCreators, selectors } from 'Redux'
 
 import * as tokenStates from 'Constants/token-states'
 
@@ -18,6 +17,14 @@ import {
 export function* loadLocalAuthenticationIntoState() {
   const authnToken = yield call(getStoredAuthentication)
   yield put.resolve(actionCreators.setAuthenticationToken(authnToken))
+}
+
+export function* preloadData() {
+  yield all([
+    put(actionCreators.getAllLocations()),
+    put(actionCreators.getAllBookables()),
+    put(actionCreators.getAllBookings()),
+  ])
 }
 
 export function* clearAllAuth() {
@@ -45,7 +52,7 @@ export function* awaitLogout() {
 }
 
 export function* retrieveAuthenticationToken() {
-  const authnToken = yield select(getAuthenticationToken)
+  const authnToken = yield select(selectors.getAuthenticationToken)
   const tokenState = yield call(validateToken, authnToken)
   if (tokenState === tokenStates.TOKEN_VALID) {
     return authnToken
@@ -90,13 +97,9 @@ export function* authFlow() {
   }
   yield put(actionCreators.loginSuccess())
 
-  yield all([
-    put(actionCreators.getAllLocations()),
-    put(actionCreators.getAllBookables()),
-    put(actionCreators.getAllBookings()),
-  ])
+  yield call(preloadData)
 
-  const location = yield select(state => state.router.location)
+  const location = yield select(selectors.getRouterLocation)
 
   if (location && location.pathname === '/') {
     yield call(history.replace, '/home')

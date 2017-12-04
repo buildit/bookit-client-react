@@ -1,10 +1,10 @@
-import { call, put, all, take, fork } from 'redux-saga/effects'
+import { call, put, all, take, fork, select } from 'redux-saga/effects'
 import { cloneableGenerator } from 'redux-saga/utils'
 
 import history from 'History'
 import { clearStoredAuthentication, getStoredAuthentication, setStoredAuthentication, parseOauthFragment } from 'Utils'
-import { actionCreators } from 'Redux'
-import { sagas as auth, loadLocalAuthenticationIntoState, clearAllAuth, settleAuthenticationToken, awaitLogout, authFlow, awaitAuthentication, retrieveAuthenticationToken, watchForAuthentication } from './sagas'
+import { actionCreators, selectors } from 'Redux'
+import { sagas as auth, loadLocalAuthenticationIntoState, clearAllAuth, settleAuthenticationToken, awaitLogout, preloadData, authFlow, awaitAuthentication, retrieveAuthenticationToken, watchForAuthentication } from './sagas'
 
 describe('sagas/auth', () => {
   describe('#loadLocalAuthenticationIntoState', () => {
@@ -78,25 +78,22 @@ describe('sagas/auth', () => {
   describe('#authFlow()', () => {
     it('starts the auth flow by retrieving the auth token and ends with awaiting logout', () => {
       const saga = cloneableGenerator(authFlow)()
-
-      expect(saga.next().value).toEqual(call(retrieveAuthenticationToken))
+      const authnToken = 'authnToken'
+      expect(saga.next().value).to.deep.equal(call(retrieveAuthenticationToken))
 
       const failureSaga = saga.clone()
-
       // calling next on failureSaga after this point will yield the exact same call
-      expect(failureSaga.next().value).toEqual(call(history.replace, '/login'))
-      expect(failureSaga.next(null).value).toEqual(call(awaitAuthentication))
+      expect(failureSaga.next().value).to.deep.equal(call(history.replace, '/login'))
+      expect(failureSaga.next(null).value).to.deep.equal(call(awaitAuthentication))
 
-      expect(saga.next('authnToken').value).toEqual(put(actionCreators.loginSuccess()))
-      const expected = all([
-        put(actionCreators.getAllLocations()),
-        put(actionCreators.getAllBookables()),
-        put(actionCreators.getAllBookings()),
-      ])
-      expect(saga.next().value).toEqual(expected)
-      expect(saga.next().value).toEqual(call(history.replace, '/home'))
-      expect(saga.next().value).toEqual(call(awaitLogout))
-      expect(saga.next().done).toBeTruthy()
+      expect(saga.next(authnToken).value).to.deep.equal(put(actionCreators.loginSuccess()))
+      expect(saga.next().value).to.deep.equal(call(preloadData))
+      expect(saga.next().value).to.deep.equal(select(selectors.getRouterLocation))
+      const noLocationSaga = saga.clone()
+      expect(saga.next().value).to.deep.equal(call(awaitLogout))
+
+      expect(noLocationSaga.next({ pathname: '/' }).value).to.deep.equal(call(history.replace, '/home'))
+      expect(saga.next().done).to.be.true
     })
   })
 
