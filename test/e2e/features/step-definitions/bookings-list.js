@@ -33,7 +33,7 @@ Given('I create a booking for next week', async function() {
 })
 
 When('I view my bookings and navigate to next week', async function() {
-  await this.getWithLogin(url)
+  await this.getWithLogin(`${url}/home`)
   await this.driver.findElement(By.linkText('View Your Bookings')).click()
   await this.driver.sleep(1000)
   await this.driver.findElement(By.id('next')).click()
