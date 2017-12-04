@@ -84,7 +84,7 @@ export default class WindowOpener extends Component {
     const loadHandler = () => this.props.onLoaded && this.props.onLoaded(owindow)
 
     owindow.onload = loadHandler
-    owindow.document.readyState === 'complete' && loadHandler()
+    loadHandler()
 
     this.setState({ owindow })
   }
