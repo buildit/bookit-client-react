@@ -10,8 +10,8 @@ const DEFAULT_OPTIONS = {
   scrollbars: 'no',
   width: 483,
   height: 600,
-  top: (o, w) => (w.innerHeight - o.height) / 2 + w.screenY,
-  left: (o, w) => (w.innerWidth - o.width) / 2 + w.screenX,
+  top: (o, w) => ((w.innerHeight / 2) - (o.height / 2)) + (w.screenTop != undefined ? w.screenTop : screen.top),
+  left: (o, w) => ((w.innerWidth / 2) - (o.width / 2)) + (w.screenLeft != undefined ? w.screenLeft : screen.left),
 }
 
 const ABOUT_BLANK = 'about:blank'
