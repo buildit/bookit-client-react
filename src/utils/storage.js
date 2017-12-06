@@ -8,7 +8,11 @@ export const storeItem = (key, item) => {
 
 export const getItem = (key) => {
   const result = localStorage.getItem(makeStoreKey(key))
-  return result ? JSON.parse(result) : null
+  try {
+    return result ? JSON.parse(result) : null
+  } catch(error) {
+    return null
+  }
 }
 
 export const getItems = (...items) => items.reduce((out, key) => ({ ...out, [key]: localStorage.getItem(makeStoreKey(key)) }), {})

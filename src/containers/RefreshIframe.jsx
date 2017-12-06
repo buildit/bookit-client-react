@@ -11,85 +11,69 @@ import { actionCreators, selectors } from 'Redux'
 
 import Iframe from 'Components/Iframe'
 
-const iframeStyles = { visibility: 'hidden' }
-
-export class RefreshAuthenticationIframe extends Component {
+export class RefreshIframe extends Component {
   static propTypes = {
     isRefreshingAuthentication: PropTypes.bool,
-    authenticationComplete: PropTypes.func,
+    refreshAuthSuccess: PropTypes.func,
     userEmail: PropTypes.string,
   }
 
   constructor(props) {
     super(props)
 
-    this.handleIframeLoad = this.handleIframeLoad.bind(this)
-    this.pollIframeLocation = this.pollIframeLocation.bind(this)
-
-    // this.poller = setInterval(this.pollIframeLocation, 1)
+    this.pollForLocation = this.pollForLocation.bind(this)
+    this.poller = null
   }
 
-  handleIframeLoad() {
-    const refreshIframe = this.iframeRef
+  pollForLocation() {
+    const { iframeRef: iframe, props: { refreshAuthSuccess } } = this
 
-    const loadHandler = () => {
-      if (this.poller) clearInterval(this.poller)
-      this.poller = setInterval(this.pollIframeLocation, 1)
+    if (!iframe) {
+      this.cancelPolling()
+    } else {
+      try {
+        const iwindow = iframe.contentWindow
+        if (iwindow.location.href.indexOf(authenticationRedirectUrl()) != -1) {
+          this.cancelPolling()
+          refreshAuthSuccess(iwindow.location.hash)
+        }
+      } catch (error) {}  // eslint-disable-line
     }
 
-    refreshIframe.contentWindow.onload = () => loadHandler()
-    refreshIframe.contentDocument.readyState === 'complete' && loadHandler()
   }
 
-  pollIframeLocation() {
-    const refreshIframe = this.iframeRef
-    const { authenticationComplete } = this.props
-
-    try {
-      const iwindow = refreshIframe.contentWindow
-
-      if (iwindow.location.href.indexOf(authenticationRedirectUrl()) != -1) {
-        clearInterval(this.poller)
-        authenticationComplete(iwindow.location.hash)
-      }
-    } catch (error) {}  // eslint-disable-line
+  cancelPolling() {
+    this.poller && clearInterval(this.pollForLocation)
+    this.poller = null
   }
 
-  componentDidMount() {
+  componentDidUpdate()  {
     if (this.props.isRefreshingAuthentication) {
-      this.poller = setInterval(this.pollIframeLocation, 1)
-    }
-
-    if (this.iframeRef && this.iframeRef.contentWindow) {
-      this.handleIframeLoad()
+      this.cancelPolling()
+      this.poller = setInterval(this.pollForLocation, 1)
     }
   }
 
   componentWillUnmount() {
-    if (this.poller) clearInterval(this.poller)
+    this.cancelPolling()
   }
 
   render() {
     return (
       this.props.isRefreshingAuthentication &&
       <Iframe
-        url={refreshRequestUrl(this.props.userEmail)}
+        src={refreshRequestUrl(this.props.userEmail)}
         iframeRef={el => this.iframeRef = el}
-        width="0"
-        height="0"
-        styles={iframeStyles}
       />
     )
   }
 }
-
-// export default Refresh
 
 const mapStateToProps = createPropsSelector({
   isRefreshingAuthentication: selectors.isRefreshingAuthentication,
   userEmail: selectors.getUserEmail,
 })
 
-const enhance = connect(mapStateToProps, { authenticationComplete: actionCreators.authenticationComplete })
+const enhance = connect(mapStateToProps, { refreshAuthSuccess: actionCreators.refreshAuthSuccess })
 
-export default enhance(RefreshAuthenticationIframe)
+export default enhance(RefreshIframe)

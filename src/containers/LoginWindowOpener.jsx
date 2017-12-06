@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { createPropsSelector } from 'reselect-immutable-helpers'
 
-import WindowOpener from '../components/WindowOpener'
+import WindowOpener from 'Components/WindowOpener'
 
 import { authenticationRedirectUrl, signinRequestUrl } from 'Utils'
 
@@ -17,10 +17,10 @@ export class LoginWindowOpener extends Component {
 
     this.toggleLoginInProgress = this.toggleLoginInProgress.bind(this)
 
-    this.handleWindowLoaded = this.handleWindowLoaded.bind(this)
-    this.handleWindowUnloaded = this.handleWindowUnloaded.bind(this)
+    this.startLoginWindowPolling = this.startLoginWindowPolling.bind(this)
+    this.closeLoginWindow = this.closeLoginWindow.bind(this)
 
-    this.pollWindowLocation = this.pollWindowLocation.bind(this)
+    this.pollLoginWindowLocation = this.pollLoginWindowLocation.bind(this)
 
     this.state = {
       loginInProgress: false,
@@ -35,26 +35,26 @@ export class LoginWindowOpener extends Component {
     authRequest: PropTypes.func,
   }
 
-  handleWindowLoaded(loginWindow) {
-    this.setState({ loginWindow, poller: setInterval(this.pollWindowLocation, 1) })
+  startLoginWindowPolling(loginWindow) {
+    this.setState({ loginWindow, poller: setInterval(this.pollLoginWindowLocation, 1) })
   }
 
-  handleWindowUnloaded() {
+  closeLoginWindow() {
     const { poller } = this.state
     poller && clearInterval(poller)
     this.setState({ loginWindow: null, poller: null, loginInProgress: false })
   }
 
-  pollWindowLocation() {
+  pollLoginWindowLocation() {
     const { loginWindow } = this.state
     const { authRequest } = this.props
 
-    if (!loginWindow || loginWindow.closed || loginWindow.closed === undefined) this.handleWindowUnloaded()
+    if (!loginWindow || loginWindow.closed || loginWindow.closed === undefined) this.closeLoginWindow()
 
     try {
       if (loginWindow.location.href.indexOf(authenticationRedirectUrl()) != -1) {
         authRequest(loginWindow.location.hash)
-        this.handleWindowUnloaded()
+        this.closeLoginWindow()
       }
     } catch (error) {} // eslint-disable-line no-empty
   }
@@ -79,9 +79,7 @@ export class LoginWindowOpener extends Component {
         { loginInProgress &&
           <WindowOpener
             url={signinRequestUrl('login', this.props.userEmail)}
-            options={{ width: 483, height: 600 }}
-            onLoaded={this.handleWindowLoaded}
-            onUnloaded={this.handleWindowUnloaded}
+            onLoaded={this.startLoginWindowPolling}
           />
         }
       </div>
