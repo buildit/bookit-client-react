@@ -101,6 +101,7 @@ describe('sagas/auth', () => {
     it('loads the local auth into state then starts the auth flow', () => {
       const saga = watchForAuthentication()
       expect(saga.next().value).toEqual(call(loadLocalAuthenticationIntoState))
+      expect(saga.next().value).toEqual(select(selectors.getRouterLocation))
       expect(saga.next().value).toEqual(call(authFlow))
       expect(saga.next().done).toBeTruthy()
     })

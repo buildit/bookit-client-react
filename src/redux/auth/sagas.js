@@ -112,7 +112,7 @@ export function* watchForAuthentication() {
   // Prime the authentication state with stored authn token
   yield call(loadLocalAuthenticationIntoState)
 
-  const location = yield select(state => state.router.location)
+  const location = yield select(selectors.getRouterLocation)
 
   if (!location || location && location.pathname != '/openid-complete') {
     // Begin the full authentication flow
