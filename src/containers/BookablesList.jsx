@@ -32,6 +32,7 @@ export class BookablesList extends React.Component {
     return (
       <div className={styles.bookablesList}>
         <ActionLink onClick={this.handleBack}>BACK</ActionLink>
+        <h3 className={styles.heading}>Change Room</h3>
         { bookableIds.map(id => (
           <SelectBookableItem
             key={id}
