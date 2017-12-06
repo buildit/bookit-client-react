@@ -1,7 +1,8 @@
 import React from 'react'
 
 import Button from 'Components/Button'
-import LoginWindowOpener from './LoginWindowOpener'
+
+import LoginWindowOpener from 'Containers/LoginWindowOpener'
 
 import styles from 'Styles/login.scss'
 

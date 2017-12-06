@@ -1,103 +1,89 @@
-import { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
-const defaultWindowOptions = {
+const DEFAULT_OPTIONS = {
   toolbar: 'no',
   location: 'no',
   directories: 'no',
   status: 'no',
   menubar: 'no',
-  scrollbars: 'yes',
-  resizable: 'no',
-  width: 500,
-  height: 400,
-  top: (o, w) => ((w.innerHeight - o.height) / 2) + w.screenY,
-  left: (o, w) => ((w.innerWidth - o.width) / 2) + w.screenX,
+  scrollbars: 'no',
+  width: 483,
+  height: 600,
+  top: (o, w) => (w.innerHeight - o.height) / 2 + w.screenY,
+  left: (o, w) => (w.innerWidth - o.width) / 2 + w.screenX,
 }
 
-const createOptions = (userOptions = {}) => {
-  const options = { ...defaultWindowOptions, ...userOptions }
-  const retVal = []
-  for (const [key, value] of Object.entries(options)) {
-    retVal.push(`${key}=${typeof value === 'function' ? value.call(this, options, window) : value}`)
+const ABOUT_BLANK = 'about:blank'
+
+export default class WindowOpener extends React.Component {
+  static defaultProps = {
+    url: ABOUT_BLANK,
+    name: 'window-opener',
   }
-  return retVal.join(',')
-}
 
-/**
- * WindowOpener is a React Component that takes a URL and options
- * that are passed to the standard `window.open` function,
- * the final two options, `onLoaded` and `onUnloaded` give the
- * parent component the ability to tap into the actual window
- * that is opened by this component.
- *
- * The bulk of the magic of this component extends from the fact that
- * the life of the child window is tied to this component, meaning
- * if you have a WindowOpener component mounting and unmounting via
- * some kind of conditional, then the child window will be destroyed
- * cleanly whenever the component unmounts, and will be recreated
- * when it mounts again.
- *
- * This is useful for development with Hot Module Reloading, as a DOM
- * reload will most likely cause this component to remount cleanly.
- */
-export default class WindowOpener extends Component {
   static propTypes = {
+    name: PropTypes.string.isRequired,
     url: PropTypes.string,
     options: PropTypes.object,
-    onUnloaded: PropTypes.func,
     onLoaded: PropTypes.func,
-  }
-
-  static defaultProps = {
-    url: 'about:blank',
-    options: {},
   }
 
   constructor(props) {
     super(props)
 
-    this.state = { owindow: null }
+    this.windowLoaded = this.windowLoaded.bind(this)
+    this.parentUnload = this.parentUnload.bind(this)
 
-    this.handleWindowLoad = this.handleWindowLoad.bind(this)
-    this.handleWindowUnload = this.handleWindowUnload.bind(this)
-    this.handleWindowClose = this.handleWindowClose.bind(this)
+    this.state = { openedWindow: null }
   }
 
   componentDidMount() {
-    const { owindow } = this.state
-    if (!owindow) this.handleWindowLoad(owindow)
+    const { openedWindow } = this.state
+    if (!openedWindow) this.openWindow(openedWindow)
   }
 
   componentWillUnmount() {
-    this.handleWindowClose()
+    this.parentUnload()
   }
 
-  handleWindowLoad(owindow) {
-    const { url, options } = this.props
+  createOptions() {
+    const mergedOptions = { ...DEFAULT_OPTIONS, ...this.props.options }
 
-    owindow = window.open(url, 'window-open', createOptions(options))
-
-    owindow.onbeforeunload = () => this.handleWindowUnload()
-    window.addEventListener('unload', this.handleWindowClose)
-
-    const loadHandler = () => this.props.onLoaded && this.props.onLoaded(owindow)
-
-    owindow.onload = loadHandler
-    loadHandler()
-
-    this.setState({ owindow })
+    return Object.keys(mergedOptions).map(
+      key => key + '=' + (
+        typeof mergedOptions[key] === 'function'
+          ? mergedOptions[key].call(this, mergedOptions, window)
+          : mergedOptions[key]
+      )
+    ).join(',')
   }
 
-  handleWindowUnload() {
-    this.props.onUnloaded && this.props.onUnloaded(this.state.owindow)
+  windowLoaded(openedWindow) {
+    this.props.onLoaded && this.props.onLoaded(openedWindow)
   }
 
-  handleWindowClose() {
-    const { owindow } = this.state
-    owindow && owindow.close()
-    window.removeEventListener('unload', this.handleWindowClose)
+  parentUnload() {
+    const { openedWindow } = this.state
+    openedWindow && openedWindow.close()
+    window.removeEventListener('unload', this.parentUnload)
   }
+
+  openWindow(openedWindow) {
+    openedWindow = window.open(
+      this.props.url,
+      this.props.name,
+      this.createOptions()
+    )
+
+    if (openedWindow) {
+      window.addEventListener('unload', this.parentUnload)
+      this.windowLoaded(openedWindow)
+    }
+
+    this.setState({ openedWindow })
+  }
+
 
   render() {
     return null

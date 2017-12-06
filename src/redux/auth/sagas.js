@@ -111,8 +111,13 @@ export function* authFlow() {
 export function* watchForAuthentication() {
   // Prime the authentication state with stored authn token
   yield call(loadLocalAuthenticationIntoState)
-  // Begin the full authentication flow
-  yield call(authFlow)
+
+  const location = yield select(state => state.router.location)
+
+  if (!location || location && location.pathname != '/openid-complete') {
+    // Begin the full authentication flow
+    yield call(authFlow)
+  }
 }
 
 export const sagas = function* authSagas() {
