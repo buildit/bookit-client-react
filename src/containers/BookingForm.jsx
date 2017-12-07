@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 
-import { Field, reduxForm, isSubmitting } from 'redux-form'
+import { Field, reduxForm, isSubmitting, change } from 'redux-form'
 
 import Moment from 'moment-timezone'
 
@@ -95,8 +95,8 @@ export class BookingForm extends React.Component {
         { error && <strong>{ error }</strong> }
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
-          <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } />
-          <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } />
+          <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
+          <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
 
           <a href="#" onClick={(event) => {
             event.preventDefault()
@@ -132,6 +132,7 @@ BookingForm.propTypes = {
   error: PropTypes.string,
   setBookablesVisible: PropTypes.func,
   bookableName: PropTypes.string,
+  dispatch: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
