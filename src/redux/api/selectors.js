@@ -74,7 +74,7 @@ export const getBookableId = createGetSelector(getBookableEntity, 'id', null)
 export const getBookableName = createGetSelector(getBookableEntity, 'name', null)
 export const getBookableDisposition = createGetSelector(getBookableEntity, 'disposition', Map())
 
-export const getBookableBookings = createSelector(
+const getBookableBookings = createSelector(
   [ getBookableId, getBookingIds, getBookingEntities ],
   (bookableId, bookingIds, bookings) => bookingIds.filter(id => bookings.getIn([id, 'bookable']) === bookableId)
 )
@@ -118,5 +118,26 @@ export const getBookablesForLocation = createSelector(
     getBookableEntities,
   ],
   (locationId, bookableIds, bookables) => bookableIds.filter(id => bookables.getIn([id, 'location']) === locationId)
+)
 
+export const getBookingOverlaps = (state, locationId) => {
+  const bookings = getBookingEntities(state)
+  const bookingFormDateRange = getBookingFormDateRange(state)
+  const bookableIds = getBookablesForLocation(state, locationId)
+  const overlapsMaybe = bookableIds.map((id) => {
+    const bookableBookings = getBookableBookings(state, { id })
+    const existingBookingRanges = bookableBookings.map(id => ({ end: bookings.getIn([id, 'end']), start: bookings.getIn([id, 'start']) }))
+    return doesRangeOverlap(bookingFormDateRange, existingBookingRanges)
+  })
+  console.log('overlaps?', overlapsMaybe)
+}
+
+export const getBookablesSortedByAvailability = createSelector(
+  [ getBookablesForLocation, getBookableEntities ],
+  (bookableIds, bookables ) => bookableIds.sort((a, b) => {
+    const bookableA = bookables.get(a)
+    const bookableB = bookables.get(b)
+    console.log('bookableA', bookableA)
+    console.log('bookableB', bookableB)
+  })
 )
