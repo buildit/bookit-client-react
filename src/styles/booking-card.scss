@@ -1,0 +1,52 @@
+@import './mixins/flex';
+
+.booking {
+  background-color: white;
+  color: black;
+
+  @include page;
+  flex-flow: column nowrap;
+}
+
+.heading {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+
+  padding: 20px 10px 20px 10px;
+
+  .heading-item {
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    width: 100vw;
+  }
+
+  .title {
+    color: black;
+  }
+
+  .cancel {
+    color: black;
+    width: 44px;
+  }
+}
+
+.booking-item {
+  padding: 20px;
+
+  .booking-input {
+    margin-bottom: 10px;
+  }
+
+  p {
+    color: lightgray;
+    margin-bottom: 5px;
+  }
+
+  h3 {
+    border-bottom: 2px solid black;
+  }
+}
