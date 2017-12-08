@@ -27,7 +27,8 @@ Given('I create a booking for next week', async function() {
   await this.driver.wait(async () => (await endInput.getAttribute('value')).includes('T'))
   await endInput.clear()
   await endInput.sendKeys(endForForm)
-
+  await this.driver.findElement(By.linkText('Rooms')).click()
+  await this.driver.findElement(By.xpath('//h3[contains(text(),"Red Room")]')).click()
   const createButton = await this.driver.findElement(By.tagName('button'))
   await createButton.click()
 })

@@ -32,6 +32,7 @@ export class BookablesList extends React.Component {
     return (
       <div className={styles.bookablesList}>
         <ActionLink onClick={this.handleBack}>BACK</ActionLink>
+        <h3 className={styles.heading}>Change Room</h3>
         { bookableIds.map(id => (
           <SelectBookableItem
             key={id}
@@ -52,7 +53,7 @@ BookablesList.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  bookableIds: selectors.getBookablesForLocation(state, 'b1177996-75e2-41da-a3e9-fcdd75d1ab31'),  // Cheating on the locationId a bit
+  bookableIds: selectors.getBookablesSortedByAvailability(state, 'b1177996-75e2-41da-a3e9-fcdd75d1ab31'),  // Cheating on the locationId a bit
 })
 
 export default connect(mapStateToProps)(BookablesList)

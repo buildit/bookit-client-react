@@ -74,7 +74,7 @@ export const getBookableId = createGetSelector(getBookableEntity, 'id', null)
 export const getBookableName = createGetSelector(getBookableEntity, 'name', null)
 export const getBookableDisposition = createGetSelector(getBookableEntity, 'disposition', Map())
 
-export const getBookableBookings = createSelector(
+const getBookableBookings = createSelector(
   [ getBookableId, getBookingIds, getBookingEntities ],
   (bookableId, bookingIds, bookings) => bookingIds.filter(id => bookings.getIn([id, 'bookable']) === bookableId)
 )
@@ -118,5 +118,31 @@ export const getBookablesForLocation = createSelector(
     getBookableEntities,
   ],
   (locationId, bookableIds, bookables) => bookableIds.filter(id => bookables.getIn([id, 'location']) === locationId)
+)
 
+// we can get state as a parameter
+//  - just needed to pass an input-selector that simply
+// returns state instead of Thing-On-State. Gah.
+export const getBookingOverlaps = createSelector(
+  [ getBookablesForLocation, getBookingEntities, getBookingFormDateRange, state => state ],
+  (bookableIds, bookings, bookingFormDateRange, state) => {
+    return Map(
+      bookableIds.map((id) => {
+        const bookableBookings = getBookableBookings(state, { id })
+        const bookingRanges = bookableBookings.map(id => ({ end: bookings.getIn([id, 'end']), start: bookings.getIn([id, 'start']) }) )
+        return [ id, doesRangeOverlap(bookingFormDateRange, bookingRanges) ]
+      })
+    )
+  }
+)
+
+export const getBookablesSortedByAvailability = createSelector(
+  [ getBookablesForLocation, getBookableEntities, getBookingOverlaps ],
+  (bookableIds, bookables, bookingOverlaps) => bookableIds.sort((a, b) => {
+    const isAvailableA = !bookables.getIn([a, 'disposition', 'closed']) && !bookingOverlaps.get(a)
+    const isAvailableB = !bookables.getIn([b, 'disposition', 'closed']) && !bookingOverlaps.get(b)
+    // No, really! subtracting a boolean from a boolean will return -1, 0 or 1!
+    // B - A === available bookables are first, A - B === unavailable bookables are first
+    return isAvailableB - isAvailableA
+  })
 )

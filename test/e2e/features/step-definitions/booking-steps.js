@@ -15,7 +15,7 @@ Given('I am on the bookit website form', async function() {
   await this.getWithLogin(`${url}/book`)
 })
 
-When('I book a room', async function() {
+When('I fill in the form', async function() {
   const end = new Date(start)
   end.setMinutes(start.getMinutes() + 1)
 
@@ -34,9 +34,19 @@ When('I book a room', async function() {
   await this.driver.wait(async () => (await endInput.getAttribute('value')).includes('T'))
   await endInput.clear()
   await endInput.sendKeys(endForForm)
+  await this.driver.findElement(By.linkText('Rooms')).click()
+  await this.driver.findElement(By.xpath('//h3[contains(text(),"Red Room")]')).click()
+})
 
+When('I create my booking', async function() {
   const createButton = await this.driver.findElement(By.tagName('button'))
   await createButton.click()
+})
+
+Then('I cannot select the same room', async function() {
+  const condition = until.elementLocated(By.tagName('h3'))
+  const element = await this.driver.wait(condition)
+  await this.driver.wait(until.elementTextContains(element, 'Change Room'))
 })
 
 Then('It\'s booked', async function() {
