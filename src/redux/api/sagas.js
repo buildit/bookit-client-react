@@ -1,5 +1,7 @@
 import { call, fork, race, take } from 'redux-saga/effects'
 
+import history from 'History'
+
 export function* doSomething(action) {
   yield call(console.log, 'GOT ACTION:', action)
 }
@@ -23,6 +25,15 @@ export function* watchForCreateBooking() {
   }
 }
 
+export function* watchForDeleteBooking() {
+  while (true) {
+    yield take('DELETE_BOOKING_SUCCESS')
+    yield call(history.replace, '/bookings')
+    //TODO: Add some kind of notification about deleted booking
+  }
+}
+
 export const sagas = function* bookingSagas() {
   yield fork(watchForCreateBooking)
+  yield fork(watchForDeleteBooking)
 }

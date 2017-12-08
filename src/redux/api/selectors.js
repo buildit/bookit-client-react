@@ -27,6 +27,7 @@ export const getBookableEntities = state => getBookables(state).get('entities', 
 
 export const getBookingEntity = (state, props) => getBookingEntities(state).get(props.id, null)
 
+export const hasBooking = (state, id) => getBookings(state).get('result', Set()).includes(id)
 // export const getBookingId = createGetSelector(getBookingEntity, 'id', null)
 export const getBookingSubject = createGetSelector(getBookingEntity, 'subject', null)
 export const getBookingStart = createGetSelector(getBookingEntity, 'start', null)

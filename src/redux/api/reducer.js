@@ -31,7 +31,7 @@ const updateEntities = entity => (entityState, action) => {
 
 const removeEntity = entity => (entityState, action) => {
   const id = action.payload
-  entityState.update(entity, slice => slice.withMutations((state) => {
+  return entityState.update(entity, slice => slice.withMutations((state) => {
     state.update('result', set => set.subtract([id]))
     state.deleteIn(['entities', id])
   }))
