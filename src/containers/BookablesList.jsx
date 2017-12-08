@@ -53,7 +53,7 @@ BookablesList.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  stuff: selectors.getBookingOverlaps(state, 'b1177996-75e2-41da-a3e9-fcdd75d1ab31'),
+  overlaps: selectors.getBookingOverlaps(state, 'b1177996-75e2-41da-a3e9-fcdd75d1ab31'),
   bookableIds: selectors.getBookablesSortedByAvailability(state, 'b1177996-75e2-41da-a3e9-fcdd75d1ab31'),  // Cheating on the locationId a bit
 })
 

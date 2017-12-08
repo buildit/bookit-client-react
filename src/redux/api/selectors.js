@@ -120,9 +120,8 @@ export const getBookablesForLocation = createSelector(
   (locationId, bookableIds, bookables) => bookableIds.filter(id => bookables.getIn([id, 'location']) === locationId)
 )
 
-// Whyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy
-// Also, I am so, so goddamn stupid - of course we can get state
-// as a parameter - just needed to pass an input-selector that simply
+// we can get state as a parameter
+//  - just needed to pass an input-selector that simply
 // returns state instead of Thing-On-State. Gah.
 export const getBookingOverlaps = createSelector(
   [ getBookablesForLocation, getBookingEntities, getBookingFormDateRange, state => state ],
