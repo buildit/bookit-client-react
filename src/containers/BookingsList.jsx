@@ -1,18 +1,15 @@
 import React from 'react'
-import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
-
-import { toast } from 'react-toastify'
 
 import GroupedBookingsList from 'Components/GroupedBookingsList'
 import WeekSpinner from 'Components/WeekSpinner'
 
+import withToast from 'Hoc/with-toast'
+
 import { getWeekDaysRange, formatDate } from 'Utils'
 
 import styles from 'Styles/bookings.scss'
-
-import { actionCreators, selectors } from 'Redux'
 
 export class BookingsList extends React.Component {
   constructor(props) {
@@ -25,21 +22,9 @@ export class BookingsList extends React.Component {
     this.updateViewingDate = this.updateViewingDate.bind(this)
   }
 
-  componentDidMount() {
-    if (this.props.toasts) {
-      this.toastify(this.props.toasts)
-    }
-  }
-
   updateViewingDate = (date) => {
     this.setState({ viewingDate: date })
   }
-
-  //TODO: make into higher-order component
-  toastify = message => toast(message, {
-    onClose: () => this.props.dispatch(actionCreators.clearToasts()),
-    type: 'success',
-  });
 
   render() {
     const { viewingDate } = this.state
@@ -62,8 +47,4 @@ export class BookingsList extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({
-  toasts: selectors.getToasts(state),
-})
-
-export default connect(mapStateToProps)(BookingsList)
+export default withToast('success')(BookingsList)
