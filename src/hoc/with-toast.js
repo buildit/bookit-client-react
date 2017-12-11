@@ -14,9 +14,14 @@ export default (toastType = 'success') => (WrappedComponent) => {
       clearToasts: PropTypes.func,
     }
 
-    componentDidMount() {
-      if (this.props.toasts) {
-        this.toastify(this.props.toasts)
+    constructor(props) {
+      super(props)
+      this.toastId = null
+    }
+
+    componentWillReceiveProps(nextProps) {
+      if (!toast.isActive(this.toastId) && nextProps.toasts) {
+        this.toastId = this.toastify(nextProps.toasts)
       }
     }
 

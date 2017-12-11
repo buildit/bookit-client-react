@@ -23,6 +23,10 @@ export const getBookables = state => getEntities(state).get('bookables')
 export const getBookableIds = state => getBookables(state).get('result').toArray()
 export const getBookableEntities = state => getBookables(state).get('entities', Map())
 
+export const getUsers = state => getEntities(state).get('users')
+export const getUserIds = state => getUsers(state).get('result').toArray()
+export const getUserEntities = state => getUsers(state).get('entities', Map())
+
 // ### Bookings --------------------------------------------------------------
 
 export const getBookingEntity = (state, props) => getBookingEntities(state).get(props.id, null)
@@ -66,6 +70,25 @@ export const getLocationEntity = (state, props) => getLocationEntities(state).ge
 // export const getLocationId = createGetSelector(getLocationEntity, 'id', null)
 export const getLocationName = createGetSelector(getLocationEntity, 'name', null)
 export const getLocationTimezone = createGetSelector(getLocationEntity, 'timeZone', null)
+
+// ### Users -----------------------------------------------------------------
+
+export const getBookingsByUser = createSelector(
+  [ getUserIds, getBookingIds, getBookingEntities ],
+  (userIds, bookingIds, bookings) => {
+    return Map(userIds.map(userId => [
+      userId,
+      bookingIds.filter(bookingId => bookings.getIn([bookingId, 'user']) === userId),
+    ]))
+  }
+)
+
+const getUserId = (state, props) => props.userId
+
+export const getBookingsForUser = createSelector(
+  [ getUserId, getBookingsByUser ],
+  (userId, bookings) => bookings.get(userId, Set())
+)
 
 // ### Bookables -------------------------------------------------------------
 

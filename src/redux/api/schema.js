@@ -12,16 +12,21 @@ export const bookable = new schema.Entity('bookables', {}, {
 })
 
 export const booking = new schema.Entity('bookings', {}, {
-  processStrategy: ({ id, subject, start, end, bookableId }) => ({
+  processStrategy: ({ id, subject, start, end, bookableId, user }) => ({
     id,
     subject,
     start,
     end,
     bookable: bookableId,
+    user,
   }),
 })
 
-booking.define({ bookable })
+export const user = new schema.Entity('users', {}, {
+  processStrategy: ({ id, name }) => ({ id, name }),
+})
+
+booking.define({ bookable, user })
 
 export const locationList = [ location ]
 export const bookableList = [ bookable ]
