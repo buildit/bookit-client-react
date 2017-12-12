@@ -1,11 +1,11 @@
-import { Given, When, Then } from 'cucumber'
+import { Given, When, Then} from 'cucumber'
 import { By, until } from 'selenium-webdriver'
 
 import addWeeks from 'date-fns/add_weeks'
 
 import { url } from '../support/hooks'
 
-Given('I create a booking for next week', async function() {
+Given('I book a room', async function() {
   await this.getWithLogin(`${url}/book`)
 
   const start = addWeeks(new Date(), 1)
@@ -16,7 +16,7 @@ Given('I create a booking for next week', async function() {
   const endForForm = end.toISOString().split('.')[0]
 
   const subjectInput = await this.driver.findElement(By.name('subject'))
-  await subjectInput.sendKeys('My Bookable for Next Week')
+  await subjectInput.sendKeys('My Bookable To Be Deleted')
 
   const startInput = await this.driver.findElement(By.name('start'))
   await this.driver.wait(async () => (await startInput.getAttribute('value')).includes('T'))
@@ -28,25 +28,24 @@ Given('I create a booking for next week', async function() {
   await endInput.clear()
   await endInput.sendKeys(endForForm)
   await this.driver.findElement(By.linkText('Rooms')).click()
-  await this.driver.findElement(By.xpath('//h3[contains(text(),"Red Room")]')).click()
+  await this.driver.findElement(By.xpath('//h3[contains(text(),"Black Room")]')).click()
   const createButton = await this.driver.findElement(By.tagName('button'))
   await createButton.click()
 })
 
-When('I view my bookings and navigate to next week', async function() {
-  await this.getWithLogin(`${url}/home`)
-  await this.driver.findElement(By.linkText('View Your Bookings')).click()
+When('I am now editing details through the My Bookings page', async function() {
+  await this.getWithLogin(`${url}/bookings`)
   await this.driver.sleep(1000)
   await this.driver.findElement(By.id('next')).click()
+  await this.driver.findElement(By.id('booking-my-bookable-to-be-deleted')).click()
 })
 
-Then('I see my created booking', async function() {
-  const condition = until.elementLocated(By.id('booking-my-bookable-for-next-week'))
-  const element = await this.driver.wait(condition)
-  await this.driver.wait(until.elementTextContains(element, 'My Bookable for Next Week'))
-})
-
-Then('Then the booking is cancelled', async function() {
-  await this.driver.findElement(By.id('booking-my-bookable-for-next-week')).click()
+When('I click the Cancel Booking button', async function() {
   await this.driver.findElement(By.linkText('Cancel Booking')).click()
+})
+
+Then('It is cancelled', async function() {
+  const condition = until.elementLocated(By.tagName('body'))
+  const element = await this.driver.wait(condition)
+  await this.driver.wait(until.elementTextContains(element, 'Success! Your booking was successfully cancelled.'))
 })
