@@ -25,7 +25,7 @@ export class EditBooking extends React.Component {
       <div className={styles.booking}>
         <div className={styles.heading}>
           <Link to="/bookings" className={cn(styles.headingItem, styles.cancel)}>&laquo;</Link>
-          <h2 className={cn(styles.headingItem, styles.title)}>Edit Your Booking</h2>
+          <h2 className={cn(styles.headingItem, styles.title)}>Manage Your Booking</h2>
         </div>
         <div>
           <EditBookingCard id={this.props.match.params.id} />
