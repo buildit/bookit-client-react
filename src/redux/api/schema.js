@@ -28,9 +28,23 @@ export const user = new schema.Entity('users', {}, {
 
 booking.define({ bookable, user })
 
+export const availability = new schema.Entity('availability', {}, {
+  processStrategy: ({ id, disposition, bookings }) => {
+    const { closed/*, reason*/ } = disposition
+
+    let bookingIntervals = []
+
+    if (!closed) {
+      bookingIntervals = bookingIntervals.concat(bookings.map(({ start, end }) => ({ start, end })))
+    }
+    return { id, closed, intervals: bookingIntervals }
+  },
+})
+
 export const locationList = [ location ]
 export const bookableList = [ bookable ]
 export const bookingList = [ booking ]
+export const availabilityList = [ availability ]
 
 export const normalizeLocations = data => normalize(data, locationList)
 export const normalizeBookables = data => normalize(data, bookableList)
@@ -40,3 +54,5 @@ export const normalizeBooking = (data) => {
   const { entities, result } = normalize(data, booking)
   return { entities, result: [ result ] }
 }
+
+export const normalizeAvailability = data => normalize(data, availabilityList)

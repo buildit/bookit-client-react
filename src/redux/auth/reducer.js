@@ -6,8 +6,9 @@ import { decodeJWT } from 'Utils'
 
 const tokensState = Map({
   authn: null,
-  authz: null,
 })
+
+const userState = Map()
 
 const tokens = handleActions({
   SET_AUTHENTICATION_TOKEN: (state, action) => {
@@ -22,12 +23,12 @@ const tokens = handleActions({
 const user = handleActions({
   SET_AUTHENTICATION_TOKEN: (state, action) => {
     const user = decodeJWT(action.payload)
-    if (user && user.preferred_username) {
-      return user.preferred_username
-    }
-    return null
+    return state.withMutations((state) => {
+      if (user && user.preferred_username) state.set('email', user.preferred_username)
+      if (user && user.oid) state.set('oid', user.oid)
+    })
   },
-}, null)
+}, userState)
 
 const refreshAuthentication = handleActions({
   REFRESH_AUTH_REQUEST: () => true,
