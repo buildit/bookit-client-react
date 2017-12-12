@@ -15,6 +15,10 @@ const entityState = Map({
     entities: Map(),
     result: Set(),
   }),
+  users: Map({
+    entities: Map(),
+    result: Set(),
+  }),
 })
 
 const updateEntitySlice = (slice, entities, result) => {
@@ -31,7 +35,7 @@ const updateEntities = entity => (entityState, action) => {
 
 const removeEntity = entity => (entityState, action) => {
   const id = action.payload
-  entityState.update(entity, slice => slice.withMutations((state) => {
+  return entityState.update(entity, slice => slice.withMutations((state) => {
     state.update('result', set => set.subtract([id]))
     state.deleteIn(['entities', id])
   }))
@@ -40,13 +44,27 @@ const removeEntity = entity => (entityState, action) => {
 export const updateLocationEntities = updateEntities('locations')
 export const updateBookableEntities = updateEntities('bookables')
 export const updateBookingEntities = updateEntities('bookings')
+export const updateUserEntities = updateEntities('users')
+
 export const removeBookingEntity = removeEntity('bookings')
 
 const entities = handleActions({
   GET_LOCATIONS_SUCCESS: updateLocationEntities,
   GET_BOOKABLES_SUCCESS: updateBookableEntities,
-  GET_BOOKINGS_SUCCESS: updateBookingEntities,
-  CREATE_BOOKING_SUCCESS: updateBookingEntities,
+  GET_BOOKINGS_SUCCESS: (state, action) => {
+    const { entities: { bookings, users }, result } = action.payload
+    let entityState
+    entityState = updateUserEntities(state, { payload: { entities: { users }, result: Object.keys(users) } })
+    entityState = updateBookingEntities(entityState, { payload: { entities: { bookings }, result } })
+    return entityState
+  },
+  CREATE_BOOKING_SUCCESS: (state, action) => {
+    const { entities: { bookings, users }, result } = action.payload
+    let entityState
+    entityState = updateUserEntities(state, { payload: { entities: { users }, result: Object.keys(users) } })
+    entityState = updateBookingEntities(entityState, { payload: { entities: { bookings }, result } })
+    return entityState
+  },
   DELETE_BOOKING_SUCCESS: removeBookingEntity,
 }, entityState)
 

@@ -9,6 +9,7 @@ import BookingFormContainer from 'Containers/BookingFormContainer'
 import Landing from 'Containers/Landing'
 import BookingsList from 'Containers/BookingsList'
 import Login from 'Containers/Login'
+import EditBooking from 'Containers/EditBooking'
 
 const ApplicationRoutes = () => (
   <TransitionSwitch>
@@ -16,6 +17,7 @@ const ApplicationRoutes = () => (
     <Route exact path="/home" component={Landing} />
     <Route path="/login" component={Login} />
     <Route path="/book" component={BookingFormContainer} />
+    <Route path="/bookings/:id" component={EditBooking} />
     <Route path="/bookings" component={BookingsList} />
   </TransitionSwitch>
 )

@@ -3,3 +3,4 @@ Feature: Bookings List Feature
     Given I create a booking for next week
     When I view my bookings and navigate to next week
     Then I see my created booking
+    And Then the booking is cancelled

@@ -7,12 +7,9 @@ import { selectors } from 'Redux'
 
 import { formatDate, isToday } from 'Utils'
 
-import withBooking from 'Hoc/with-booking'
-import BaseBookingItem from 'Components/BaseBookingItem'
-
 import styles from 'Styles/grouped-bookings.scss'
 
-const BookingItem = withBooking(BaseBookingItem)
+import BookingListItem from 'Components/BookingListItem'
 
 export class GroupedBookingsList extends React.Component {
   render() {
@@ -25,7 +22,7 @@ export class GroupedBookingsList extends React.Component {
             { formatDate(date, 'ddd MMM D').toUpperCase() }
           </h4>
         </div>
-        { bookingIds.map(id => <BookingItem key={id} id={id} />) }
+        { bookingIds.map(id => <BookingListItem key={id} id={id} />) }
         { !bookingIds.length && <p className={styles.noBooking}>No bookings to show</p> }
       </div>
     )

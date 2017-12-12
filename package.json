@@ -41,6 +41,7 @@
     "url": "git+ssh://git@github.com/buildit/bookit-client-react.git"
   },
   "dependencies": {
+    "classnames": "^2.2.5",
     "date-fns": "^1.29.0",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
@@ -53,6 +54,7 @@
     "react-redux": "^5.0.6",
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^5.0.0-alpha.8",
+    "react-toastify": "^3.1.0",
     "react-transition-group": "^2.2.1",
     "redux": "^3.7.2",
     "redux-actions": "^2.2.1",

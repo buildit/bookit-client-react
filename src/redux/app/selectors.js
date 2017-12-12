@@ -14,3 +14,5 @@ export const getErrorMessages = createSelector(
     }
   }
 )
+
+export const getToasts = state => state.toasts

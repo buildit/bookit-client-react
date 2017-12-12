@@ -45,3 +45,14 @@ Then('I see my created booking', async function() {
   const element = await this.driver.wait(condition)
   await this.driver.wait(until.elementTextContains(element, 'My Bookable for Next Week'))
 })
+
+// TODO: We should make the `until... element` thing into a convenience method in support/world.js
+Then('Then the booking is cancelled', async function() {
+  const bookingForNextWeekCondition = until.elementLocated(By.id('booking-my-bookable-for-next-week'))
+  const bookingForNextWeekElement = await this.driver.wait(bookingForNextWeekCondition)
+  await bookingForNextWeekElement.click()
+
+  const cancelBookingCondition = until.elementLocated(By.linkText('Cancel Booking'))
+  const cancelBookingElement = await this.driver.wait(cancelBookingCondition)
+  await cancelBookingElement.click()
+})

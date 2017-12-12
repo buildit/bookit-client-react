@@ -17,7 +17,6 @@ const WeekSpinner = ({ weekOf, onClick }) => {
         <ActionLink onClick={() => onClick(previousWeek)} id="previous">&#12296;</ActionLink>
       </div>
       <div className={styles.week}>
-        <p>Week of</p>
         <h3>{formatWeek(weekOf)}</h3>
       </div>
       <div className={styles.controls}>
