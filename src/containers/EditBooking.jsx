@@ -30,7 +30,8 @@ export class EditBooking extends React.Component {
         <div>
           <EditBookingCard id={this.props.match.params.id} />
         </div>
-        <ActionLink onClick={() => this.props.deleteBooking(this.props.match.params.id)}>Cancel Booking</ActionLink>
+        <p>{ this.props.isBookingInPast }</p>
+        { !this.props.isBookingInPast && <ActionLink onClick={() => this.props.deleteBooking(this.props.match.params.id)}>Cancel Booking</ActionLink> }
       </div>
     )
   }
@@ -40,10 +41,12 @@ EditBooking.propTypes = {
   deleteBooking: PropTypes.func,
   match: PropTypes.object,
   hasBooking: PropTypes.bool,
+  isBookingInPast: PropTypes.bool,
 }
 
 const mapStateToProps = (state, ownProps) => ({
   hasBooking: selectors.hasBooking(state, ownProps.match.params.id),
+  isBookingInPast: selectors.isBookingInPast(state, { id: ownProps.match.params.id }),
 })
 
 export default connect(mapStateToProps, { deleteBooking: actionCreators.deleteBooking })(EditBooking)

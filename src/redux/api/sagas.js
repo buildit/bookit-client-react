@@ -42,7 +42,6 @@ export function* watchForDeleteBooking() {
         failure: take('DELETE_BOOKING_FAILURE'),
         success: take('DELETE_BOOKING_SUCCESS'),
       })
-
       if (success) {
         yield put(actionCreators.setToasts(messages.BOOKING_DELETED_SUCCESS))
         yield call(history.replace, '/bookings')

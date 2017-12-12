@@ -5,7 +5,7 @@ import { formValueSelector } from 'redux-form'
 import { createSelector } from 'reselect'
 import { createGetSelector } from 'reselect-immutable-helpers'
 
-import { doesRangeOverlap, formatDate, isSameDay, compareDates } from 'Utils'
+import { doesRangeOverlap, formatDate, isSameDay, compareDates, isBefore } from 'Utils'
 
 // ### Baseline selectors ----------------------------------------------------
 
@@ -29,7 +29,7 @@ export const getUserEntities = state => getUsers(state).get('entities', Map())
 
 // ### Bookings --------------------------------------------------------------
 
-export const getBookingEntity = (state, props) => getBookingEntities(state).get(props.id, null)
+export const getBookingEntity = (state, props) => getBookingEntities(state).get(props.id, Map())
 
 export const hasBooking = (state, id) => getBookings(state).get('result', Set()).includes(id)
 // export const getBookingId = createGetSelector(getBookingEntity, 'id', null)
@@ -37,6 +37,11 @@ export const getBookingSubject = createGetSelector(getBookingEntity, 'subject', 
 export const getBookingStart = createGetSelector(getBookingEntity, 'start', null)
 export const getBookingEnd = createGetSelector(getBookingEntity, 'end', null)
 export const getBookingBookable = createGetSelector(getBookingEntity, 'bookable', null)
+
+export const isBookingInPast = createSelector(
+  [ getBookingEnd ],
+  end => end && isBefore(end, new Date)
+)
 
 // Private helper for relating a bookable entity to a booking via the booking' bookable id
 const getBookingBookableEntity = createSelector(
