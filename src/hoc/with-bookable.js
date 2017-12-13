@@ -9,6 +9,7 @@ import { selectors } from 'Redux'
 export default (WrappedComponent) => {
   const mapStateToProps = createPropsSelector({
     closed: selectors.isBookableClosed,
+    reason: selectors.getBookableDispositionReason,
     name: selectors.getBookableName,
   })
 

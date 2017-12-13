@@ -122,6 +122,11 @@ export const isBookableClosed = createSelector(
   disposition => disposition.get('closed')
 )
 
+export const getBookableDispositionReason = createSelector(
+  [ getBookableDisposition ],
+  disposition => disposition.get('reason')
+)
+
 // Support selector for isBookableBooked
 const getBookingFormDateRange = state => formValueSelector('booking')(state, 'start', 'end')
 
