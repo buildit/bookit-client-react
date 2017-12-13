@@ -63,7 +63,7 @@ export class BookingForm extends React.Component {
       end: Moment().tz('America/New_York').add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
       start: Moment().tz('America/New_York').add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
     }
-    this.props.getAvailability('b1177996-75e2-41da-a3e9-fcdd75d1ab31', { start: '2017-12-12', end: '2017-12-13' })
+    this.props.getAvailability('2017-12-12')
     this.props.initialize(values)
   }
 

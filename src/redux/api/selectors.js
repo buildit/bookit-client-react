@@ -5,6 +5,8 @@ import { formValueSelector } from 'redux-form'
 import { createSelector } from 'reselect'
 import { createGetSelector } from 'reselect-immutable-helpers'
 
+import { getSelectedLocation } from '../app/selectors'
+
 import { doesRangeOverlap, formatDate, isSameDay, compareDates, isBefore } from 'Utils'
 
 // ### Baseline selectors ----------------------------------------------------
@@ -76,6 +78,13 @@ export const getLocationEntity = (state, props) => getLocationEntities(state).ge
 export const getLocationName = createGetSelector(getLocationEntity, 'name', null)
 export const getLocationTimezone = createGetSelector(getLocationEntity, 'timeZone', null)
 
+const getNameForLocation = (state, props) => props.name
+
+export const getLocationByName = createSelector(
+  [ getNameForLocation, getLocationEntities ],
+  (name, locations) => locations.find(value => value.get('name') === name)
+)
+
 // ### Users -----------------------------------------------------------------
 
 export const getBookingsByUser = createSelector(
@@ -142,7 +151,7 @@ export const getBookableLocationTimezone = createGetSelector(getBookableLocation
 
 export const getBookablesForLocation = createSelector(
   [
-    (state, locationId) => locationId,
+    getSelectedLocation,
     getBookableIds,
     getBookableEntities,
   ],

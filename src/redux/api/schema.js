@@ -1,5 +1,7 @@
 import { normalize, schema } from 'normalizr'
 
+import { createIntervalTree } from 'Utils'
+
 export const location = new schema.Entity('locations', {})
 
 export const bookable = new schema.Entity('bookables', {}, {
@@ -28,31 +30,43 @@ export const user = new schema.Entity('users', {}, {
 
 booking.define({ bookable, user })
 
-export const availability = new schema.Entity('availability', {}, {
-  processStrategy: ({ id, disposition, bookings }) => {
-    const { closed/*, reason*/ } = disposition
+export const normalizeLocations = data => normalize(data, [ location ])
+export const normalizeBookables = data => normalize(data, [ bookable ])
 
-    let bookingIntervals = []
-
-    if (!closed) {
-      bookingIntervals = bookingIntervals.concat(bookings.map(({ start, end }) => ({ start, end })))
-    }
-    return { id, closed, intervals: bookingIntervals }
-  },
-})
-
-export const locationList = [ location ]
-export const bookableList = [ bookable ]
-export const bookingList = [ booking ]
-export const availabilityList = [ availability ]
-
-export const normalizeLocations = data => normalize(data, locationList)
-export const normalizeBookables = data => normalize(data, bookableList)
-
-export const normalizeBookings = data => normalize(data, bookingList)
+export const normalizeBookings = data => normalize(data, [ booking ])
 export const normalizeBooking = (data) => {
   const { entities, result } = normalize(data, booking)
   return { entities, result: [ result ] }
 }
 
-export const normalizeAvailability = data => normalize(data, availabilityList)
+// The following two Entities exist to support computation of availability
+// on a set of bookables for a given date.
+//
+// These entities are not meant to be persisted, their only purpose is to
+// transform raw getAllBookables response data to a single intervaltree
+// that we can perform searches against using start and end date/times
+
+export const bookingAvailability = new schema.Entity(
+  'bookings', {},
+  {
+    processStrategy: ({ id: booking, bookableId: bookable, start, end }) => [
+      start, end, { bookable, booking },
+    ],
+  }
+)
+
+export const bookableAvailability = new schema.Entity(
+  'bookables', { bookings: [ bookingAvailability ] },
+  {
+    processStrategy: ({ id, disposition: { reason: closed } }) => ({
+      id, closed,
+    }),
+  }
+)
+
+export const normalizeAvailability = (data) => {
+  const { entities: { bookings } } = normalize(data, [ bookableAvailability ])
+  return createIntervalTree(
+    Object.values(bookings).reduce((acc, booking) => acc.concat([ booking ]), [])
+  )
+}

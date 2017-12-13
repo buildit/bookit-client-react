@@ -12,7 +12,7 @@ import {
 
 import { selectors } from 'Redux'
 
-import { getAPIEndpoint } from 'Utils'
+import { getAPIEndpoint, formatDate, addDays } from 'Utils'
 
 const apiBaseURI = getAPIEndpoint()
 const apiVersion = 'v1'
@@ -54,9 +54,9 @@ export const getAllLocations = () => ({
   },
 })
 
-export const getAllBookables = (locationId = 'b1177996-75e2-41da-a3e9-fcdd75d1ab31') => ({
+export const getAllBookables = () => ({
   [RSAA]: {
-    endpoint: `${apiEndpoint}/location/${locationId}/bookable`,
+    endpoint: state => `${apiEndpoint}/location/${selectors.getSelectedLocation(state)}/bookable`,
     method: 'GET',
     types: [
       'GET_BOOKABLES_PENDING',
@@ -86,12 +86,13 @@ export const getAllBookings = () => ({
   },
 })
 
-export const getAvailability = (locationId = 'b1177996-75e2-41da-a3e9-fcdd75d1ab31', options = {}) => {
-  const { start, end } = options
+export const getAvailability = (date = new Date) => {
+  const start = formatDate(date)
+  const end = formatDate(addDays(date, 1))
   const qs = QS.stringify({ start, end, expand: 'bookings' })
   return {
     [RSAA]: {
-      endpoint: `${apiEndpoint}/location/${locationId}/bookable?${qs}`,
+      endpoint: state => `${apiEndpoint}/location/${selectors.getSelectedLocation(state)}/bookable?${qs}`,
       method: 'GET',
       types: [
         'GET_AVAILABILITY_PENDING',

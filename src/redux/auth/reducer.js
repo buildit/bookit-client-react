@@ -4,12 +4,6 @@ import { handleActions } from 'redux-actions'
 
 import { decodeJWT } from 'Utils'
 
-const tokensState = Map({
-  authn: null,
-})
-
-const userState = Map()
-
 const tokens = handleActions({
   SET_AUTHENTICATION_TOKEN: (state, action) => {
     const { payload: authn } = action
@@ -17,7 +11,7 @@ const tokens = handleActions({
       state.set('authn', authn)
     })
   },
-}, tokensState)
+}, Map({ authn: null }))
 
 // "Temporary" setup to extract the identity used by the user to login via azure
 const user = handleActions({
@@ -28,7 +22,7 @@ const user = handleActions({
       if (user && user.oid) state.set('oid', user.oid)
     })
   },
-}, userState)
+}, Map())
 
 const refreshAuthentication = handleActions({
   REFRESH_AUTH_REQUEST: () => true,
