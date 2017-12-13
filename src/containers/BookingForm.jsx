@@ -7,19 +7,19 @@ import { Link } from 'react-router-dom'
 
 import { Field, reduxForm, isSubmitting, change } from 'redux-form'
 
-import Moment from 'moment-timezone'
-
 import { actionCreators, selectors } from 'Redux'
 
 import Button from 'Components/Button'
+
+import { addHours, isBefore, isAfter, formatDate } from 'Utils'
 
 import styles from 'Styles/form.scss'
 
 const required = value => (value ? undefined : 'Required')
 
-const endAfterStart = (value, {start}) => {
+const endAfterStart = (value, { start }) => {
   try {
-    if (Moment(value).isBefore(start)) {
+    if (isBefore(value, start)) {
       return 'End must be after start'
     }
   }
@@ -28,7 +28,7 @@ const endAfterStart = (value, {start}) => {
 
 const startBeforeEnd = (value, {end}) => {
   try {
-    if (Moment(value).isAfter(end)) {
+    if (isAfter(value, end)) {
       return 'Start must be before end'
     }
   }
@@ -58,12 +58,14 @@ const renderSuccessMessage = bookingId => <h1>Booking Created with booking ID {b
 const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, index) => <p key={index}>{error}</p>)}</h1>
 
 export class BookingForm extends React.Component {
-  componentDidMount() {
+  async componentDidMount() {
+    const now = new Date
     const values = {
-      end: Moment().tz('America/New_York').add(2, 'hours').format('YYYY-MM-DDTHH:mm'),
-      start: Moment().tz('America/New_York').add(1, 'hours').format('YYYY-MM-DDTHH:mm'),
+      end: formatDate(addHours(now, 1), 'YYYY-MM-DDTHH:mm'),
+      start: formatDate(now, 'YYYY-MM-DDTHH:mm'),
     }
-    this.props.getAvailability('2017-12-12')
+    const { payload: availability } = await this.props.getAvailability(now)
+    console.log('BLAP BLAP BLAP', availability)
     this.props.initialize(values)
   }
 

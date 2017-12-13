@@ -58,8 +58,8 @@ export const bookingAvailability = new schema.Entity(
 export const bookableAvailability = new schema.Entity(
   'bookables', { bookings: [ bookingAvailability ] },
   {
-    processStrategy: ({ id, disposition: { reason: closed } }) => ({
-      id, closed,
+    processStrategy: ({ id, disposition: { reason: closed }, bookings }) => ({
+      id, closed, bookings,
     }),
   }
 )

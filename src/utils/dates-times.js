@@ -14,6 +14,7 @@ import isSameYear from 'date-fns/is_same_year'
 import addDays from 'date-fns/add_days'
 import eachDay from 'date-fns/each_day'
 
+import addHours from 'date-fns/add_hours'
 import addWeeks from 'date-fns/add_weeks'
 
 import differenceInSeconds from 'date-fns/difference_in_seconds'
@@ -93,4 +94,4 @@ export const createIntervalTree = (intervals) => {
 }
 
 // "Re-export" functions from `date-fns` to reduce overall import statements
-export { isToday, isBefore, isAfter, isSameDay, addDays }
+export { addHours, isToday, isBefore, isAfter, isSameDay, addDays }
