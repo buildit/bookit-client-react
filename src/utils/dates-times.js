@@ -87,6 +87,10 @@ Node.prototype._getOverlappingRecords = function (currentNode, low, high) {
   return []
 }
 
+IntervalTree.prototype.search = function (low, high) {
+  return this.tree.search(...getIntervalInSeconds(low, high)).map(function (v) { return v.data })
+}
+
 export const createIntervalTree = (intervals) => {
   const tree = new IntervalTree
   intervals.forEach(([ start, end, data ]) => tree.insert(...getIntervalInSeconds(start, end), data))

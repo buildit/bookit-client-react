@@ -155,7 +155,9 @@ export const getBookablesForLocation = createSelector(
     getBookableIds,
     getBookableEntities,
   ],
-  (locationId, bookableIds, bookables) => bookableIds.filter(id => bookables.getIn([id, 'location']) === locationId)
+  (locationId, bookableIds, bookables) => bookableIds.filter(id => bookables.getIn([id, 'location']) === locationId).sort((a, b) => {
+    return bookables.getIn([a, 'disposition', 'closed']) - bookables.getIn([b, 'disposition', 'closed'])
+  })
 )
 
 // we can get state as a parameter

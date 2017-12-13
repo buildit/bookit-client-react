@@ -6,21 +6,27 @@ const clickHandler = (handler, value) => (event) => {
   handler(value)
 }
 
-export const BaseBookableItem = ({ id, name, className, onClick, available }) => {
+export const BaseBookableItem = ({ id, name, className, onClick, booked, closed }) => {
   return (
-    <div id={id} className={className} onClick={available ? clickHandler(onClick, id) : null}>
+    <div id={id} className={className} onClick={ (!closed && !booked) ? clickHandler(onClick, id) : null }>
       <h3>{ name }</h3>
-      <p>Available: {available ? 'Yes' : 'No'}</p>
+      <p>Available: {(closed || booked) ? 'No' : 'Yes'}</p>
     </div>
   )
 }
+
+// <BaseBookableItem>
+//  <ClosedReason bookable={bookable} />
+//   <OverlapsReason booking={booking} />
+// </BaseBookableItem>
 
 BaseBookableItem.propTypes = {
   id: PropTypes.string,
   name: PropTypes.string,
   className: PropTypes.string,
   onClick: PropTypes.func,
-  available: PropTypes.bool,
+  booked: PropTypes.bool,
+  closed: PropTypes.bool,
 }
 
 export default BaseBookableItem

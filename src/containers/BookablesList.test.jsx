@@ -6,13 +6,14 @@ import { BookablesList } from 'Containers/BookablesList'
 describe('<BookablesList />', () => {
   it('renders a list of bookables on the page', () => {
     const setBookablesVisible = jest.fn()
+    const getAvailability = jest.fn()
     const dispatch = jest.fn()
 
     const wrapper = shallow(
       <BookablesList
         bookableIds={[1, 2]}
         setBookablesVisible={setBookablesVisible}
-        dispatch={dispatch}
+        getAvailability={getAvailability}
       />
     )
 

@@ -8,7 +8,7 @@ import { selectors } from 'Redux'
 
 export default (WrappedComponent) => {
   const mapStateToProps = createPropsSelector({
-    available: selectors.isBookableAvailable,
+    closed: selectors.isBookableClosed,
     name: selectors.getBookableName,
   })
 

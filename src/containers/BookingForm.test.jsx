@@ -11,7 +11,6 @@ describe('<BookingForm />', () => {
     handleSubmit: jest.fn(),
     initialize: jest.fn(),
     getBookablesForLocation: jest.fn(),
-    getAvailability: jest.fn(),
   }
 
   it('renders itself and <Button /> given the default props', () => {

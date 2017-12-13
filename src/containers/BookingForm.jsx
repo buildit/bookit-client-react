@@ -64,8 +64,6 @@ export class BookingForm extends React.Component {
       end: formatDate(addHours(now, 1), 'YYYY-MM-DDTHH:mm'),
       start: formatDate(now, 'YYYY-MM-DDTHH:mm'),
     }
-    const { payload: availability } = await this.props.getAvailability(now)
-    console.log('BLAP BLAP BLAP', availability)
     this.props.initialize(values)
   }
 
@@ -149,5 +147,4 @@ const formed = reduxForm({ form: 'booking' })(BookingForm)
 
 export default connect(mapStateToProps, {
   createBooking: actionCreators.createBooking,
-  getAvailability: actionCreators.getAvailability,
 })(formed)
