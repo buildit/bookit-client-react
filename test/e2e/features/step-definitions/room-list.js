@@ -12,11 +12,9 @@ When('I click the room input button', async function() {
 })
 
 Then('I see a list of rooms and their availability', async function() {
-  const roomTitleCondition = until.elementLocated(By.tagName('h3'))
-  await this.driver.wait(roomTitleCondition)
-  const condition = until.elementLocated(By.tagName('p'))
+  const condition = until.elementLocated(By.tagName('h2'))
   const element = await this.driver.wait(condition)
-  await this.driver.wait(until.elementTextContains(element, 'Available'))
+  await this.driver.wait(until.elementTextContains(element, 'Room'))
 })
 
 // Given('I am on the list of rooms', async function() {
