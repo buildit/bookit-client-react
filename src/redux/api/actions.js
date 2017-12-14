@@ -7,11 +7,12 @@ import {
   normalizeBookables,
   normalizeBookings,
   normalizeBooking,
+  normalizeAvailability,
 } from './schema'
 
 import { selectors } from 'Redux'
 
-import { getAPIEndpoint } from 'Utils'
+import { getAPIEndpoint, formatDate, addDays } from 'Utils'
 
 const apiBaseURI = getAPIEndpoint()
 const apiVersion = 'v1'
@@ -53,25 +54,21 @@ export const getAllLocations = () => ({
   },
 })
 
-export const getAllBookables = (locationId = 'b1177996-75e2-41da-a3e9-fcdd75d1ab31', options = {}) => {
-  const { start, end } = options
-  const qs = QS.stringify({ start, end, expand: 'bookings' })
-  return {
-    [RSAA]: {
-      endpoint: `${apiEndpoint}/location/${locationId}/bookable?${qs}`,
-      method: 'GET',
-      types: [
-        'GET_BOOKABLES_PENDING',
-        {
-          type: 'GET_BOOKABLES_SUCCESS',
-          payload: (action, state, res) => getJSON(res).then(json => normalizeBookables(json)),
-        },
-        'GET_BOOKABLES_FAILURE',
-      ],
-      headers: makeHeaders(true, false),
-    },
-  }
-}
+export const getAllBookables = () => ({
+  [RSAA]: {
+    endpoint: state => `${apiEndpoint}/location/${selectors.getSelectedLocation(state)}/bookable`,
+    method: 'GET',
+    types: [
+      'GET_BOOKABLES_PENDING',
+      {
+        type: 'GET_BOOKABLES_SUCCESS',
+        payload: (action, state, res) => getJSON(res).then(json => normalizeBookables(json)),
+      },
+      'GET_BOOKABLES_FAILURE',
+    ],
+    headers: makeHeaders(true, false),
+  },
+})
 
 export const getAllBookings = () => ({
   [RSAA]: {
@@ -88,6 +85,29 @@ export const getAllBookings = () => ({
     headers: makeHeaders(true, false),
   },
 })
+
+export const getAvailability = (start, end) => {
+  const qs = QS.stringify({
+    start: formatDate(start),
+    end: formatDate(addDays(start, 1)),
+    expand: 'bookings',
+  })
+  return {
+    [RSAA]: {
+      endpoint: state => `${apiEndpoint}/location/${selectors.getSelectedLocation(state)}/bookable?${qs}`,
+      method: 'GET',
+      types: [
+        'GET_AVAILABILITY_PENDING',
+        {
+          type: 'GET_AVAILABILITY_SUCCESS',
+          payload: (action, state, res) => getJSON(res).then(json => normalizeAvailability(json, start, end)),
+        },
+        'GET_AVAILABILITY_FAILURE',
+      ],
+      headers: makeHeaders(true, false),
+    },
+  }
+}
 
 export const createBooking = booking => ({
   [RSAA]: {
@@ -129,4 +149,5 @@ export const actionCreators = {
   getAllBookings,
   createBooking,
   deleteBooking,
+  getAvailability,
 }

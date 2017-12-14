@@ -35,7 +35,9 @@ When('I fill in the form', async function() {
   await endInput.clear()
   await endInput.sendKeys(endForForm)
   await this.driver.findElement(By.linkText('Rooms')).click()
-  await this.driver.findElement(By.xpath('//h3[contains(text(),"Red Room")]')).click()
+  const condition = until.elementLocated(By.xpath('//h2[contains(text(),"Red Room")]'))
+  const element = await this.driver.wait(condition)
+  await element.click()
 })
 
 When('I create my booking', async function() {

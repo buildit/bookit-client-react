@@ -1,8 +1,8 @@
-import { call, fork, race, take, put } from 'redux-saga/effects'
+import { call, fork, race, take, takeEvery, put, select } from 'redux-saga/effects'
 
 import history from 'History'
 
-import { actionCreators } from 'Redux'
+import { selectors, actionCreators } from 'Redux'
 
 import * as messages from 'Constants/messages'
 
@@ -56,7 +56,16 @@ export function* watchForDeleteBooking() {
   }
 }
 
+export function* setLocationSaga() {
+  const location = yield select(selectors.getLocationByName, { name: 'NYC' })
+  if (location) {
+    yield put(actionCreators.setSelectedLocation(location.get('id')))
+  }
+}
+
 export const sagas = function* bookingSagas() {
   yield fork(watchForCreateBooking)
   yield fork(watchForDeleteBooking)
+
+  yield takeEvery('GET_LOCATIONS_SUCCESS', setLocationSaga)
 }

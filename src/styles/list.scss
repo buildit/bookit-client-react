@@ -12,10 +12,15 @@
 
 .bookable {
   color: black;
+  display: flex;
   border-top: 1px solid lightgray;
   margin-top: 10px;
   padding-left: 10px;
   padding-top: 10px;
+  padding-right: 10px;
+  align-content: center;
+  justify-content: space-between;
+  user-select: none;
 }
 
 .heading {

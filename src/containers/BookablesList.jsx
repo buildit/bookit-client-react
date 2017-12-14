@@ -4,41 +4,49 @@ import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { change } from 'redux-form'
 
-import { selectors } from 'Redux'
+import { selectors, actionCreators } from 'Redux'
 
 import ActionLink from 'Components/ActionLink'
-import BaseBookableItem from 'Components/BaseBookableItem'
-
-import withBookable from 'Hoc/with-bookable'
+import BookableAvailabilityItem from 'Components/BookableAvailabilityItem'
 
 import styles from 'Styles/list.scss'
 
-const SelectBookableItem = withBookable(BaseBookableItem)
-
 export class BookablesList extends React.Component {
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      availability: [],
+    }
+  }
+
+  async componentDidMount() {
+    const { payload: availability } = await this.props.getAvailability(this.props.start, this.props.end)
+    this.setState({ availability })
+  }
 
   handleBack = () => {
     this.props.setBookablesVisible(false)
   }
 
   handleBookableClick = (bookableId) => {
-    this.props.dispatch(change('booking', 'bookableId', bookableId))
+    this.props.change('booking', 'bookableId', bookableId)
     this.handleBack()
   }
 
   render() {
-    const { bookableIds } = this.props
+    const { availability } = this.state
 
     return (
       <div className={styles.bookablesList}>
         <ActionLink onClick={this.handleBack}>BACK</ActionLink>
         <h3 className={styles.heading}>Change Room</h3>
-        { bookableIds.map(id => (
-          <SelectBookableItem
-            key={id}
-            id={id}
+        { availability.map(bookable => (
+          <BookableAvailabilityItem
+            key={bookable.bookableId}
             className={styles.bookable}
             onClick={this.handleBookableClick}
+            {...bookable}
           />)
         )}
       </div>
@@ -47,13 +55,21 @@ export class BookablesList extends React.Component {
 }
 
 BookablesList.propTypes = {
-  bookableIds: PropTypes.array,
+  start: PropTypes.string,
+  end: PropTypes.string,
+  change: PropTypes.func,
+  getAvailability: PropTypes.func,
   setBookablesVisible: PropTypes.func,
-  dispatch: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
-  bookableIds: selectors.getBookablesSortedByAvailability(state, 'b1177996-75e2-41da-a3e9-fcdd75d1ab31'),  // Cheating on the locationId a bit
+  start: selectors.getBookingFormStart(state),
+  end: selectors.getBookingFormEnd(state),
 })
 
-export default connect(mapStateToProps)(BookablesList)
+const mapDispatchToProps = {
+  change,
+  getAvailability: actionCreators.getAvailability,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookablesList)

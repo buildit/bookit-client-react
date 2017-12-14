@@ -1,5 +1,7 @@
 import { normalize, schema } from 'normalizr'
 
+import { createIntervalTree } from 'Utils'
+
 export const location = new schema.Entity('locations', {})
 
 export const bookable = new schema.Entity('bookables', {}, {
@@ -28,15 +30,32 @@ export const user = new schema.Entity('users', {}, {
 
 booking.define({ bookable, user })
 
-export const locationList = [ location ]
-export const bookableList = [ bookable ]
-export const bookingList = [ booking ]
+export const normalizeLocations = data => normalize(data, [ location ])
+export const normalizeBookables = data => normalize(data, [ bookable ])
 
-export const normalizeLocations = data => normalize(data, locationList)
-export const normalizeBookables = data => normalize(data, bookableList)
-
-export const normalizeBookings = data => normalize(data, bookingList)
+export const normalizeBookings = data => normalize(data, [ booking ])
 export const normalizeBooking = (data) => {
   const { entities, result } = normalize(data, booking)
   return { entities, result: [ result ] }
+}
+
+export const availabilitySchema = new schema.Entity('availability', {}, {
+  processStrategy: ({ id, name, disposition: { closed, reason }, bookings }) => {
+    const tree = createIntervalTree(
+      bookings.map(({ start, end, user: { name } }) => [ start, end, { name } ])
+    )
+    return { id, name, closed, reason, bookings: tree }
+  },
+})
+
+export const normalizeAvailability = (data, start, end) => {
+  const { entities: { availability } } = normalize(data, [ availabilitySchema ])
+  return Object.values(availability).map(({ id, name, closed, reason, bookings }) => {
+    if (!closed) {
+      const overlaps = bookings.search(start, end)
+      closed = Boolean(overlaps.length)
+      reason = closed ? `Booked by ${overlaps[0].name}` : reason
+    }
+    return { bookableId: id, name, closed, reason }
+  }).sort((a, b) => a.closed - b.closed)
 }
