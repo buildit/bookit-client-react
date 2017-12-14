@@ -39,34 +39,23 @@ export const normalizeBooking = (data) => {
   return { entities, result: [ result ] }
 }
 
-// The following two Entities exist to support computation of availability
-// on a set of bookables for a given date.
-//
-// These entities are not meant to be persisted, their only purpose is to
-// transform raw getAllBookables response data to a single intervaltree
-// that we can perform searches against using start and end date/times
+export const availabilitySchema = new schema.Entity('availability', {}, {
+  processStrategy: ({ id, name, disposition: { closed, reason }, bookings }) => {
+    const tree = createIntervalTree(
+      bookings.map(({ start, end, user: { name } }) => [ start, end, { name } ])
+    )
+    return { id, name, closed, reason, bookings: tree }
+  },
+})
 
-export const bookingAvailability = new schema.Entity(
-  'bookings', {},
-  {
-    processStrategy: ({ id: booking, bookableId: bookable, start, end }) => [
-      start, end, { bookable, booking },
-    ],
-  }
-)
-
-export const bookableAvailability = new schema.Entity(
-  'bookables', { bookings: [ bookingAvailability ] },
-  {
-    processStrategy: ({ id, disposition: { reason: closed }, bookings }) => ({
-      id, closed, bookings,
-    }),
-  }
-)
-
-export const normalizeAvailability = (data) => {
-  const { entities: { bookings } } = normalize(data, [ bookableAvailability ])
-  return createIntervalTree(
-    Object.values(bookings).reduce((acc, booking) => acc.concat([ booking ]), [])
-  )
+export const normalizeAvailability = (data, start, end) => {
+  const { entities: { availability } } = normalize(data, [ availabilitySchema ])
+  return Object.values(availability).map(({ id, name, closed, reason, bookings }) => {
+    if (!closed) {
+      const overlaps = bookings.search(start, end)
+      closed = Boolean(overlaps.length)
+      reason = closed ? `Booked by ${overlaps[0].name}` : reason
+    }
+    return { bookableId: id, name, closed, reason }
+  }).sort((a, b) => a.closed - b.closed)
 }

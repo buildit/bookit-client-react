@@ -86,10 +86,12 @@ export const getAllBookings = () => ({
   },
 })
 
-export const getAvailability = (date = new Date) => {
-  const start = formatDate(date)
-  const end = formatDate(addDays(date, 1))
-  const qs = QS.stringify({ start, end, expand: 'bookings' })
+export const getAvailability = (start, end) => {
+  const qs = QS.stringify({
+    start: formatDate(start),
+    end: formatDate(addDays(start, 1)),
+    expand: 'bookings',
+  })
   return {
     [RSAA]: {
       endpoint: state => `${apiEndpoint}/location/${selectors.getSelectedLocation(state)}/bookable?${qs}`,
@@ -98,7 +100,7 @@ export const getAvailability = (date = new Date) => {
         'GET_AVAILABILITY_PENDING',
         {
           type: 'GET_AVAILABILITY_SUCCESS',
-          payload: (action, state, res) => getJSON(res).then(json => normalizeAvailability(json)),
+          payload: (action, state, res) => getJSON(res).then(json => normalizeAvailability(json, start, end)),
         },
         'GET_AVAILABILITY_FAILURE',
       ],

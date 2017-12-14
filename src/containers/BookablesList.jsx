@@ -7,29 +7,22 @@ import { change } from 'redux-form'
 import { selectors, actionCreators } from 'Redux'
 
 import ActionLink from 'Components/ActionLink'
-import BaseBookableItem from 'Components/BaseBookableItem'
-
-import withBookable from 'Hoc/with-bookable'
+import BookableAvailabilityItem from 'Components/BookableAvailabilityItem'
 
 import styles from 'Styles/list.scss'
-
-const SelectBookableItem = withBookable(BaseBookableItem)
 
 export class BookablesList extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      overlaps: [],
+      availability: [],
     }
   }
 
   async componentDidMount() {
-    console.log('COMPONENT DID MOUNT')
-    const { payload: availability } = await this.props.getAvailability(this.props.start)
-    const overlaps = availability.search(this.props.start, this.props.end)
-    console.log('OVERLAPS!', overlaps)
-    this.setState({ overlaps: overlaps.map(overlap => overlap.bookable) })
+    const { payload: availability } = await this.props.getAvailability(this.props.start, this.props.end)
+    this.setState({ availability })
   }
 
   handleBack = () => {
@@ -42,26 +35,18 @@ export class BookablesList extends React.Component {
   }
 
   render() {
-    const { bookableIds } = this.props
-    const { overlaps } = this.state
-
-    const sortedBookableIds = bookableIds.reduce((acc, id) => {
-      if (!overlaps.includes(id))
-        acc.push(id)
-      return acc
-    }, []).concat(overlaps)
+    const { availability } = this.state
 
     return (
       <div className={styles.bookablesList}>
         <ActionLink onClick={this.handleBack}>BACK</ActionLink>
         <h3 className={styles.heading}>Change Room</h3>
-        { sortedBookableIds.map(id => (
-          <SelectBookableItem
-            key={id}
-            id={id}
+        { availability.map(bookable => (
+          <BookableAvailabilityItem
+            key={bookable.bookableId}
             className={styles.bookable}
             onClick={this.handleBookableClick}
-            booked={overlaps.includes(id)}
+            {...bookable}
           />)
         )}
       </div>
@@ -70,17 +55,14 @@ export class BookablesList extends React.Component {
 }
 
 BookablesList.propTypes = {
-  bookableIds: PropTypes.array,
   start: PropTypes.string,
   end: PropTypes.string,
   change: PropTypes.func,
   getAvailability: PropTypes.func,
   setBookablesVisible: PropTypes.func,
-  dispatch: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
-  bookableIds: selectors.getBookablesForLocation(state),  // selectors.getBookablesSortedByAvailability(state),
   start: selectors.getBookingFormStart(state),
   end: selectors.getBookingFormEnd(state),
 })
