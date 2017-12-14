@@ -9,10 +9,12 @@ describe('<BookablesList />', () => {
     const getAvailability = jest.fn()
     const change = jest.fn()
 
-    getAvailability.mockReturnValue(() => Promise.resolve([
-      { bookableId: 'xyz', name: 'Mock Room One', closed: false, reason: '' },
-      { bookableId: 'abc', name: 'Mock Room Two', closed: true, reason: 'Eggs Everywhere, man' },
-    ]))
+    getAvailability.mockReturnValue(Promise.resolve({
+      payload: [
+        { bookableId: 'xyz', name: 'Mock Room One', closed: false, reason: '' },
+        { bookableId: 'abc', name: 'Mock Room Two', closed: true, reason: 'Eggs Everywhere, man' },
+      ],
+    }))
 
     const wrapper = mount(
       <BookablesList
@@ -24,9 +26,10 @@ describe('<BookablesList />', () => {
       />
     )
 
-    console.log(wrapper.debug())
-    console.log(wrapper.state())
+    await wrapper.instance().componentDidMount()
+
+    expect(wrapper.find('BookableAvailabilityItem')).to.have.length(0)
     wrapper.update()
-    console.log(wrapper.debug())
+    expect(wrapper.find('BookableAvailabilityItem')).to.have.length(2)
   })
 })
