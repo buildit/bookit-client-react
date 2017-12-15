@@ -20,7 +20,9 @@ export function* watchForCreateBooking() {
     })
 
     if (success) {
+      yield put(actionCreators.setToasts('BOOKING CREATED YAYAYAYAY'))
       yield call(doSomething, success)
+      yield call(history.replace, '/bookings')
     }
 
     if (failure) {
