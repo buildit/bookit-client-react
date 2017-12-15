@@ -19,9 +19,9 @@ export default (toastType = 'success') => (WrappedComponent) => {
       this.toastId = null
     }
 
-    componentWillReceiveProps(nextProps) {
-      if (!toast.isActive(this.toastId) && nextProps.toasts) {
-        this.toastId = this.toastify(nextProps.toasts)
+    componentDidMount() {
+      if (!toast.isActive(this.toastId) && Boolean(this.props.toasts)) {
+        this.toastId = this.toastify(this.props.toasts)
       }
     }
 
