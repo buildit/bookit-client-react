@@ -52,9 +52,9 @@ Then('I cannot select the same room', async function() {
 })
 
 Then('It\'s booked', async function() {
-  const condition = until.elementLocated(By.tagName('h1'))
+  const condition = until.elementLocated(By.tagName('body'))
   const element = await this.driver.wait(condition)
-  await this.driver.wait(until.elementTextContains(element, 'Booking Created'))
+  await this.driver.wait(until.elementTextContains(element, 'Success! Your booking was successfully created.'))
 })
 
 Then('It fails', async function() {

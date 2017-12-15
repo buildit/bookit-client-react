@@ -9,6 +9,8 @@ import { Field, reduxForm, isSubmitting, change } from 'redux-form'
 
 import { actionCreators, selectors } from 'Redux'
 
+import withToast from 'Hoc/with-toast'
+
 import Button from 'Components/Button'
 
 import { addHours, isBefore, isAfter, formatDate } from 'Utils'
@@ -54,7 +56,6 @@ renderField.propTypes = {
   meta: PropTypes.object,
 }
 
-const renderSuccessMessage = bookingId => <h1>Booking Created with booking ID {bookingId}!</h1>
 const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, index) => <p key={index}>{error}</p>)}</h1>
 
 export class BookingForm extends React.Component {
@@ -77,7 +78,6 @@ export class BookingForm extends React.Component {
     const {
       handleSubmit,
       submitting,
-      bookingInstanceId,
       pristine,
       invalid,
       error,
@@ -114,7 +114,6 @@ export class BookingForm extends React.Component {
           </div>
         </form>
 
-        { bookingInstanceId && renderSuccessMessage(bookingInstanceId) }
         { errorMessages && renderErrorMessages(errorMessages) }
       </div>
     )
@@ -143,7 +142,9 @@ const mapStateToProps = state => ({
   bookableName: selectors.getBookingFormBookableName(state),
 })
 
-const formed = reduxForm({ form: 'booking' })(BookingForm)
+const toastForm = withToast('success')(BookingForm)
+
+const formed = reduxForm({ form: 'booking' })(toastForm)
 
 export default connect(mapStateToProps, {
   createBooking: actionCreators.createBooking,
