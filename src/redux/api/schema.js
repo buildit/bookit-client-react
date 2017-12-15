@@ -25,7 +25,8 @@ export const booking = new schema.Entity('bookings', {}, {
 })
 
 export const user = new schema.Entity('users', {}, {
-  processStrategy: ({ id, name }) => ({ id, name }),
+  idAttribute: 'externalId',
+  processStrategy: ({ id, externalId, name }) => ({ id, externalId, name }),
 })
 
 booking.define({ bookable, user })

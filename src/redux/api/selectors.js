@@ -6,6 +6,7 @@ import { createSelector } from 'reselect'
 import { createGetSelector } from 'reselect-immutable-helpers'
 
 import { getSelectedLocation } from '../app/selectors'
+import { getUserId } from '../auth/selectors'
 
 import { doesRangeOverlap, formatDate, isSameDay, compareDates, isBefore } from 'Utils'
 
@@ -97,11 +98,14 @@ export const getBookingsByUser = createSelector(
   }
 )
 
-const getUserId = (state, props) => props.userId
-
 export const getBookingsForUser = createSelector(
   [ getUserId, getBookingsByUser ],
   (userId, bookings) => bookings.get(userId, Set())
+)
+
+export const getBookingsForUserForDate = createSelector(
+  [ getUserId, getBookingsForDate, getBookingEntities ],
+  (userId, bookingIds, bookings) => bookingIds.filter(id => bookings.getIn([id, 'user']) === userId)
 )
 
 // ### Bookables -------------------------------------------------------------
