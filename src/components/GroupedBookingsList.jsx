@@ -35,7 +35,7 @@ GroupedBookingsList.propTypes = {
 }
 
 const mapStateToProps = (state, props) => ({
-  bookingIds: selectors.getBookingsForDate(state, props),
+  bookingIds: selectors.getBookingsForUserForDate(state, props),
 })
 
 export default connect(mapStateToProps)(GroupedBookingsList)
