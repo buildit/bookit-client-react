@@ -49,7 +49,7 @@ Then('I cannot select the same room', async function() {
 })
 
 Then('It\'s booked', async function() {
-  await this.waitUntilElementTextContains(By.tagName('h1'), 'Booking Created')
+  await this.waitUntilElementTextContains(By.tagName('body'), 'Success! Your booking was successfully created.')
 })
 
 Then('It fails', async function() {
