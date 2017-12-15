@@ -1,9 +1,7 @@
 import { Given, When, Then, Before } from 'cucumber'
-import { By, until } from 'selenium-webdriver'
+import { By } from 'selenium-webdriver'
 
 import faker from 'faker'
-
-import { url } from '../support/hooks'
 
 let start
 
@@ -12,7 +10,7 @@ Before(function() {
 })
 
 Given('I am on the bookit website form', async function() {
-  await this.getWithLogin(`${url}/book`)
+  await this.getWithLogin('/book')
 })
 
 When('I fill in the form', async function() {
@@ -22,43 +20,38 @@ When('I fill in the form', async function() {
   const startForForm = start.toISOString().split('.')[0]
   const endForForm = end.toISOString().split('.')[0]
 
-  const subjectInput = await this.driver.findElement(By.name('subject'))
+  const subjectInput = await this.findElementByName('subject')
   await subjectInput.sendKeys('My Bookable')
 
-  const startInput = await this.driver.findElement(By.name('start'))
+  const startInput = await this.findElementByName('start')
   await this.driver.wait(async () => (await startInput.getAttribute('value')).includes('T'))
   await startInput.clear()
   await startInput.sendKeys(startForForm)
 
-  const endInput = await this.driver.findElement(By.name('end'))
+  const endInput = await this.findElementByName('end')
   await this.driver.wait(async () => (await endInput.getAttribute('value')).includes('T'))
   await endInput.clear()
   await endInput.sendKeys(endForForm)
-  await this.driver.findElement(By.linkText('Rooms')).click()
-  const condition = until.elementLocated(By.xpath('//h2[contains(text(),"Red Room")]'))
-  const element = await this.driver.wait(condition)
+
+  await this.findElementByLinkText('Rooms').click()
+
+  const element = await this.waitUntilElement(By.xpath('//h2[contains(text(),"Red Room")]'))
   await element.click()
 })
 
 When('I create my booking', async function() {
-  const createButton = await this.driver.findElement(By.tagName('button'))
+  const createButton = await this.findElementByTagName('button')
   await createButton.click()
 })
 
 Then('I cannot select the same room', async function() {
-  const condition = until.elementLocated(By.tagName('h3'))
-  const element = await this.driver.wait(condition)
-  await this.driver.wait(until.elementTextContains(element, 'Change Room'))
+  await this.waitUntilElementTextContains(By.tagName('h3'), 'Change Room')
 })
 
 Then('It\'s booked', async function() {
-  const condition = until.elementLocated(By.tagName('body'))
-  const element = await this.driver.wait(condition)
-  await this.driver.wait(until.elementTextContains(element, 'Success! Your booking was successfully created.'))
+  await this.waitUntilElementTextContains(By.tagName('body'), 'Success! Your booking was successfully created.')
 })
 
 Then('It fails', async function() {
-  const condition = until.elementLocated(By.tagName('h1'))
-  const element = await this.driver.wait(condition)
-  await this.driver.wait(until.elementTextContains(element, 'Bookable is not available'))
+  await this.waitUntilElementTextContains(By.tagName('h1'), 'Bookable is not available')
 })

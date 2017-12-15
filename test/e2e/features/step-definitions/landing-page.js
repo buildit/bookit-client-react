@@ -1,26 +1,22 @@
 import { Given, When, Then } from 'cucumber'
-import { By, until } from 'selenium-webdriver'
-
-import { url } from '../support/hooks'
+import { By } from 'selenium-webdriver'
 
 Given('I am on the landing page of Bookit', async function() {
-  await this.getWithLogin(`${url}/home`)
+  await this.getWithLogin('/home')
 })
 
 When('I click the Book a Room button', async function() {
-  await this.driver.findElement(By.linkText('Book A Room')).click()
+  await this.findElementByLinkText('Book A Room').click()
 })
 
 When('I click the View Your Bookings button', async function() {
-  await this.driver.findElement(By.linkText('View Your Bookings')).click()
+  await this.findElementByLinkText('View Your Bookings').click()
 })
 
 Then('I am on the booking form', async function() {
-  await this.driver.findElement(By.tagName('form'))
+  await this.findElementByTagName('form')
 })
 
 Then('I am on the view bookings page', async function() {
-  const condition = until.elementLocated(By.tagName('h2'))
-  const element = await this.driver.wait(condition)
-  await this.driver.wait(until.elementTextContains(element, 'All Bookings'))
+  await this.waitUntilElementTextContains(By.tagName('h2'), 'All Bookings')
 })
