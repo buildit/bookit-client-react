@@ -28,8 +28,12 @@ Given('I book a room', async function() {
 
   await this.findElementByLinkText('Rooms').click()
 
+  await this.driver.sleep(2000)
+
   const element = await this.waitUntilElement(By.xpath('//h2[contains(text(),"Black Room")]'))
   await element.click()
+
+  await this.driver.sleep(2000)
 
   const createButton = await this.findElementByTagName('button')
   await createButton.click()
