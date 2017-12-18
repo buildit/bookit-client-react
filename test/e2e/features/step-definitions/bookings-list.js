@@ -77,4 +77,5 @@ Then('the booking is cancelled', async function() {
 
   const cancelBookingElement = await this.waitUntilElement(By.linkText('Cancel Booking'))
   await cancelBookingElement.click()
+  await this.waitUntilElementTextContains(By.tagName('body'), 'Success! Your booking was successfully cancelled.')
 })
