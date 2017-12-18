@@ -2,8 +2,9 @@ import { defineSupportCode, setWorldConstructor } from 'cucumber'
 
 import { By, Builder, until } from 'selenium-webdriver'
 import chrome from 'selenium-webdriver/chrome'
-
+import faker from 'faker'
 import jwt from 'jsonwebtoken'
+import addDays from 'date-fns/add_days'
 
 function makeValidToken() {
   return JSON.stringify(
@@ -23,6 +24,7 @@ class _JWhutWorld {
     this.parameters = parameters
 
     this.LOCALURL = process.env.ENDPOINT_URI || 'http://localhost:3001'
+    this.start = faker.date.between(new Date(), addDays(new Date(), 6))
 
     const options = new chrome.Options()
     options.addArguments('no-sandbox')

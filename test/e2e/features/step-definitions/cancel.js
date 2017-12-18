@@ -6,7 +6,7 @@ import addWeeks from 'date-fns/add_weeks'
 Given('I book a room', async function() {
   await this.getWithLogin('/book')
 
-  const start = addWeeks(new Date(), 1)
+  const start = addWeeks(this.start, 1)
   const end = new Date(start)
   end.setMinutes(start.getMinutes() + 1)
 

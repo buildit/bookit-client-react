@@ -1,23 +1,15 @@
-import { Given, When, Then, Before } from 'cucumber'
+import { Given, When, Then } from 'cucumber'
 import { By } from 'selenium-webdriver'
-
-import faker from 'faker'
-
-let start
-
-Before(function() {
-  start = faker.date.future(2)
-})
 
 Given('I am on the bookit website form', async function() {
   await this.getWithLogin('/book')
 })
 
 When('I fill in the form', async function() {
-  const end = new Date(start)
-  end.setMinutes(start.getMinutes() + 1)
+  const end = new Date(this.start)
+  end.setMinutes(this.start.getMinutes() + 1)
 
-  const startForForm = start.toISOString().split('.')[0]
+  const startForForm = this.start.toISOString().split('.')[0]
   const endForForm = end.toISOString().split('.')[0]
 
   const subjectInput = await this.findElementByName('subject')
