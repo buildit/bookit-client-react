@@ -35,11 +35,14 @@ When('I fill in the form', async function() {
 
   await this.findElementByLinkText('Rooms').click()
 
+  await this.driver.sleep(1000)
+
   const element = await this.waitUntilElement(By.xpath('//h2[contains(text(),"Red Room")]'))
   await element.click()
 })
 
 When('I create my booking', async function() {
+  await this.driver.sleep(1000)
   const createButton = await this.findElementByTagName('button')
   await createButton.click()
 })

@@ -30,6 +30,8 @@ Given('I create a booking for next week', async function() {
 
   await this.findElementByLinkText('Rooms').click()
 
+  await this.driver.sleep(2000)
+
   const element = await this.waitUntilElement(By.xpath('//h2[contains(text(),"Red Room")]'))
   await element.click()
 
