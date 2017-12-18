@@ -1,5 +1,6 @@
 import { Given, When, Then } from 'cucumber'
 import { By } from 'selenium-webdriver'
+import { fail } from 'assert'
 
 import addWeeks from 'date-fns/add_weeks'
 
@@ -32,26 +33,45 @@ Given('I create a booking for next week', async function() {
   const element = await this.waitUntilElement(By.xpath('//h2[contains(text(),"Red Room")]'))
   await element.click()
 
-  const createButton = await this.findElementByTagName('button')
+  await this.driver.sleep(1000)
+
+  const createButton = await this.waitUntilElementIsVisible(By.tagName('button'))
   await createButton.click()
 })
 
-When('I view my bookings and navigate to next week', async function() {
+When('I view my bookings', async function() {
   await this.getWithLogin('/home')
 
   await this.findElementByLinkText('View Your Bookings').click()
+})
 
+When('I view my bookings as another user', async function () {
+  await this.getWithAnotherUsersLogin('/home')
+
+  await this.findElementByLinkText('View Your Bookings').click()
+})
+
+When('I navigate to next week', async function () {
+  // TODO eliminate these blind waits (need to wait for animation to stop)
   await this.driver.sleep(1000)
-
-  await this.findElementById('next').click()
+  const element = await this.waitUntilElementIsVisible(By.id('next'))
+  await element.click()
 })
 
 Then('I see my created booking', async function() {
   await this.waitUntilElementTextContains(By.id('booking-my-bookable-for-next-week'), 'My Bookable for Next Week')
 })
 
-// TODO: We should make the `until... element` thing into a convenience method in support/world.js
-Then('Then the booking is cancelled', async function() {
+Then('I don\'t see the created booking', async function() {
+  try {
+    await this.waitUntilElementTextContains(By.id('booking-my-bookable-for-next-week'), 'My Bookable for Next Week', 3000)
+  } catch (error) {
+    return
+  }
+  fail("The created booking", "No created booking", "Found the created booking")
+})
+
+Then('the booking is cancelled', async function() {
   const bookingForNextWeekElement = await this.waitUntilElement(By.id('booking-my-bookable-for-next-week'))
   await bookingForNextWeekElement.click()
 
