@@ -35,7 +35,7 @@ Given('I create a booking for next week', async function() {
   const element = await this.waitUntilElement(By.xpath('//h2[contains(text(),"Red Room")]'))
   await element.click()
 
-  await this.driver.sleep(1000)
+  await this.driver.sleep(2000)
 
   const createButton = await this.waitUntilElementIsVisible(By.tagName('button'))
   await createButton.click()
