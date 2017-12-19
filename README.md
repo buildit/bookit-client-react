@@ -1,6 +1,6 @@
 # Bookit
 
-This is the front end for Bookit, a room booking app created by Buildit. It runs against the [Bookit API](https://github.com/buildit/bookit-api).
+This is the front end for Bookit, a room booking app created by Buildit. It runs against the [Bookit API](https://github.com/buildit/bookit-api) (which you must have running locally).
 
 
 ## Quick start
@@ -13,6 +13,7 @@ $ brew install yarn
 $ yarn
 
 # Run the app in dev mode on localhost:3001
+# Also ensure bookit-api is running on localhost:8080
 $ yarn start
 ```
 
@@ -29,6 +30,7 @@ To run unit tests
 
 ### Run end-to-end UI testing
 ```
+# Again ensure bookit-api is running on localhost:8080
 yarn cucumber
 ```
 
