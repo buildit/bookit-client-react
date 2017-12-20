@@ -5,16 +5,33 @@ This is the front end for Bookit, a room booking app created by Buildit. It runs
 
 ## Quick start
 
+Clone the [Bookit API](https://github.com/buildit/bookit-api) locally. From the bookit-api root run a 
+Docker command to create the back-end.
+
+```Shell
+git clone git@github.com:buildit/bookit-api.git
+cd bookit-api
+docker-compose up
+
+# Make sure to run `docker-compose down` to turn off the API when you're done
 ```
+
+Clone this repo. Set the proper Node version ([Node Version Manager](https://github.com/creationix/nvm) 
+is recommended). Navigate to the root and install the dependencies. Then run the app.
+
+```Shell
+nvm use
+
 # If you don't already have it
 $ brew install yarn
 
 # Install dependencies
 $ yarn
 
-# Run the app in dev mode on localhost:3001
 # Also ensure bookit-api is running on localhost:8080
 $ yarn start
+
+# Run the app in dev mode on localhost:3001
 ```
 
 ## Testing
