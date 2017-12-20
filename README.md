@@ -24,6 +24,9 @@ $ yarn test
 
 # Run unit tests continuously
 $ yarn test:watch
+
+# Run unit test against a single test suite
+$ yarn test path/to/source.test.js
 ```
 To run unit tests
 
@@ -89,4 +92,4 @@ See [Contributing](./docs/CONTRIBUTING.md)
 
 
 ## Design Screens & Prototypes
-* [Bookit-design](https://github.com/buildit/bookit-design) 
+* [Bookit-design](https://github.com/buildit/bookit-design)

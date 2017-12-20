@@ -1,6 +1,28 @@
-import { deriveAPIEndpoint } from './get-location'
+import { getAPIEndpoint, deriveAPIEndpoint } from './get-location'
 
 describe('BookIt API URL tests', () => {
+
+  describe('#getApiEndpoint()', () => {
+    it('returns localhost when window.location is not defined', () => {
+      window._location = window.location
+      delete window.location
+
+      const actual = getAPIEndpoint()
+
+      expect(actual).to.equal('http://localhost:8080')
+
+      window.location = window._location
+      delete window._location
+    })
+
+    it('returns a domain when window.location is defined', () => {
+      window.location = { origin: 'http://bookit-client-react.buildit.tools' }
+
+      const actual = getAPIEndpoint()
+
+      expect(actual).to.equal('http://bookit-api.buildit.tools')
+    })
+  })
 
   describe('derives an non-production environment api endpoint', () => {
     it('generates the integration URL', () => {

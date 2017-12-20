@@ -72,6 +72,7 @@ export const formatWeek = (date = new Date) => {
 
 // "Monkeypatch" node-interval-tree to allow for exclusive overlap testing
 // rather than the baked-in default of inclusive overlaps
+/* istanbul ignore next */
 Node.prototype._getOverlappingRecords = function (currentNode, low, high) {
   if (currentNode.key < high && low < currentNode.getNodeHigh()) {
     // Nodes are overlapping, check if individual records in the node are overlapping
@@ -86,6 +87,7 @@ Node.prototype._getOverlappingRecords = function (currentNode, low, high) {
   return []
 }
 
+/* istanbul ignore next */
 IntervalTree.prototype.search = function (low, high) {
   return this.tree.search(...getIntervalInSeconds(low, high)).map(function (v) { return v.data })
 }

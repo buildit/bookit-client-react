@@ -9,13 +9,18 @@ export const storeItem = (key, item) => {
 export const getItem = (key) => {
   const result = localStorage.getItem(makeStoreKey(key))
   try {
-    return result ? JSON.parse(result) : null
+    return result ? JSON.parse(result) : undefined
   } catch(error) {
-    return null
+    return undefined
   }
 }
 
-export const getItems = (...items) => items.reduce((out, key) => ({ ...out, [key]: localStorage.getItem(makeStoreKey(key)) }), {})
+export const getItems = (...items) => items.reduce((out, key) => {
+  const value = getItem(key)
+  if (value !== undefined)
+    return { ...out, [key]: value }
+  return out
+}, {})
 
 export const clearItem = (...items) => {
   for (const key of items) {

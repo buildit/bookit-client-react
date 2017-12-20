@@ -23,7 +23,7 @@ const apiEndpoint = `${apiBaseURI}/${apiVersion}`
 // create a function factory that will emit all the common parts
 // for each type of `getAllXYZ`
 
-const makeHeaders = (withAuth = true, withJSON = false) => (state) => {
+export const makeHeaders = (withAuth = true, withJSON = false) => (state) => {
   const headers = {}
 
   if (withAuth) {

@@ -43,10 +43,6 @@ module.exports = {
   // MAKE IMPORTS GREAT AGAIN!
   resolve: {
     alias: {
-      // Reducers: path.join(__dirname, 'src/reducers'),
-      // Selectors: path.join(__dirname, 'src/selectors'),
-      // Sagas: path.join(__dirname, 'src/sagas'),
-
       Store: path.resolve(__dirname, 'src/store'),
       History: path.resolve(__dirname, 'src/history'),
 
@@ -62,6 +58,8 @@ module.exports = {
       Styles: path.resolve(__dirname, 'src/styles'),
 
       Api: path.resolve(__dirname, 'src/api'),
+
+      Fixtures: path.resolve(__dirname, 'test/unit/__fixtures__'),
     },
     extensions: [ '.js', '.jsx', '.json' ],
   },

@@ -6,7 +6,7 @@ import BaseBookingItem from 'Components/BaseBookingItem'
 
 import withBooking from 'Hoc/with-booking'
 
-const BookingListItem = ({ id, ...props }) => (
+export const BookingListItem = ({ id, ...props }) => (
   <Link to={`/bookings/${id}`}><BaseBookingItem id={id} {...props} /></Link>
 )
 

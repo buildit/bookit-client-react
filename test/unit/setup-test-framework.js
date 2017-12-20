@@ -1,3 +1,6 @@
+/* global jasmine */
+
+const util = require('util')
 const chai = require('chai')
 const chaiEnzyme = require('chai-enzyme')
 
@@ -35,3 +38,31 @@ global.expect = (actual) => {
   const combinedMatchers = Object.assign(chaiMatchers, originalMatchers)
   return combinedMatchers
 }
+
+// The following console-related munging is required to allow us to easily
+// test PropType validity on React components
+// For example:
+//
+//    expect(() => (<Button type="lemons" />)).to.throw()
+//
+// (where button PropTypes expects oneOf 'submit' or 'button')
+
+// keep a reference to the original console methods
+const consoleWarn = console.warn
+const consoleError = console.error
+
+const elevateLogToError = (...args) => {
+  throw new Error(util.format.apply(this, args).replace(/^Error: (?:Warning: )?/, ''))
+}
+
+jasmine.getEnv().beforeEach(() => {
+  // make calls to console.warn and console.error throw an error
+  console.warn = elevateLogToError
+  console.error = elevateLogToError
+})
+
+jasmine.getEnv().afterEach(() => {
+  // return console.warn and console.error to default behaviour
+  console.warn = consoleWarn
+  console.error = consoleError
+})

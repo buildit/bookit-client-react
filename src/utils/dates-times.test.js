@@ -1,6 +1,69 @@
 import * as DT from './dates-times'
 
+
 describe('dates-times', () => {
+  describe('#formatTime(datetime)', () => {
+    it('formats a string representation of a datetime to a time', () => {
+      expect(DT.formatTime('2017-12-19T13:45')).to.equal('1:45 PM')
+    })
+
+    it('formats a Date datetime to a time', () => {
+      expect(DT.formatTime(new Date('2017-12-19T13:45'))).to.equal('1:45 PM')
+    })
+  })
+
+  describe('#formatDate(date, pattern = \'YYYY-MM-DD\')', () => {
+    it('formats a string representation of a date', () => {
+      expect(DT.formatDate('2017-12-19T13:45')).to.equal('2017-12-19')
+    })
+
+    it('formats a Date datetime to a time', () => {
+      expect(DT.formatDate(new Date('2017-12-19T13:45'))).to.equal('2017-12-19')
+    })
+  })
+
+  describe('#getSecondOfDay(date)', () => {
+    it('returns seconds since the beginning of the day from a date', () => {
+      expect(DT.getSecondOfDay('2017-12-19T01:00')).to.equal(3600)
+    })
+  })
+
+  describe('#getIntervalInSeconds(low, high)', () => {
+    it('returns a two-element array of seconds since the beginning of the day', () => {
+      expect(DT.getIntervalInSeconds('2017-12-19T01:00', '2017-12-19T02:00')).to.deep.equal([ 3600, 7200 ])
+    })
+  })
+
+  describe('#getWholeDayInterval()', () => {
+    it('returns a static two-element array of seconds since the beginning of the day', () => {
+      expect(DT.getWholeDayInterval()).to.deep.equal([ 0, 86399 ])
+    })
+  })
+
+  describe('#compareDates(dateA, dateB)', () => {
+    it('returns -1 if dateA is before dateB', () => {
+      expect(DT.compareDates('2017-12-19T01:00', '2017-12-19T02:00')).to.equal(-1)
+    })
+    it('returns 1 if dateA is after dateB', () => {
+      expect(DT.compareDates('2017-12-19T02:00', '2017-12-19T01:00')).to.equal(1)
+    })
+    it('returns 0 if dateA is the same as dateB', () => {
+      expect(DT.compareDates('2017-12-19T01:00', '2017-12-19T01:00')).to.equal(0)
+    })
+  })
+
+  describe('#getWeekStartAndEnd(date = new Date)', () => {
+    it('returns an interval of seven days from current date when no parameter is provided', () => {
+      expect(DT.getWeekStartAndEnd()).to.have.lengthOf(2)
+    })
+    it('returns an interval of seven days from `date`', () => {
+      const [ start, end ] = DT.getWeekStartAndEnd('2017-12-19T01:00')
+
+      expect(start.toString()).to.deep.equal(new Date('2017-12-19T01:00').toString())
+      expect(end.toString()).to.deep.equal(new Date('2017-12-25T01:00').toString())
+    })
+  })
+
   describe('#getWeekDaysRange(date = new Date)', () => {
     it('should return an object including the range of week days plus the next and previous week dates', () => {
       const range = DT.getWeekDaysRange()
@@ -9,6 +72,9 @@ describe('dates-times', () => {
   })
 
   describe('#getPreviousAndNextWeekDates(date = new Date)', () => {
+    it('should return an array of the start days of the next and previous weeks from the current date', () => {
+      expect(DT.getPreviousAndNextWeekDates()).to.have.lengthOf(2)
+    })
     it('should return an array of the start days of the next and previous weeks from a given date', () => {
       const theDate = new Date(2017, 10, 16)
       const previousWeekStart = '2017-11-09'
@@ -22,6 +88,11 @@ describe('dates-times', () => {
   })
 
   describe('#formatWeek(date = new Date)', () => {
+    it('should return a formatted week when no date is passed as a parameter', () => {
+      const expected = DT.formatWeek(new Date)
+      const actual = DT.formatWeek()
+      expect(actual).to.equal(expected)
+    })
     it('should return the month on both start and end when the week overlaps two months', () => {
       const theDate = new Date(2017, 9, 30)
       const expected = 'Oct 30 - Nov 5 2017'
@@ -43,6 +114,20 @@ describe('dates-times', () => {
 
       const actual = DT.formatWeek(theDate)
       expect(actual).to.equal(expected)
+    })
+  })
+
+  describe('#createIntervalTree(intervals)', () => {
+    it('returns an interval tree when given intervals', () => {
+      const intervals = [
+        [ '2017-12-19T01:00', '2017-12-19:T02:00', { foo: 'bar' } ],
+        [ '2017-12-19T03:00', '2017-12-19:T04:00', { foo: 'baz' } ],
+        [ '2017-12-19T05:00', '2017-12-19:T06:00', { foo: 'bif' } ],
+      ]
+
+      const tree = DT.createIntervalTree(intervals)
+      expect(tree).to.exist
+
     })
   })
 })
