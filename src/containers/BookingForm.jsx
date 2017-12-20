@@ -76,6 +76,16 @@ export class BookingForm extends React.Component {
     })
   }
 
+  onDatePickerChange = (date, datestring) => {
+    console.log(date, datestring)
+    this.props.dispatch(change('booking', 'start', datestring))
+    this.clearRoom()
+  }
+
+  clearRoom = () => {
+    this.props.dispatch(change('booking', 'bookableId', ''))
+  }
+
   render() {
     const {
       handleSubmit,
@@ -98,7 +108,8 @@ export class BookingForm extends React.Component {
         { error && <strong>{ error }</strong> }
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
-          <DatePicker />
+          {/*<DatePicker onChange={this.onDatePickerChange} />*/}
+          <Field name="bookingDate" component={DatePicker} onChange={this.onDatePickerChange} />
           <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
           <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
 
