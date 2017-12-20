@@ -5,11 +5,11 @@ import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 
-import { Field, reduxForm, isSubmitting, change } from 'redux-form'
+import { Field, reduxForm, isSubmitting, change, formValueSelector } from 'redux-form'
 
 import { actionCreators, selectors } from 'Redux'
 
-import { DatePicker } from 'antd'
+import { DatePicker, TimePicker } from 'antd'
 
 import withToast from 'Hoc/with-toast'
 
@@ -79,7 +79,18 @@ export class BookingForm extends React.Component {
   onDatePickerChange = (date, datestring) => {
     console.log(date, datestring)
     this.props.dispatch(change('booking', 'start', datestring))
+    this.props.dispatch(change('booking', 'end', datestring))
     this.clearRoom()
+  }
+
+  onStartTimeChange = (time, timeString) => {
+    const newStart = `${this.props.endValue}T${timeString}`
+    this.props.dispatch(change('booking', 'start', newStart))
+    this.clearRoom()
+  }
+
+  onEndTimeChange = (time, timeString) => {
+    console.log('TIME', time, timeString)
   }
 
   clearRoom = () => {
@@ -108,8 +119,9 @@ export class BookingForm extends React.Component {
         { error && <strong>{ error }</strong> }
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
-          {/*<DatePicker onChange={this.onDatePickerChange} />*/}
-          <Field name="bookingDate" component={DatePicker} onChange={this.onDatePickerChange} />
+          <DatePicker onChange={this.onDatePickerChange} />
+          <TimePicker format="HH:mm" minuteStep={15} onChange={this.onStartTimeChange} />
+          <TimePicker format="HH:mm" minuteStep={15} onChange={this.onEndTimeChange} />
           <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
           <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
 
@@ -147,13 +159,19 @@ BookingForm.propTypes = {
   setBookablesVisible: PropTypes.func,
   bookableName: PropTypes.string,
   dispatch: PropTypes.func,
+  startValue: PropTypes.string,
+  endValue: PropTypes.string,
 }
+
+const selector = formValueSelector('booking')
 
 const mapStateToProps = state => ({
   bookingInstanceId: selectors.getBookingInstanceId(state),
   errorMessages: selectors.getErrorMessages(state),
   submitting: isSubmitting('booking')(state),
   bookableName: selectors.getBookingFormBookableName(state),
+  startValue: selector(state, 'start'),
+  endValue: selector(state, 'end'),
 })
 
 const toastForm = withToast('success')(BookingForm)
