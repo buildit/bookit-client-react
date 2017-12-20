@@ -1,19 +1,13 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-import { connect } from 'react-redux'
-
-import { selectors } from 'Redux'
-
 import { formatDate, isToday } from 'Utils'
 
 import styles from 'Styles/grouped-bookings.scss'
 
-import BookingListItem from 'Components/BookingListItem'
-
 export class GroupedBookingsList extends React.Component {
   render() {
-    const { date, bookingIds } = this.props
+    const { date, bookingIds, component: Component } = this.props
     return (
       <div className={styles.groupedBookingList}>
         <div className={styles.heading}>
@@ -22,7 +16,7 @@ export class GroupedBookingsList extends React.Component {
             { formatDate(date, 'ddd MMM D').toUpperCase() }
           </h4>
         </div>
-        { bookingIds.map(id => <BookingListItem key={id} id={id} />) }
+        { bookingIds.map(id => <Component key={id} id={id} />) }
         { !bookingIds.length && <p className={styles.noBooking}>No bookings to show</p> }
       </div>
     )
@@ -32,10 +26,7 @@ export class GroupedBookingsList extends React.Component {
 GroupedBookingsList.propTypes = {
   date: PropTypes.string,
   bookingIds: PropTypes.array,
+  component: PropTypes.oneOfType([ PropTypes.node, PropTypes.func ]),
 }
 
-const mapStateToProps = (state, props) => ({
-  bookingIds: selectors.getBookingsForUserForDate(state, props),
-})
-
-export default connect(mapStateToProps)(GroupedBookingsList)
+export default GroupedBookingsList

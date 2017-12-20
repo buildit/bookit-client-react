@@ -1,9 +1,11 @@
 import url from 'url'
 import { v4 as uuid } from 'uuid'
 
-import { getStoredAuthentication, decodeJWT } from 'Utils'
+import { getStoredAuthentication } from './storage'
+import { decodeJWT } from './decode-jwt'
 
 let W = global.window
+/* istanbul ignore next */
 if (!W) W = { location: { origin: 'http://localhost:3001' } }
 
 const currentHostname = () => W.location.origin
@@ -51,7 +53,7 @@ const response_mode = 'fragment'
 const protocol = 'https'
 const host = `login.microsoftonline.com/${tenant}/oauth2/v2.0/authorize`
 
-export const signinRequestUrl = (prompt = 'login', login_hint, domain_hint) => {
+export const signinRequestUrl = (prompt, login_hint, domain_hint) => {
   const state = uuid()
 
   let query = {

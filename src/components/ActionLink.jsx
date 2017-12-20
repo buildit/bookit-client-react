@@ -3,12 +3,12 @@ import PropTypes from 'prop-types'
 
 export const ActionLink = ({ onClick, children, ...props }) => (
   <a
+    { ...props }
     href="#"
     onClick={(event) => {
       event.preventDefault()
       onClick()
     }}
-    { ...props }
   >
     { children }
   </a>

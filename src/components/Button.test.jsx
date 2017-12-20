@@ -1,7 +1,7 @@
 import React from 'react'
 import { shallow } from 'enzyme'
 
-import Button from './Button'
+import Button from 'Components/Button'
 
 describe('<Button />', () => {
   it('renders a button', () => {
@@ -34,5 +34,9 @@ describe('<Button />', () => {
 
   it('passes html attributes as props', () => {
     expect(shallow(<Button disabled />).find('button')).to.be.disabled
+  })
+
+  it('restricts `type` to `button` or `submit`', () => {
+    expect(() => (<Button type="lemons" />)).to.throw()
   })
 })

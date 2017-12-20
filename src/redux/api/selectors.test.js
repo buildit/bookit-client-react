@@ -1,43 +1,470 @@
-import { Map, Set } from 'immutable'
+import { Map } from 'immutable'
 
 import { compose } from 'redux'
 
-import { normalizeLocations, normalizeBookables, normalizeBookings } from './schema'
-import { updateLocationEntities, updateBookableEntities, updateBookingEntities } from './reducer'
+import {
+  updateLocationEntities,
+  updateBookableEntities,
+  updateBookingEntities,
+} from './reducer'
 
-import * as selectors from './selectors'
+import {
+  makeEntityState,
+  locationResponse,
+  bookableResponse,
+  bookingResponse,
+} from 'Fixtures/api-responses'
 
-// TODO: state bootstrapping/fixturizing is a little clunky? Who knew!?
-
-const locations = { payload: normalizeLocations([{"id":1,"name":"NYC","timeZone":"America/New_York"},{"id":2,"name":"LON","timeZone":"Europe/London"}]) }
-const bookables = { payload: normalizeBookables([{"id":1001,"locationId":1,"name":"Dev Red","disposition":{"closed":false,"reason":""},"bookings":[]},{"id":1002,"locationId":1,"name":"Dev Blue","disposition":{"closed":false,"reason":""},"bookings":[]},{"id":1003,"locationId":1,"name":"Dev White","disposition":{"closed":false,"reason":""},"bookings":[{"id":5,"bookableId":1003,"subject":"Wash Hands","start":"2017-11-16T12:28","end":"2017-11-16T13:28"}]},{"id":1004,"locationId":1,"name":"Dev Black","disposition":{"closed":false,"reason":""},"bookings":[]},{"id":1,"locationId":1,"name":"Red","disposition":{"closed":false,"reason":""},"bookings":[]}]) }
-const bookings = { payload: normalizeBookings([{"id":1,"bookableId":1001,"subject":"My Booking","start":"2017-11-14T12:28","end":"2017-11-14T13:28"},{"id":2,"bookableId":1001,"subject":"Another Booking","start":"2017-11-15T13:28","end":"2017-11-15T14:28"},{"id":3,"bookableId":1002,"subject":"Plan All Things","start":"2017-11-15T15:28","end":"2017-11-15T16:28"},{"id":4,"bookableId":1002,"subject":"Execute Proletariat","start":"2017-11-15T19:28","end":"2017-11-15T20:28"},{"id":5,"bookableId":1003,"subject":"Wash Hands","start":"2017-11-16T12:28","end":"2017-11-16T13:28"},{"id":1001,"bookableId":1,"subject":"My Bookable","start":"2019-09-01T05:37","end":"2019-09-01T05:38"},{"id":1002,"bookableId":1,"subject":"My Bookable","start":"2019-10-31T03:56","end":"2019-10-31T03:57"},{"id":1003,"bookableId":1003,"subject":"White Room Booking Pew Pew","start":"2017-11-15T14:32","end":"2017-11-15T15:32"},{"id":1004,"bookableId":1,"subject":"A meeting in red","start":"2017-11-15T17:39","end":"2017-11-15T18:00"},{"id":1005,"bookableId":1004,"subject":"Pigeons For Everyone!","start":"2017-11-15T16:00","end":"2017-11-15T17:00"},{"id":1007,"bookableId":1001,"subject":"Make It Work!","start":"2017-11-15T17:29","end":"2017-11-15T18:29"},{"id":1008,"bookableId":1002,"subject":"A Booking Will Happen","start":"2017-11-15T17:33","end":"2017-11-15T18:33"},{"id":1009,"bookableId":1003,"subject":"BOOKING NOW IN WHITE","start":"2017-11-15T17:49","end":"2017-11-15T18:49"},{"id":1010,"bookableId":1004,"subject":"I CHOO-CHOO CHOOSE YOU","start":"2017-11-15T17:57","end":"2017-11-15T18:57"},{"id":1011,"bookableId":1,"subject":"CONSUME ALL AVAILABILITY","start":"2017-11-15T18:03","end":"2017-11-15T19:03"},{"id":1012,"bookableId":1,"subject":"CONSUME ALL AVAILABILITY FOREVER","start":"2017-11-15T19:03","end":"2017-11-15T19:30"},{"id":1013,"bookableId":1,"subject":"My Bookable","start":"2018-06-10T20:21","end":"2018-06-10T20:22"},{"id":1014,"bookableId":1,"subject":"My Bookable","start":"2019-08-25T04:05","end":"2019-08-25T04:06"},{"id":1015,"bookableId":1,"subject":"My Bookable","start":"2019-02-03T15:40","end":"2019-02-03T15:41"},{"id":1016,"bookableId":1,"subject":"My Bookable","start":"2018-10-24T05:28","end":"2018-10-24T05:29"}]) }
-
-const entityState = Map({
-  locations: Map({ entities: Map(), result: Set() }),
-  bookables: Map({ entities: Map(), result: Set() }),
-  bookings: Map({ entities: Map(), result: Set() }),
-})
+import {
+  getEntities,
+  getBookings,
+  getBookingIds,
+  getBookingEntities,
+  getLocations,
+  getLocationIds,
+  getLocationEntities,
+  getBookables,
+  getBookableIds,
+  getBookableEntities,
+  getUsers,
+  getUserIds,
+  getUserEntities,
+  getBookingEntity,
+  hasBooking,
+  getBookingSubject,
+  getBookingStart,
+  getBookingEnd,
+  getBookingBookable,
+  isBookingInPast,
+  getBookingBookableName,
+  getBookingDates,
+  getBookingsForDate,
+  getLocationEntity,
+  getLocationName,
+  getLocationTimezone,
+  getLocationByName,
+  getBookingsByUser,
+  getBookingsForUser,
+  getBookingsForUserForDate,
+  getBookableEntity,
+  getBookableId,
+  getBookableName,
+  getBookableDisposition,
+  isBookableClosed,
+  getBookableDispositionReason,
+  isBookableBooked,
+  isBookableAvailable,
+  getBookableLocation,
+  getBookableLocationName,
+  getBookableLocationTimezone,
+  getBookablesForLocation,
+  getBookingOverlaps,
+  getBookablesSortedByAvailability,
+} from './selectors'
 
 const entities = compose(
-  state => updateBookingEntities(state, bookings),
-  state => updateBookableEntities(state, bookables),
-  state => updateLocationEntities(state, locations)
-)(entityState)
+  state => updateBookingEntities(state, { payload: bookingResponse }),
+  state => updateBookableEntities(state, { payload: bookableResponse }),
+  state => updateLocationEntities(state, { payload: locationResponse })
+)(makeEntityState())
 
 const state = { entities }
 
 describe('API selectors', () => {
-  describe('#getBookingEntity(state, props)', () => {
-    it('obtains a booking entity from the state via props', () => {
-      expect(selectors.getBookingEntity(state, { id: 1 })).to.exist
+  describe('#getEntities(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getEntities(state)
+
+      expect(actual).to.deep.equal(entities)
     })
+  })
 
-    it('obtains a booking entity from the state via props', () => {
-      const bookingEntity = selectors.getBookingEntity(state, { id: 1 })
-      const sameBookingEntity = selectors.getBookingEntity(state, { id: 1 })
+  describe('#getBookings(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getBookings(state)
 
-      expect(bookingEntity).to.equal(sameBookingEntity)
+      expect(actual).to.deep.equal(entities.get('bookings'))
+    })
+  })
+
+  describe('#getBookingIds(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getBookingIds(state)
+
+      expect(actual).to.deep.equal(entities.getIn(['bookings', 'result']).toArray())
+    })
+  })
+
+  describe('#getBookingEntities(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getBookingEntities(state)
+
+      expect(actual).to.deep.equal(entities.getIn(['bookings', 'entities']))
+    })
+  })
+
+  describe('#getLocations(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getLocations(state)
+
+      expect(actual).to.deep.equal(entities.get('locations'))
+    })
+  })
+
+  describe('#getLocationIds(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getLocationIds(state)
+
+      expect(actual).to.deep.equal(entities.getIn(['locations', 'result']).toArray())
+    })
+  })
+
+  describe('#getLocationEntities(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getLocationEntities(state)
+
+      expect(actual).to.deep.equal(entities.getIn(['locations', 'entities']))
+    })
+  })
+
+  describe('#getBookables(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getBookables(state)
+
+      expect(actual).to.deep.equal(entities.get('bookables'))
+    })
+  })
+
+  describe('#getBookableIds(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getBookableIds(state)
+
+      expect(actual).to.deep.equal(entities.getIn(['bookables', 'result']).toArray())
+    })
+  })
+
+  describe('#getBookableEntities(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getBookableEntities(state)
+
+      expect(actual).to.deep.equal(entities.getIn(['bookables', 'entities']))
+    })
+  })
+
+  describe('#getUsers(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getUsers(state)
+
+      expect(actual).to.deep.equal(entities.get('users'))
+    })
+  })
+
+  describe('#getUserIds(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getUserIds(state)
+
+      expect(actual).to.deep.equal(entities.getIn(['users', 'result']).toArray())
+    })
+  })
+
+  describe('#getUserEntities(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getUserEntities(state)
+
+      expect(actual).to.deep.equal(entities.getIn(['users', 'entities']))
+    })
+  })
+
+  describe('#getBookingEntity(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'e081f498-151b-49bf-a302-6cf248c991f3' }
+      const actual = getBookingEntity(state, props)
+
+      expect(actual).to.deep.equal(entities.getIn(['bookings', 'entities', props.id]))
+    })
+  })
+
+  describe('#hasBooking(state, id)', () => {
+    it('returns the correct value from state', () => {
+      const id = 'e081f498-151b-49bf-a302-6cf248c991f3'
+      const actual = hasBooking(state, id)
+
+      expect(actual).to.be.true
+    })
+  })
+
+  describe('#getBookingSubject(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'e081f498-151b-49bf-a302-6cf248c991f3' }
+      const actual = getBookingSubject(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookings', 'entities', props.id, 'subject']))
+    })
+  })
+
+  describe('#getBookingStart(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'e081f498-151b-49bf-a302-6cf248c991f3' }
+      const actual = getBookingStart(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookings', 'entities', props.id, 'start']))
+    })
+  })
+
+  describe('#getBookingEnd(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'e081f498-151b-49bf-a302-6cf248c991f3' }
+      const actual = getBookingEnd(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookings', 'entities', props.id, 'end']))
+    })
+  })
+
+  describe('#getBookingBookable(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'e081f498-151b-49bf-a302-6cf248c991f3' }
+      const actual = getBookingBookable(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookings', 'entities', props.id, 'bookable']))
+    })
+  })
+
+  describe('#isBookingInPast(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'e081f498-151b-49bf-a302-6cf248c991f3' }
+      const actual = isBookingInPast(state, props)
+
+      expect(actual).to.be.true
+    })
+  })
+
+  describe('#getBookingBookableName(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'e081f498-151b-49bf-a302-6cf248c991f3' }
+      const actual = getBookingBookableName(state, props)
+      const bookable = getBookingBookable(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookables', 'entities', bookable, 'name']))
+    })
+  })
+
+  describe('#getBookingDates(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getBookingDates(state)
+
+      expect(actual).to.exist
+    })
+  })
+
+  // TODO: Branch miss on line 69 - not sure how to test
+  describe('#getBookingsForDate(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { date: '2017-12-17' }
+      const actual = getBookingsForDate(state, props)
+
+      expect(actual).to.exist
+    })
+  })
+
+  describe('#getLocationEntity(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'b1177996-75e2-41da-a3e9-fcdd75d1ab31' }
+      const actual = getLocationEntity(state, props)
+
+      expect(actual).to.equal(entities.getIn(['locations', 'entities', props.id]))
+    })
+  })
+
+  describe('#getLocationName(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'b1177996-75e2-41da-a3e9-fcdd75d1ab31' }
+      const actual = getLocationName(state, props)
+
+      expect(actual).to.equal(entities.getIn(['locations', 'entities', props.id, 'name']))
+    })
+  })
+
+  describe('#getLocationTimezone(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'b1177996-75e2-41da-a3e9-fcdd75d1ab31' }
+      const actual = getLocationTimezone(state, props)
+
+      expect(actual).to.equal(entities.getIn(['locations', 'entities', props.id, 'timeZone']))
+    })
+  })
+
+  describe('#getLocationByName(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { name: 'NYC' }
+      const actual = getLocationByName(state, props)
+
+      expect(actual).to.equal(entities.getIn(['locations', 'entities', 'b1177996-75e2-41da-a3e9-fcdd75d1ab31']))
+    })
+  })
+
+  // TODO: Pluck random sample
+  // TODO: Branch miss on line 96 - not sure how to test
+  describe('#getBookingsByUser(state)', () => {
+    it('returns the correct value from state', () => {
+      const actual = getBookingsByUser(state)
+
+      expect(actual).to.exist
+    })
+  })
+
+  describe('#getBookingsForUser(state)', () => {
+    it('returns the correct value from state', () => {
+      const modifiedState = { ...state, user: Map({ email: 'test@test.com', oid: 'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30' }) }
+      const actual = getBookingsForUser(modifiedState)
+
+      expect(actual).to.exist
+    })
+  })
+
+  describe('#getBookingsForUserForDate(state)', () => {
+    it('returns the correct value from state', () => {
+      const modifiedState = { ...state, user: Map({ email: 'test@test.com', oid: 'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30' }) }
+      const props = { date: '2017-12-17' }
+      const actual = getBookingsForUserForDate(modifiedState, props)
+
+      expect(actual).to.exist
+    })
+  })
+
+  describe('#getBookableEntity(state)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const actual = getBookableEntity(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookables', 'entities', props.id]))
+    })
+  })
+
+  // TODO: Why does this exist.
+  describe('#getBookableId(state)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const actual = getBookableId(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookables', 'entities', props.id, 'id']))
+    })
+  })
+
+  describe('#getBookableName(state)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const actual = getBookableName(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookables', 'entities', props.id, 'name']))
+    })
+  })
+
+  describe('#getBookableDisposition(state)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const actual = getBookableDisposition(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookables', 'entities', props.id, 'disposition']))
+    })
+  })
+
+  describe('#isBookableClosed(state)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const actual = isBookableClosed(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookables', 'entities', props.id, 'disposition', 'closed']))
+    })
+  })
+
+  describe('#getBookableDispositionReason(state)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const actual = getBookableDispositionReason(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookables', 'entities', props.id, 'disposition', 'reason']))
+    })
+  })
+
+  describe('#isBookableBooked(state)', () => {
+    it('returns the correct value from state', () => {
+      const formValues = { start: '2017-12-19T01:00', end: '2017-12-19T02:00', bookableId: 'abc', subject: 'A Booking' }
+      const formState = { form: { booking: { values: formValues } } }
+      const modifiedState = { ...state, ...formState }
+
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const actual = isBookableBooked(modifiedState, props)
+
+      expect(actual).to.be.false
+    })
+  })
+
+  describe('#isBookableAvailable(state)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const actual = isBookableAvailable(state, props)
+
+      expect(actual).to.be.true
+    })
+  })
+
+  describe('#getBookableLocation(state)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const actual = getBookableLocation(state, props)
+
+      expect(actual).to.equal(entities.getIn(['bookables', 'entities', props.id, 'location']))
+    })
+  })
+
+  describe('#getBookableLocationName(state)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const locationId = getBookableLocation(state, props)
+      const actual = getBookableLocationName(state, props)
+
+      expect(actual).to.equal(entities.getIn(['locations', 'entities', locationId, 'name']))
+    })
+  })
+
+  describe('#getBookableLocationTimezone(state)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
+      const locationId = getBookableLocation(state, props)
+      const actual = getBookableLocationTimezone(state, props)
+
+      expect(actual).to.equal(entities.getIn(['locations', 'entities', locationId, 'timeZone']))
+    })
+  })
+
+  describe('#getBookablesForLocation(state)', () => {
+    it('returns the correct value from state', () => {
+      const modifiedState = { ...state, app: Map({ selectedLocation: 'b1177996-75e2-41da-a3e9-fcdd75d1ab31' }) }
+      const actual = getBookablesForLocation(modifiedState)
+
+      expect(actual).to.exist
+    })
+  })
+
+  describe('#getBookingOverlaps(state)', () => {
+    it('returns the correct value from state', () => {
+      const formValues = { start: '2017-12-19T01:00', end: '2017-12-19T02:00', bookableId: 'abc', subject: 'A Booking' }
+      const formState = { form: { booking: { values: formValues } } }
+      const modifiedState = { ...state, ...formState, app: Map({ selectedLocation: 'b1177996-75e2-41da-a3e9-fcdd75d1ab31' }) }
+      const actual = getBookingOverlaps(modifiedState)
+
+      expect(actual).to.exist
+    })
+  })
+
+  describe('#getBookablesSortedByAvailability(state)', () => {
+    it('returns the correct value from state', () => {
+      const formValues = { start: '2017-12-19T01:00', end: '2017-12-19T02:00', bookableId: 'abc', subject: 'A Booking' }
+      const formState = { form: { booking: { values: formValues } } }
+      const modifiedState = { ...state, ...formState, app: Map({ selectedLocation: 'b1177996-75e2-41da-a3e9-fcdd75d1ab31' }) }
+      const actual = getBookablesSortedByAvailability(modifiedState)
+
+      expect(actual).to.exist
     })
   })
 })

@@ -65,7 +65,7 @@ export function* setLocationSaga() {
   }
 }
 
-export const sagas = function* bookingSagas() {
+export const sagas = function* apiSagas() {
   yield fork(watchForCreateBooking)
   yield fork(watchForDeleteBooking)
 

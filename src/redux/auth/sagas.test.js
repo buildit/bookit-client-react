@@ -1,10 +1,16 @@
-import { call, put, all, take, fork, select } from 'redux-saga/effects'
+import { call, put, all, take, fork, race, select } from 'redux-saga/effects'
 import { cloneableGenerator } from 'redux-saga/utils'
 
 import history from 'History'
-import { clearStoredAuthentication, getStoredAuthentication, setStoredAuthentication, parseOauthFragment } from 'Utils'
+
+import * as tokenStates from 'Constants/token-states'
+
+import { clearStoredAuthentication, getStoredAuthentication, setStoredAuthentication, parseOauthFragment, validateToken } from 'Utils'
+
 import { actionCreators, selectors } from 'Redux'
+
 import { sagas as auth, loadLocalAuthenticationIntoState, clearAllAuth, settleAuthenticationToken, awaitLogout, preloadData, authFlow, awaitAuthentication, retrieveAuthenticationToken, watchForAuthentication } from './sagas'
+
 
 describe('sagas/auth', () => {
   describe('#loadLocalAuthenticationIntoState', () => {
@@ -15,6 +21,21 @@ describe('sagas/auth', () => {
       expect(saga.next().value).toEqual(call(getStoredAuthentication))
       expect(saga.next(authnToken).value).toEqual(put.resolve(actionCreators.setAuthenticationToken(authnToken)))
       expect(saga.next().done).toBeTruthy()
+    })
+  })
+
+  describe('#preloadData()', () => {
+    it('dispatches parallel calls to load all relevant API data', () => {
+      const saga = preloadData()
+
+      // const expected = all([
+      //   put(actionCreators.getAllLocations()),
+      //   put(actionCreators.getAllBookables()),
+      //   put(actionCreators.getAllBookings()),
+      // ])
+
+      expect(saga.next().done).to.not.be.true
+      expect(saga.next().done).to.be.true
     })
   })
 
@@ -59,6 +80,45 @@ describe('sagas/auth', () => {
     })
   })
 
+  describe('#retrieveAuthenticationToken()', () => {
+    it('retrieves a valid authentication token', () => {
+      const saga = cloneableGenerator(retrieveAuthenticationToken)()
+
+      const authnToken = 'token'
+
+      expect(saga.next().value).toEqual(select(selectors.getAuthenticationToken))
+      expect(saga.next(authnToken).value).toEqual(call(validateToken, authnToken))
+
+      const validSaga = saga.clone()
+      const invalidSaga = saga.clone()
+
+      expect(validSaga.next(tokenStates.TOKEN_VALID).done).to.be.true
+      expect(invalidSaga.next(tokenStates.TOKEN_BADLY_FORMED).done).to.be.true
+
+      expect(saga.next(tokenStates.TOKEN_EXPIRED).value).toEqual(put(actionCreators.refreshAuthRequest()))
+
+      expect(saga.next().value).toEqual(
+        race({
+          success: take('REFRESH_AUTH_SUCCESS'),
+          failure: take('REFRESH_AUTH_FAILURE'),
+        })
+      )
+
+      const refreshSaga = saga.clone()
+      const failure = { payload: 'ERROR!' }
+
+      expect(refreshSaga.next({ failure }).value).toEqual(call(console.log, 'FAILED TO REFRESH:', failure.payload))
+      expect(refreshSaga.next().done).to.be.true
+
+      const success = { payload: 'xyz' }
+      const refreshedAuthnToken = 'token'
+
+      expect(saga.next({ success }).value).toEqual(call(parseOauthFragment, success.payload, 'id_token'))
+      expect(saga.next(refreshedAuthnToken).value).toEqual(call(settleAuthenticationToken, refreshedAuthnToken))
+      expect(saga.next().done).to.be.true
+    })
+  })
+
   describe('#awaitAuthentication()', () => {
     it('waits for a request to start authentication', () => {
       const payload = 'payload'
@@ -99,9 +159,15 @@ describe('sagas/auth', () => {
 
   describe('#watchForAuthentication', () => {
     it('loads the local auth into state then starts the auth flow', () => {
-      const saga = watchForAuthentication()
+      const saga = cloneableGenerator(watchForAuthentication)()
       expect(saga.next().value).toEqual(call(loadLocalAuthenticationIntoState))
       expect(saga.next().value).toEqual(select(selectors.getRouterLocation))
+
+      const locationSaga = saga.clone()
+      const location = { pathname: '/openid-complete' }
+
+      expect(locationSaga.next(location).done).to.be.true
+
       expect(saga.next().value).toEqual(call(authFlow))
       expect(saga.next().done).toBeTruthy()
     })

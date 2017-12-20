@@ -12,7 +12,8 @@
     "^Utils(.*)$": "<rootDir>/src/utils$1",
     "^Constants(.*)$": "<rootDir>/src/constants$1",
     "^Styles(.*)$": "<rootDir>/src/styles$1",
-    "^Api(.*)$": "<rootDir>/src/api$1"
+    "^Api(.*)$": "<rootDir>/src/api$1",
+    "^Fixtures(.*)$": "<rootDir>/test/unit/__fixtures__$1"
   },
   "moduleFileExtensions": [ "js", "jsx", "json" ],
   "testPathIgnorePatterns": [ "<rootDir>/(build|docs|node_modules|images)/" ],
@@ -27,6 +28,7 @@
   "coverageReporters": [
     "html",
     "text",
+    "json",
     "lcov"
   ],
   "rootDir": ".",

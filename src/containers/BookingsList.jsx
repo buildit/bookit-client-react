@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import GroupedBookingsList from 'Components/GroupedBookingsList'
+import GroupedBookingsListContainer from 'Containers/GroupedBookingsListContainer'
 import WeekSpinner from 'Components/WeekSpinner'
 
 import withToast from 'Hoc/with-toast'
@@ -40,7 +40,7 @@ export class BookingsList extends React.Component {
 
         <WeekSpinner weekOf={viewingDate} onClick={this.updateViewingDate} />
         <div>
-          { bookingDaysRange.map(d => <GroupedBookingsList key={d} date={d} />) }
+          { bookingDaysRange.map(d => <GroupedBookingsListContainer key={d} date={d} />) }
         </div>
       </div>
     )

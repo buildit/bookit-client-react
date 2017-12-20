@@ -7,7 +7,7 @@ import { toast } from 'react-toastify'
 
 import { actionCreators, selectors } from 'Redux'
 
-export default (toastType = 'success') => (WrappedComponent) => {
+export default toastType => (WrappedComponent) => {
   class ToastWrapper extends React.Component {
     static propTypes = {
       toasts: PropTypes.string,
@@ -20,6 +20,7 @@ export default (toastType = 'success') => (WrappedComponent) => {
     }
 
     componentDidMount() {
+      /* istanbul ignore next */
       if (!toast.isActive(this.toastId) && Boolean(this.props.toasts)) {
         this.toastId = this.toastify(this.props.toasts)
       }
@@ -36,6 +37,7 @@ export default (toastType = 'success') => (WrappedComponent) => {
     }
   }
 
+  /* istanbul ignore next */
   const getDisplayName = WrappedComponent => WrappedComponent.displayName || WrappedComponent.name || 'Component'
 
   ToastWrapper.displayName = `Toasted(${getDisplayName(WrappedComponent)})`
