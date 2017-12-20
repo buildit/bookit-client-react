@@ -20,16 +20,23 @@ export default toastType => (WrappedComponent) => {
     }
 
     componentDidMount() {
-      /* istanbul ignore next */
-      if (!toast.isActive(this.toastId) && Boolean(this.props.toasts)) {
-        this.toastId = this.toastify(this.props.toasts)
+      this.toastify()
+    }
+
+    componentDidUpdate(prevProps) {
+      if (prevProps.toasts !== this.props.toasts) {
+        this.toastify()
       }
     }
 
-    toastify = message => toast(message, {
-      onClose: () => this.props.clearToasts(),
-      type: toastType,
-    })
+    toastify = () => {
+      if (!toast.isActive(this.toastId) && Boolean(this.props.toasts)) {
+        this.toastId = toast(this.props.toasts, {
+          onClose: () => this.props.clearToasts(),
+          type: toastType,
+        })
+      }
+    }
 
     render() {
       const { toasts, clearToasts, ...props } = this.props  // eslint-disable-line

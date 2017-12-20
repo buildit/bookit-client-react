@@ -2,6 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
+import { compose } from 'redux'
 
 import { Link } from 'react-router-dom'
 
@@ -142,10 +143,10 @@ const mapStateToProps = state => ({
   bookableName: selectors.getBookingFormBookableName(state),
 })
 
-const toastForm = withToast('success')(BookingForm)
+const enhance = compose(
+  withToast('error'),
+  reduxForm({ form: 'booking' }),
+  connect(mapStateToProps, { createBooking: actionCreators.createBooking })
+)
 
-const formed = reduxForm({ form: 'booking' })(toastForm)
-
-export default connect(mapStateToProps, {
-  createBooking: actionCreators.createBooking,
-})(formed)
+export default enhance(BookingForm)

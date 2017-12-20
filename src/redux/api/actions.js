@@ -12,7 +12,7 @@ import {
 
 import { selectors } from 'Redux'
 
-import { getAPIEndpoint, formatDate, addDays } from 'Utils'
+import { getAPIEndpoint, getWeekStartAndEnd, formatDate, addDays } from 'Utils'
 
 const apiBaseURI = getAPIEndpoint()
 const apiVersion = 'v1'
@@ -86,6 +86,30 @@ export const getAllBookings = () => ({
   },
 })
 
+export const getBookingsForWeek = (week) => {
+  const [ start, end ] = getWeekStartAndEnd(week)
+  const qs = QS.stringify({
+    start: formatDate(start),
+    end: formatDate(addDays(end, 1)),
+  })
+
+  return {
+    [RSAA]: {
+      endpoint: `${apiEndpoint}/booking?${qs}`,
+      method: 'GET',
+      types: [
+        'GET_BOOKINGS_PENDING',
+        {
+          type: 'GET_BOOKINGS_SUCCESS',
+          payload: (action, state, res) => getJSON(res).then(json => normalizeBookings(json)),
+        },
+        'GET_BOOKINGS_FAILURE',
+      ],
+      headers: makeHeaders(true, false),
+    },
+  }
+}
+
 export const getAvailability = (start, end) => {
   const qs = QS.stringify({
     start: formatDate(start),
@@ -122,6 +146,7 @@ export const createBooking = booking => ({
       'CREATE_BOOKING_FAILURE',
     ],
     body: JSON.stringify(booking),
+    // body: JSON.stringify({ ...booking, end: booking.start }),
     headers: makeHeaders(true, true),
   },
 })
@@ -147,6 +172,7 @@ export const actionCreators = {
   getAllLocations,
   getAllBookables,
   getAllBookings,
+  getBookingsForWeek,
   createBooking,
   deleteBooking,
   getAvailability,
