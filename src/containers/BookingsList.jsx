@@ -2,11 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import { connect } from 'react-redux'
-import { compose } from 'redux'
 
 import { Link } from 'react-router-dom'
-
-import withToast from 'Hoc/with-toast'
 
 import GroupedBookingsListContainer from 'Containers/GroupedBookingsListContainer'
 import WeekSpinner from 'Components/WeekSpinner'
@@ -67,11 +64,4 @@ export class BookingsList extends React.Component {
   }
 }
 
-// export default withToast('success')(BookingsList)
-
-const enhance = compose(
-  connect(null, { getBookingsForWeek: actionCreators.getBookingsForWeek }),
-  withToast('success')
-)
-
-export default enhance(BookingsList)
+export default connect(null, { getBookingsForWeek: actionCreators.getBookingsForWeek })(BookingsList)
