@@ -9,6 +9,8 @@ import { Field, reduxForm, isSubmitting, change } from 'redux-form'
 
 import { actionCreators, selectors } from 'Redux'
 
+import { DatePicker } from 'antd'
+
 import withToast from 'Hoc/with-toast'
 
 import Button from 'Components/Button'
@@ -96,6 +98,7 @@ export class BookingForm extends React.Component {
         { error && <strong>{ error }</strong> }
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
+          <DatePicker />
           <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
           <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
 

@@ -30,7 +30,14 @@ const dev = {
   module: {
     rules: [
       {
-        test: /\.(sass|scss|css)$/,
+        test: /antd.*\.css$/,
+        use: [
+          { loader: 'style-loader', options: { sourceMap: true } },
+          { loader: 'css-loader', options: { sourceMap: true } },
+        ],
+      },
+      {
+        test: /\.(sass|scss)$/,
         use: [
           { loader: 'style-loader', options: { sourceMap: true } },
           { loader: 'css-loader', options: { sourceMap: true, modules: true, camelCase: 'only', localIdentName: '[name]-[local]--[hash:base64:5]', importLoaders: 2 } },

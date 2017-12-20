@@ -2,8 +2,8 @@ const path = require('path')
 
 const webpack = require('webpack')
 
-const stylelint = require('stylelint')
-const postcssReporter = require('postcss-reporter')
+// const stylelint = require('stylelint')
+// const postcssReporter = require('postcss-reporter')
 
 const HTMLPlugin = require('html-webpack-plugin')
 
@@ -22,12 +22,12 @@ const sourceLinterRule = {
   use: [ 'eslint-loader' ],
 }
 
-const styleLinterRule = {
-  test: /\.(sass|scss|css)$/,
-  enforce: 'pre',
-  loader: 'postcss-loader',
-  options: { plugins: () => ([ stylelint(), postcssReporter({ clearMessages: true }) ]) },
-}
+// const styleLinterRule = {
+//   test: /\.(sass|scss|css)$/,
+//   enforce: 'pre',
+//   loader: 'postcss-loader',
+//   options: { plugins: () => ([ stylelint(), postcssReporter({ clearMessages: true }) ]) },
+// }
 
 const assetsLoaderRule = {
   test: /\.(jpg|jpeg|png|gif|eot|svg|ttf|woff|woff2)$/,
@@ -80,7 +80,7 @@ module.exports = {
     rules: [
       sourceLoaderRule,
       sourceLinterRule,
-      styleLinterRule,
+      // styleLinterRule,
       assetsLoaderRule,
       htmlLoaderRule,
     ],
