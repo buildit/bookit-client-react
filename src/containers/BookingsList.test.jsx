@@ -5,7 +5,10 @@ import { BookingsList } from 'Containers/BookingsList'
 
 describe('<BookingsList />', () => {
   it('renders itself with a heading', () => {
-    const wrapper = shallow(<BookingsList />)
+    const props = {
+      getBookingsForWeek: jest.fn(),
+    }
+    const wrapper = shallow(<BookingsList {...props} />)
     expect(wrapper.find('h2')).to.exist
   })
 })

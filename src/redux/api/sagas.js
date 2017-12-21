@@ -16,10 +16,6 @@ export function* showToast(message, type) {
   )
 }
 
-export function* doSomething(action) {
-  yield call(console.log, 'GOT ACTION:', action)
-}
-
 export function* watchForCreateBooking() {
   while (true) {
     yield take('CREATE_BOOKING_PENDING')
@@ -31,7 +27,6 @@ export function* watchForCreateBooking() {
 
     if (success) {
       yield call(history.replace, '/bookings')
-      yield call(doSomething, success)
       yield call(showToast, messages.BOOKING_CREATED_SUCCESS, 'success')
     }
 
@@ -54,6 +49,7 @@ export function* watchForDeleteBooking() {
         failure: take('DELETE_BOOKING_FAILURE'),
         success: take('DELETE_BOOKING_SUCCESS'),
       })
+
       if (success) {
         yield call(history.replace, '/bookings')
         yield call(showToast, messages.BOOKING_DELETED_SUCCESS, 'success')
