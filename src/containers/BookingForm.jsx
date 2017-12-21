@@ -126,6 +126,7 @@ export class BookingForm extends React.Component {
             </div>
 
             { error && <strong>{ error }</strong> }
+            <h5 className={ styles.disclaimer }>All times local to selected location</h5>
             <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
             <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
 
