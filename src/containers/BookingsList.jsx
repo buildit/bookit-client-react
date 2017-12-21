@@ -34,7 +34,6 @@ export class BookingsList extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log(prevProps, prevState)
     if (prevState.viewingDate != this.state.viewingDate) {
       this.getBookingsForWeek()
     }
