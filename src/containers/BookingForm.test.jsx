@@ -11,6 +11,10 @@ describe('<BookingForm />', () => {
     handleSubmit: jest.fn(),
     initialize: jest.fn(),
     getBookablesForLocation: jest.fn(),
+    locations: [
+      { id: 'id1', name: 'NYC' },
+      { id: 'id2', name: 'LON' },
+    ],
   }
 
   it('renders itself and <Button /> given the default props', () => {

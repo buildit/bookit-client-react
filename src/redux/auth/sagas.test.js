@@ -33,7 +33,6 @@ describe('sagas/auth', () => {
       //   put(actionCreators.getAllBookables()),
       //   put(actionCreators.getAllBookings()),
       // ])
-
       expect(saga.next().done).to.not.be.true
       expect(saga.next().done).to.be.true
     })
