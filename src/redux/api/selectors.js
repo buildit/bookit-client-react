@@ -86,6 +86,11 @@ export const getLocationByName = createSelector(
   (name, locations) => locations.find(value => value.get('name') === name)
 )
 
+export const getLocationOptions = createSelector(
+  [ getLocationIds, getLocationEntities ],
+  (ids, locations) => ids.map(id => ({ id, name: locations.getIn([id, 'name']) }))
+)
+
 // ### Users -----------------------------------------------------------------
 
 export const getBookingsByUser = createSelector(

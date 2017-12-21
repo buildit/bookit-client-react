@@ -48,6 +48,16 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
   </div>
 )
 
+const renderSelect = locations => (
+  <Field name="locationId" component="select">
+    {locations.map(location => (
+      <option value={location.id} key={location.id}>
+        {location.name}
+      </option>
+    ))}
+  </Field>
+)
+
 renderField.propTypes = {
   input: PropTypes.any,
   label: PropTypes.string,
@@ -83,18 +93,19 @@ export class BookingForm extends React.Component {
       errorMessages,
       setBookablesVisible,
       bookableName,
+      locations,
     } = this.props
 
     return (
       <div className={ styles.bookingForm }>
-        <div className={ styles.heading }>
-          <h2 className={ styles.title }>Book A Room</h2>
-          <Link to="/home" className={ styles.cancel }>X</Link>
-        </div>
-
-        { error && <strong>{ error }</strong> }
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
+          <div className={ styles.heading }>
+            <h2 className={ styles.title }>Book A Room in { renderSelect(locations) }</h2>
+            <Link to="/home" className={ styles.cancel }>X</Link>
+          </div>
+
+          { error && <strong>{ error }</strong> }
           <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
           <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
 
@@ -132,6 +143,7 @@ BookingForm.propTypes = {
   setBookablesVisible: PropTypes.func,
   bookableName: PropTypes.string,
   dispatch: PropTypes.func,
+  locations: PropTypes.array,
 }
 
 const mapStateToProps = state => ({
@@ -139,6 +151,7 @@ const mapStateToProps = state => ({
   errorMessages: selectors.getErrorMessages(state),
   submitting: isSubmitting('booking')(state),
   bookableName: selectors.getBookingFormBookableName(state),
+  locations: selectors.getLocationOptions(state),
 })
 
 const enhance = compose(
