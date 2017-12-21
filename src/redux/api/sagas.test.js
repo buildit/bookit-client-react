@@ -11,26 +11,13 @@ import * as messages from 'Constants/messages'
 
 import {
   sagas as api,
-  doSomething,
   watchForCreateBooking,
   watchForDeleteBooking,
   setLocationSaga,
+  showToast,
 } from './sagas'
 
 describe('api/sagas', () => {
-  describe('#doSomething(action)', () => {
-    it('logs to console with action', () => {
-      const action = {
-        type: 'DUMMY_ACTION',
-      }
-      const saga = doSomething(action)
-      const expected = call(console.log, 'GOT ACTION:', action)
-
-      expect(saga.next().value).to.deep.equal(expected)
-      expect(saga.next().done).to.be.true
-    })
-  })
-
   describe('#watchForCreateBooking()', () => {
     it('watches for booking creation actions', () => {
       const saga = cloneableGenerator(watchForCreateBooking)()
@@ -45,12 +32,12 @@ describe('api/sagas', () => {
 
       const failureSaga = saga.clone()
 
-      expect(saga.next({ success: true }).value).to.deep.equal(put(actionCreators.setToasts(messages.BOOKING_CREATED_SUCCESS)))
-      expect(saga.next({ success: true }).value).to.deep.equal(call(doSomething, true))
-      expect(saga.next(pendingAction).value).to.deep.equal(call(history.replace, '/bookings'))
+      const success = { success: true }
+      expect(saga.next(success).value).to.deep.equal(call(history.replace, '/bookings'))
+      expect(saga.next().value).to.deep.equal(call(showToast, messages.BOOKING_CREATED_SUCCESS, 'success'))
 
-      const failure = { payload: true }
-      expect(failureSaga.next({ failure }).value).to.deep.equal(call(doSomething, failure))
+      const failure = { payload: { response: { message: true } } }
+      expect(failureSaga.next({ failure }).value).to.deep.equal(call(showToast, failure.payload.response.message, 'error'))
       expect(failureSaga.next(pendingAction).value).to.deep.equal(take('CREATE_BOOKING_PENDING'))
     })
   })
@@ -64,7 +51,7 @@ describe('api/sagas', () => {
 
       const firstPendingSaga = saga.clone()
 
-      expect(firstPendingSaga.next({ ...pendingAction, error: 'AN ERROR' }).value).to.deep.equal(put(actionCreators.setToasts(messages.BOOKING_DELETED_ERROR)))
+      expect(firstPendingSaga.next({ ...pendingAction, error: 'AN ERROR' }).value).to.deep.equal(call(showToast, messages.BOOKING_DELETED_ERROR, 'error'))
       expect(firstPendingSaga.next().value).to.deep.equal(call(history.replace, '/bookings'))
 
       expect(saga.next(pendingAction).value).to.deep.equal(race({
@@ -76,16 +63,16 @@ describe('api/sagas', () => {
       const failureSaga = saga.clone()
       const pendingSaga = saga.clone()
 
-      expect(saga.next({ success: true }).value).to.deep.equal(put(actionCreators.setToasts(messages.BOOKING_DELETED_SUCCESS)))
-      expect(saga.next(pendingAction).value).to.deep.equal(call(history.replace, '/bookings'))
+      expect(saga.next({ success: true }).value).to.deep.equal(call(history.replace, '/bookings'))
+      expect(saga.next().value).to.deep.equal(call(showToast, messages.BOOKING_DELETED_SUCCESS, 'success'))
 
       const failure = { payload: true }
-      expect(failureSaga.next({ failure }).value).to.deep.equal(put(actionCreators.setToasts(messages.BOOKING_DELETED_ERROR)))
+      expect(failureSaga.next({ failure }).value).to.deep.equal(call(showToast, messages.BOOKING_DELETED_ERROR, 'error'))
       expect(failureSaga.next().value).to.deep.equal(call(history.replace, '/bookings'))
       expect(failureSaga.next(pendingAction).value).to.deep.equal(take('DELETE_BOOKING_PENDING'))
 
       const pending = { payload: true, error: true }
-      expect(pendingSaga.next({ pending }).value).to.deep.equal(put(actionCreators.setToasts(messages.BOOKING_DELETED_ERROR)))
+      expect(pendingSaga.next({ pending }).value).to.deep.equal(call(showToast, messages.BOOKING_DELETED_ERROR, 'error'))
       expect(pendingSaga.next().value).to.deep.equal(call(history.replace, '/bookings'))
       expect(pendingSaga.next(pendingAction).value).to.deep.equal(take('DELETE_BOOKING_PENDING'))
     })

@@ -11,13 +11,7 @@ export const errors = handleActions({
   APPEND_ERROR: (state, action) => [...state, action.payload],
 }, [])
 
-export const toasts = handleActions({
-  CLEAR_TOASTS: () => null,
-  SET_TOASTS: (state, action) => action.payload,
-}, null)
-
 export const reducer = {
   app,
   errors,
-  toasts,
 }

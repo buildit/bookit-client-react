@@ -4,7 +4,6 @@ import {
   getSelectedLocation,
   getRouterLocation,
   getErrorMessages,
-  getToasts,
 } from './selectors'
 
 describe('selectors/app', () => {
@@ -34,12 +33,4 @@ describe('selectors/app', () => {
       expect(getErrorMessages(state)).to.be.undefined
     })
   })
-
-  describe('#getToasts(state)', () => {
-    it('returns toast messages', () => {
-      const state = { toasts: 'A Toast!' }
-      expect(getToasts(state)).to.equal('A Toast!')
-    })
-  })
-
 })

@@ -1,6 +1,6 @@
 import { Map } from 'immutable'
 
-import { app, errors, toasts } from './reducer'
+import { app, errors } from './reducer'
 
 describe('reducers/app', () => {
 
@@ -31,19 +31,4 @@ describe('reducers/app', () => {
       expect(state).to.be.empty
     })
   })
-
-  describe('#toasts(state, action)', () => {
-    it('returns a toast message when passed a value', () => {
-      const state = toasts(null, { type: 'SET_TOASTS', payload: 'A Toast!' })
-
-      expect(state).to.equal('A Toast!')
-    })
-
-    it('clears toast message on CLEAR_TOASTS', () => {
-      const state = toasts('A Toast!', { type: 'CLEAR_TOASTS' })
-
-      expect(state).to.be.null
-    })
-  })
-
 })

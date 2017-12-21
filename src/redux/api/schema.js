@@ -2,9 +2,9 @@ import { normalize, schema } from 'normalizr'
 
 import { createIntervalTree } from 'Utils'
 
-export const location = new schema.Entity('locations', {})
+export const locationSchema = new schema.Entity('locations', {})
 
-export const bookable = new schema.Entity('bookables', {}, {
+export const bookableSchema = new schema.Entity('bookables', {}, {
   processStrategy: ({ id, name, locationId, disposition }) => ({
     id,
     name,
@@ -13,7 +13,7 @@ export const bookable = new schema.Entity('bookables', {}, {
   }),
 })
 
-export const booking = new schema.Entity('bookings', {}, {
+export const bookingSchema = new schema.Entity('bookings', {}, {
   processStrategy: ({ id, subject, start, end, bookableId, user }) => ({
     id,
     subject,
@@ -24,21 +24,10 @@ export const booking = new schema.Entity('bookings', {}, {
   }),
 })
 
-export const user = new schema.Entity('users', {}, {
+export const userSchema = new schema.Entity('users', {}, {
   idAttribute: 'externalId',
   processStrategy: ({ id, externalId, name }) => ({ id, externalId, name }),
 })
-
-booking.define({ bookable, user })
-
-export const normalizeLocations = data => normalize(data, [ location ])
-export const normalizeBookables = data => normalize(data, [ bookable ])
-
-export const normalizeBookings = data => normalize(data, [ booking ])
-export const normalizeBooking = (data) => {
-  const { entities, result } = normalize(data, booking)
-  return { entities, result: [ result ] }
-}
 
 export const availabilitySchema = new schema.Entity('availability', {}, {
   processStrategy: ({ id, name, disposition: { closed, reason }, bookings }) => {
@@ -48,6 +37,34 @@ export const availabilitySchema = new schema.Entity('availability', {}, {
     return { id, name, closed, reason, bookings: tree }
   },
 })
+
+bookingSchema.define({ bookable: bookableSchema, user: userSchema })
+
+export const normalizeLocations = (data) => {
+  const { entities: { locations }, result } = normalize(data, [ locationSchema ])
+  return { entities: { locations: (locations || {}) }, result: { locations: result } }
+}
+
+export const normalizeBookables = (data) => {
+  const { entities: { bookables }, result } = normalize(data, [ bookableSchema ])
+  return { entities: { bookables: (bookables || {}) }, result: { bookables: result } }
+}
+
+export const normalizeBookings = (data) => {
+  const { entities: { bookings, users }, result } = normalize(data, [ bookingSchema ])
+  return {
+    entities: { bookings: (bookings || {}), users: (users || {}) },
+    result: { bookings: result, users: (users ? Object.keys(users) : []) },
+  }
+}
+
+export const normalizeBooking = (data) => {
+  const { entities: { bookings, users }, result } = normalize(data, bookingSchema)
+  return {
+    entities: { bookings: (bookings || {}), users: (users || {}) },
+    result: { bookings: [ result ], users: (users ? Object.keys(users) : []) },
+  }
+}
 
 export const normalizeAvailability = (data, start, end) => {
   const { entities: { availability } } = normalize(data, [ availabilitySchema ])

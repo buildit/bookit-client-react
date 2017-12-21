@@ -1,5 +1,7 @@
 import { Map, Set, fromJS } from 'immutable'
 
+import { compose } from 'redux'
+
 import { handleActions } from 'redux-actions'
 
 const entityState = Map({
@@ -29,7 +31,7 @@ const updateEntitySlice = (slice, entities, result) => {
 }
 
 const updateEntities = entity => (entityState, action) => {
-  const { entities: { [entity]: entities }, result } = action.payload
+  const { entities: { [entity]: entities }, result: { [entity]: result } } = action.payload
   return entityState.update(entity, slice => updateEntitySlice(slice, entities, result))
 }
 
@@ -52,18 +54,16 @@ export const entities = handleActions({
   GET_LOCATIONS_SUCCESS: updateLocationEntities,
   GET_BOOKABLES_SUCCESS: updateBookableEntities,
   GET_BOOKINGS_SUCCESS: (state, action) => {
-    const { entities: { bookings, users }, result } = action.payload
-    let entityState
-    entityState = updateUserEntities(state, { payload: { entities: { users }, result: Object.keys(users) } })
-    entityState = updateBookingEntities(entityState, { payload: { entities: { bookings }, result } })
-    return entityState
+    return compose(
+      state => updateBookingEntities(state, action),
+      state => updateUserEntities(state, action)
+    )(state)
   },
   CREATE_BOOKING_SUCCESS: (state, action) => {
-    const { entities: { bookings, users }, result } = action.payload
-    let entityState
-    entityState = updateUserEntities(state, { payload: { entities: { users }, result: Object.keys(users) } })
-    entityState = updateBookingEntities(entityState, { payload: { entities: { bookings }, result } })
-    return entityState
+    return compose(
+      state => updateBookingEntities(state, action),
+      state => updateUserEntities(state, action)
+    )(state)
   },
   DELETE_BOOKING_SUCCESS: removeBookingEntity,
 }, entityState)

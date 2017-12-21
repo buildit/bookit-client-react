@@ -23,7 +23,7 @@ export function* preloadData() {
   yield all([
     put(actionCreators.getAllLocations()),
     put(actionCreators.getAllBookables()),
-    put(actionCreators.getAllBookings()),
+    // put(actionCreators.getAllBookings()),
   ])
 }
 

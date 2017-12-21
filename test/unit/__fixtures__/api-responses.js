@@ -22,10 +22,12 @@ export const locationResponse = {
       },
     },
   },
-  result: [
-    'b1177996-75e2-41da-a3e9-fcdd75d1ab31',
-    '43ec3f7d-348d-427f-8c13-102ca0362a62',
-  ],
+  result: {
+    locations: [
+      'b1177996-75e2-41da-a3e9-fcdd75d1ab31',
+      '43ec3f7d-348d-427f-8c13-102ca0362a62',
+    ],
+  },
 }
 
 export const bookableResponse = {
@@ -123,18 +125,20 @@ export const bookableResponse = {
       },
     },
   },
-  result: [
-    'cd87ee34-b393-4400-a1c9-d91278d4b8ee',
-    'bf16f7d9-d0ee-4333-86ff-5a97c75b4424',
-    'bfa745f7-cb86-493a-98b4-984173a9ab01',
-    '3aceeedc-5302-4b32-b653-a7ee1d8eab6c',
-    'aab6d676-d3cb-4b9b-b285-6e63058aeda8',
-    '1c824c61-7539-41d7-b723-d4447826ba50',
-    '23787564-e99d-4741-b285-4d17cc29bf8d',
-    'a7b68976-8dda-44f2-8e39-4e2b6c3514cd',
-    '25708e84-cf1b-45aa-b062-0af903328a52',
-    'cc4bd7e5-00f6-4903-86a2-abf5423edb84',
-  ],
+  result: {
+    bookables: [
+      'cd87ee34-b393-4400-a1c9-d91278d4b8ee',
+      'bf16f7d9-d0ee-4333-86ff-5a97c75b4424',
+      'bfa745f7-cb86-493a-98b4-984173a9ab01',
+      '3aceeedc-5302-4b32-b653-a7ee1d8eab6c',
+      'aab6d676-d3cb-4b9b-b285-6e63058aeda8',
+      '1c824c61-7539-41d7-b723-d4447826ba50',
+      '23787564-e99d-4741-b285-4d17cc29bf8d',
+      'a7b68976-8dda-44f2-8e39-4e2b6c3514cd',
+      '25708e84-cf1b-45aa-b062-0af903328a52',
+      'cc4bd7e5-00f6-4903-86a2-abf5423edb84',
+    ],
+  },
 }
 
 export const bookingResponse = {
@@ -266,22 +270,28 @@ export const bookingResponse = {
       },
     },
   },
-  result: [
-    'e081f498-151b-49bf-a302-6cf248c991f3',
-    '989fa334-7b8c-4dec-8be7-adf5e2302f39',
-    'c52c0fd4-9fdc-4d55-973c-2ba340c8edf6',
-    '9c73c6a9-b08d-416f-a401-d7c8a8279d13',
-    '2e46deec-a1d7-4842-a3e3-633032b50bf4',
-    'c04a27aa-8f60-490f-95eb-240094f233ac',
-    'ce114724-393e-4668-905d-16db6b2323c4',
-    'dbc3ecf2-c4a7-4243-ab8b-5d19413f78a8',
-    'e06a5f69-86e6-4310-9ce4-353fbacd578d',
-    'b605daa1-2203-4763-81b8-84ea94c3d999',
-    'bdd2661e-38a7-493a-a15b-bba0b0d47608',
-    'eb358338-fb79-42d7-a93f-e55c5761a82c',
-    '865202df-f696-4093-bb3b-073f226549a0',
-    'f31c8d36-909c-4a38-a730-0224a1883751',
-  ],
+  result: {
+    bookings: [
+      'e081f498-151b-49bf-a302-6cf248c991f3',
+      '989fa334-7b8c-4dec-8be7-adf5e2302f39',
+      'c52c0fd4-9fdc-4d55-973c-2ba340c8edf6',
+      '9c73c6a9-b08d-416f-a401-d7c8a8279d13',
+      '2e46deec-a1d7-4842-a3e3-633032b50bf4',
+      'c04a27aa-8f60-490f-95eb-240094f233ac',
+      'ce114724-393e-4668-905d-16db6b2323c4',
+      'dbc3ecf2-c4a7-4243-ab8b-5d19413f78a8',
+      'e06a5f69-86e6-4310-9ce4-353fbacd578d',
+      'b605daa1-2203-4763-81b8-84ea94c3d999',
+      'bdd2661e-38a7-493a-a15b-bba0b0d47608',
+      'eb358338-fb79-42d7-a93f-e55c5761a82c',
+      '865202df-f696-4093-bb3b-073f226549a0',
+      'f31c8d36-909c-4a38-a730-0224a1883751',
+    ],
+    users: [
+      '160e0263-4f83-4a99-a2e5-177cd7e96d16',
+      'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30',
+    ],
+  },
 }
 
 export const createBookingResponse = {
@@ -304,7 +314,12 @@ export const createBookingResponse = {
       },
     },
   },
-  result: [
-    '8916995d-f6de-4664-8fa3-2090f807069b',
-  ],
+  result: {
+    bookings: [
+      '8916995d-f6de-4664-8fa3-2090f807069b',
+    ],
+    users: [
+      'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30',
+    ],
+  },
 }

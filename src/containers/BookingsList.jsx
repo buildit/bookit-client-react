@@ -1,17 +1,23 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+
+import { connect } from 'react-redux'
 
 import { Link } from 'react-router-dom'
 
 import GroupedBookingsListContainer from 'Containers/GroupedBookingsListContainer'
 import WeekSpinner from 'Components/WeekSpinner'
 
-import withToast from 'Hoc/with-toast'
-
+import { actionCreators } from 'Redux'
 import { getWeekDaysRange, formatDate } from 'Utils'
 
 import styles from 'Styles/bookings.scss'
 
 export class BookingsList extends React.Component {
+  static propTypes = {
+    getBookingsForWeek: PropTypes.func,
+  }
+
   constructor(props) {
     super(props)
 
@@ -22,9 +28,19 @@ export class BookingsList extends React.Component {
     this.updateViewingDate = this.updateViewingDate.bind(this)
   }
 
-  updateViewingDate = (date) => {
-    this.setState({ viewingDate: date })
+
+  componentDidMount() {
+    this.getBookingsForWeek()
   }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.viewingDate != this.state.viewingDate) {
+      this.getBookingsForWeek()
+    }
+  }
+
+  updateViewingDate = date => this.setState({ viewingDate: date })
+  getBookingsForWeek = () => this.props.getBookingsForWeek(this.state.viewingDate)
 
   render() {
     const { viewingDate } = this.state
@@ -47,4 +63,4 @@ export class BookingsList extends React.Component {
   }
 }
 
-export default withToast('success')(BookingsList)
+export default connect(null, { getBookingsForWeek: actionCreators.getBookingsForWeek })(BookingsList)

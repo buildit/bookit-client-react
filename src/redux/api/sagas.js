@@ -1,13 +1,19 @@
 import { call, fork, race, take, takeEvery, put, select } from 'redux-saga/effects'
 
+import { toast } from 'react-toastify'
+
 import history from 'History'
 
 import { selectors, actionCreators } from 'Redux'
 
 import * as messages from 'Constants/messages'
 
-export function* doSomething(action) {
-  yield call(console.log, 'GOT ACTION:', action)
+export function* showToast(message, type) {
+  yield call(
+    toast,
+    message,
+    { type }
+  )
 }
 
 export function* watchForCreateBooking() {
@@ -20,13 +26,12 @@ export function* watchForCreateBooking() {
     })
 
     if (success) {
-      yield put(actionCreators.setToasts(messages.BOOKING_CREATED_SUCCESS))
-      yield call(doSomething, success)
       yield call(history.replace, '/bookings')
+      yield call(showToast, messages.BOOKING_CREATED_SUCCESS, 'success')
     }
 
     if (failure) {
-      yield call(doSomething, failure)
+      yield call(showToast, failure.payload.response.message, 'error')
     }
   }
 }
@@ -35,7 +40,7 @@ export function* watchForDeleteBooking() {
   while (true) {
     const action = yield take('DELETE_BOOKING_PENDING')
     if (action.error) {
-      yield put(actionCreators.setToasts(messages.BOOKING_DELETED_ERROR))
+      yield call(showToast, messages.BOOKING_DELETED_ERROR, 'error')
       //TODO: Not navigate back to bookings if booking deleted errors.
       yield call(history.replace, '/bookings')
     } else {
@@ -44,13 +49,14 @@ export function* watchForDeleteBooking() {
         failure: take('DELETE_BOOKING_FAILURE'),
         success: take('DELETE_BOOKING_SUCCESS'),
       })
+
       if (success) {
-        yield put(actionCreators.setToasts(messages.BOOKING_DELETED_SUCCESS))
         yield call(history.replace, '/bookings')
+        yield call(showToast, messages.BOOKING_DELETED_SUCCESS, 'success')
       }
 
       if (failure || pending) {
-        yield put(actionCreators.setToasts(messages.BOOKING_DELETED_ERROR))
+        yield call(showToast, messages.BOOKING_DELETED_ERROR, 'error')
         //TODO: Not navigate back to bookings if booking deleted errors.
         yield call(history.replace, '/bookings')
       }
