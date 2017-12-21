@@ -19,7 +19,7 @@
   "testPathIgnorePatterns": [ "<rootDir>/(build|docs|node_modules|images)/" ],
   "testEnvironment": "jsdom",
   "testRegex": "\\.test.jsx?$",
-  "collectCoverage": false,
+  "collectCoverage": true,
   "collectCoverageFrom": [
     "!src/**/index.*(js|jsx)",
     "!src/*(store|history)/*",

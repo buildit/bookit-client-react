@@ -146,7 +146,6 @@ export const createBooking = booking => ({
       'CREATE_BOOKING_FAILURE',
     ],
     body: JSON.stringify(booking),
-    // body: JSON.stringify({ ...booking, end: booking.start }),
     headers: makeHeaders(true, true),
   },
 })
