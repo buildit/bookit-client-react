@@ -21,7 +21,7 @@ export class BookablesList extends React.Component {
   }
 
   async componentDidMount() {
-    const { payload: availability } = await this.props.getAvailability(this.props.start, this.props.end)
+    const { payload: availability } = await this.props.getAvailability(this.props.start, this.props.end, this.props.location)
     this.setState({ availability })
   }
 
@@ -60,11 +60,13 @@ BookablesList.propTypes = {
   change: PropTypes.func,
   getAvailability: PropTypes.func,
   setBookablesVisible: PropTypes.func,
+  location: PropTypes.string,
 }
 
 const mapStateToProps = state => ({
   start: selectors.getBookingFormStart(state),
   end: selectors.getBookingFormEnd(state),
+  location: selectors.getBookingFormLocation(state),
 })
 
 const mapDispatchToProps = {

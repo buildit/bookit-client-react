@@ -11,6 +11,7 @@ import { Field, reduxForm, isSubmitting, change } from 'redux-form'
 import { actionCreators, selectors } from 'Redux'
 
 import Button from 'Components/Button'
+import Loading from 'Components/Loading'
 
 import { addHours, isBefore, isAfter, formatDate } from 'Utils'
 
@@ -68,13 +69,22 @@ renderField.propTypes = {
 const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, index) => <p key={index}>{error}</p>)}</h1>
 
 export class BookingForm extends React.Component {
-  async componentDidMount() {
+  componentDidMount() {
+    if (this.props.locations.length === 0) {
+      this.props.getAllLocations()
+    }
     const now = new Date
     const values = {
       end: formatDate(addHours(now, 1), 'YYYY-MM-DDTHH:mm'),
       start: formatDate(now, 'YYYY-MM-DDTHH:mm'),
     }
     this.props.initialize(values)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.locations.length !== this.props.locations.length) {
+      this.props.dispatch(change('booking', 'locationId', this.props.locations[0].id))
+    }
   }
 
   submitBookingForm = (values) => {
@@ -99,38 +109,45 @@ export class BookingForm extends React.Component {
       bookableName,
       locations,
     } = this.props
+    if (locations.length === 0) {
+      return (
+        <div>
+          <Loading />
+        </div>
+      )
+    } else {
+      return (
+        <div className={ styles.bookingForm }>
 
-    return (
-      <div className={ styles.bookingForm }>
+          <form onSubmit={ handleSubmit(this.submitBookingForm) }>
+            <div className={ styles.heading }>
+              <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
+              <Link to="/home" className={ styles.cancel }>X</Link>
+            </div>
 
-        <form onSubmit={ handleSubmit(this.submitBookingForm) }>
-          <div className={ styles.heading }>
-            <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
-            <Link to="/home" className={ styles.cancel }>X</Link>
-          </div>
+            { error && <strong>{ error }</strong> }
+            <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
+            <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
 
-          { error && <strong>{ error }</strong> }
-          <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
-          <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
+            <a href="#" onClick={(event) => {
+              event.preventDefault()
+              setBookablesVisible(true)
+            }} className="roomsInput">Rooms</a>
 
-          <a href="#" onClick={(event) => {
-            event.preventDefault()
-            setBookablesVisible(true)
-          }} className="roomsInput">Rooms</a>
+            <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } />
+            <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
 
-          <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } />
-          <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
+            <div className={ styles.field }>
+              <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={ styles.submitButton }>
+                BookIt
+              </Button>
+            </div>
+          </form>
 
-          <div className={ styles.field }>
-            <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={ styles.submitButton }>
-              BookIt
-            </Button>
-          </div>
-        </form>
-
-        { errorMessages && renderErrorMessages(errorMessages) }
-      </div>
-    )
+          { errorMessages && renderErrorMessages(errorMessages) }
+        </div>
+      )
+    }
   }
 }
 
@@ -147,7 +164,8 @@ BookingForm.propTypes = {
   setBookablesVisible: PropTypes.func,
   bookableName: PropTypes.string,
   dispatch: PropTypes.func,
-  locations: PropTypes.array,
+  locations: PropTypes.arrayOf(PropTypes.object),
+  getAllLocations: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -160,7 +178,7 @@ const mapStateToProps = state => ({
 
 const enhance = compose(
   reduxForm({ form: 'booking' }),
-  connect(mapStateToProps, { createBooking: actionCreators.createBooking })
+  connect(mapStateToProps, { createBooking: actionCreators.createBooking, getAllLocations: actionCreators.getAllLocations })
 )
 
 export default enhance(BookingForm)
