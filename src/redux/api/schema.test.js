@@ -59,7 +59,7 @@ describe('api/schema', () => {
 
   describe('#normalizeBookings()', () => {
     it('should normalize and process a `getAllBookings` API response', () => {
-      const raw = [ { id: 'f31c8d36-909c-4a38-a730-0224a1883751', bookableId: 'aab6d676-d3cb-4b9b-b285-6e63058aeda8', subject: 'My Bookable for Next Week', start: '2017-12-25T18:25', end: '2017-12-25T18:26', user: { id:'18420ed4-4ec5-4ae6-8085-d21bb8440527', name: 'Bruce Springsteen', externalId: 'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30' } } ]
+      const raw = [{ id: 'f31c8d36-909c-4a38-a730-0224a1883751', bookable: { 'id': 'aab6d676-d3cb-4b9b-b285-6e63058aeda8' }, subject: 'My Bookable for Next Week', start: '2017-12-25T18:25', end: '2017-12-25T18:26', user: { id:'18420ed4-4ec5-4ae6-8085-d21bb8440527', name: 'Bruce Springsteen', externalId: 'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30' } } ]
       const expected = { entities: { bookings: { 'f31c8d36-909c-4a38-a730-0224a1883751': { id: 'f31c8d36-909c-4a38-a730-0224a1883751', subject: 'My Bookable for Next Week', start: '2017-12-25T18:25', end: '2017-12-25T18:26', bookable: 'aab6d676-d3cb-4b9b-b285-6e63058aeda8', user: 'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30' } }, users: { 'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30': { id: '18420ed4-4ec5-4ae6-8085-d21bb8440527', externalId: 'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30', name: 'Bruce Springsteen' } } }, result: { bookings: [ 'f31c8d36-909c-4a38-a730-0224a1883751' ], users: [ 'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30' ] } }
       const actual = normalizeBookings(raw)
 
