@@ -48,8 +48,8 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
   </div>
 )
 
-const renderSelect = locations => (
-  <Field name="locationId" component="select">
+const renderSelect = (locations, onChange) => (
+  <Field name="locationId" component="select" onChange={onChange}>
     {locations.map(location => (
       <option value={location.id} key={location.id}>
         {location.name}
@@ -83,6 +83,10 @@ export class BookingForm extends React.Component {
     })
   }
 
+  clearRoom = () => {
+    this.props.dispatch(change('booking', 'bookableId', ''))
+  }
+
   render() {
     const {
       handleSubmit,
@@ -101,13 +105,13 @@ export class BookingForm extends React.Component {
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
           <div className={ styles.heading }>
-            <h2 className={ styles.title }>Book A Room in { renderSelect(locations) }</h2>
+            <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
             <Link to="/home" className={ styles.cancel }>X</Link>
           </div>
 
           { error && <strong>{ error }</strong> }
-          <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
-          <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
+          <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
+          <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
 
           <a href="#" onClick={(event) => {
             event.preventDefault()
