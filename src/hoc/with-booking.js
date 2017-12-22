@@ -12,6 +12,7 @@ export default (WrappedComponent) => {
     start: selectors.getBookingStart,
     end: selectors.getBookingEnd,
     bookableName: selectors.getBookingBookableName,
+    locationName: selectors.getBookingLocationName,
   })
 
   // Object.assign({}, ownProps, stateProps, dispatchProps)

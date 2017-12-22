@@ -5,12 +5,12 @@ import { formatTime } from 'Utils'
 
 import styles from 'Styles/booking-item.scss'
 
-export const BaseBookingItem = ({ id, subject, start, end, bookableName }) => {
+export const BaseBookingItem = ({ id, subject, start, end, bookableName, locationName }) => {
   return (
     <div className={styles.bookingItem} id={ `booking-${id}` }>
       <p>{ formatTime(start) } - { formatTime(end) }</p>
       <p id={`booking-${subject.replace(/\s/g, '-').toLowerCase()}`}>{ subject }</p>
-      <h3>{ bookableName }</h3>
+      <h3>{ bookableName } ({ locationName })</h3>
     </div>
   )
 }
@@ -21,6 +21,7 @@ BaseBookingItem.propTypes = {
   start: PropTypes.string,
   end: PropTypes.string,
   bookableName: PropTypes.string,
+  locationName: PropTypes.string,
 }
 
 export default BaseBookingItem

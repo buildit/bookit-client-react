@@ -27,13 +27,11 @@ describe('sagas/auth', () => {
   describe('#preloadData()', () => {
     it('dispatches parallel calls to load all relevant API data', () => {
       const saga = preloadData()
+      const action = { payload: { result: { locations: [ 'abc', 'def', 'ghi' ] } } }
 
-      // const expected = all([
-      //   put(actionCreators.getAllLocations()),
-      //   put(actionCreators.getAllBookables()),
-      //   put(actionCreators.getAllBookings()),
-      // ])
-      expect(saga.next().done).to.not.be.true
+      expect(saga.next().value).to.exist
+      expect(saga.next(action).value).to.deep.equal(take('GET_LOCATIONS_SUCCESS'))
+      expect(saga.next(action).value).to.exist
       expect(saga.next().done).to.be.true
     })
   })

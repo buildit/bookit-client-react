@@ -37,12 +37,14 @@ import {
   getBookingBookable,
   isBookingInPast,
   getBookingBookableName,
+  getBookingLocationName,
   getBookingDates,
   getBookingsForDate,
   getLocationEntity,
   getLocationName,
   getLocationTimezone,
   getLocationByName,
+  getLocationOptions,
   getBookingsByUser,
   getBookingsForUser,
   getBookingsForUserForDate,
@@ -248,6 +250,17 @@ describe('API selectors', () => {
     })
   })
 
+  describe('#getBookingLocationName(state, props)', () => {
+    it('returns the correct value from state', () => {
+      const props = { id: 'e081f498-151b-49bf-a302-6cf248c991f3' }
+      const actual = getBookingLocationName(state, props)
+      const bookable = getBookingBookable(state, props)
+      const location = getBookableLocation(state, { id: bookable })
+
+      expect(actual).to.equal(entities.getIn(['locations', 'entities', location, 'name']))
+    })
+  })
+
   describe('#getBookingDates(state, props)', () => {
     it('returns the correct value from state', () => {
       const actual = getBookingDates(state)
@@ -299,6 +312,20 @@ describe('API selectors', () => {
       const actual = getLocationByName(state, props)
 
       expect(actual).to.equal(entities.getIn(['locations', 'entities', 'b1177996-75e2-41da-a3e9-fcdd75d1ab31']))
+    })
+  })
+
+  describe('#getLocationOptions(state)', () => {
+    it('returns the correct value from state', () => {
+      const expected = [
+        { id: 'b1177996-75e2-41da-a3e9-fcdd75d1ab31', name: 'NYC' },
+        { id: '43ec3f7d-348d-427f-8c13-102ca0362a62', name: 'LON' },
+      ]
+      const actual = getLocationOptions(state)
+
+      expect(actual).to.have.lengthOf(expected.length)
+      expect(actual[0]).to.deep.equal(expected[0])
+      expect(actual[1]).to.deep.equal(expected[1])
     })
   })
 
