@@ -24,7 +24,6 @@ export function* preloadData() {
   const { payload: { result: { locations } } } = yield take('GET_LOCATIONS_SUCCESS')
   yield all(
     locations.map(locationId => put(actionCreators.getAllBookables(locationId)))
-    // put(actionCreators.getAllBookings()),
   )
 }
 
