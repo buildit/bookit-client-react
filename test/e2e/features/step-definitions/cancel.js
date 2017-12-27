@@ -45,7 +45,7 @@ When('I am now editing details through the My Bookings page', async function() {
   await this.driver.sleep(1000)
 
   await this.findElementById('next').click()
-  const element = await this.waitUntilElement(By.id('booking-my-bookable-to-be-deleted'))
+  const element = await this.waitUntilElement(By.partialLinkText('My Bookable To Be Deleted'))
   await element.click()
 })
 
