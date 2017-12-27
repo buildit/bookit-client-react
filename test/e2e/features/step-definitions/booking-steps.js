@@ -12,7 +12,7 @@ When('I fill in the form', async function() {
   const startForForm = this.start.toISOString().split('.')[0]
   const endForForm = end.toISOString().split('.')[0]
 
-  const subjectInput = await this.findElementByName('subject')
+  const subjectInput = await this.waitUntilElement(By.name('subject'))
   await subjectInput.sendKeys('My Bookable')
 
   const startInput = await this.findElementByName('start')
