@@ -35,3 +35,8 @@ phases:
 artifacts:
   files:
     - build.json
+
+cache:
+  paths:
+    - 'node_modules/**/*'
+    - '/var/cache/apt/archives/**/*'

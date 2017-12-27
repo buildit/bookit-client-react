@@ -29,3 +29,8 @@ phases:
       - chmod +x ./reporter.js
       - yarn cucumber:report
       - aws s3 cp --recursive --acl public-read ./reports ${REPORTS_BUCKET}/
+
+cache:
+  paths:
+    - 'node_modules/**/*'
+    - '/var/cache/apt/archives/**/*'
