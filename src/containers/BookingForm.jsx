@@ -70,15 +70,24 @@ const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, in
 
 export class BookingForm extends React.Component {
   componentDidMount() {
+    const now = new Date
+    const end = formatDate(addHours(now, 1), 'YYYY-MM-DDTHH:mm')
+    const start = formatDate(now, 'YYYY-MM-DDTHH:mm')
     if (this.props.locations.length === 0) {
       this.props.getAllLocations()
+      const values = {
+        end: end,
+        start: start,
+      }
+      this.props.initialize(values)
+    } else {
+      const values = {
+        end: end,
+        start: start,
+        locationId: this.props.locations[0].id,
+      }
+      this.props.initialize(values)
     }
-    const now = new Date
-    const values = {
-      end: formatDate(addHours(now, 1), 'YYYY-MM-DDTHH:mm'),
-      start: formatDate(now, 'YYYY-MM-DDTHH:mm'),
-    }
-    this.props.initialize(values)
   }
 
   componentDidUpdate(prevProps) {
