@@ -39,7 +39,7 @@ export class BookablesList extends React.Component {
 
     return (
       <div className={styles.bookablesList}>
-        <ActionLink onClick={this.handleBack}>BACK</ActionLink>
+        <ActionLink onClick={this.handleBack} className={styles.back}>BACK</ActionLink>
         <h3 className={styles.heading}>Change Room</h3>
         { availability.map(bookable => (
           <BookableAvailabilityItem
