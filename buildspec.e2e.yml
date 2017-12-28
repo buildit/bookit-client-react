@@ -25,4 +25,5 @@ phases:
 cache:
   paths:
     - 'node_modules/**/*'
-    - '/var/cache/apt/archives/**/*'
+    - '/usr/local/share/.cache/yarn/**/*'
+    - '/var/cache/apt/**/*'

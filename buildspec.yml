@@ -16,7 +16,6 @@ phases:
 
   build:
     commands:
-      - yarn cache dir
       - yarn
       - yarn lint
       - yarn lint:style
@@ -39,4 +38,5 @@ artifacts:
 cache:
   paths:
     - 'node_modules/**/*'
-    - '/var/cache/apt/archives/**/*'
+    - '/usr/local/share/.cache/yarn/**/*'
+    - '/var/cache/apt/**/*'
