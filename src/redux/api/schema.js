@@ -5,21 +5,21 @@ import { createIntervalTree } from 'Utils'
 export const locationSchema = new schema.Entity('locations', {})
 
 export const bookableSchema = new schema.Entity('bookables', {}, {
-  processStrategy: ({ id, name, locationId, disposition }) => ({
+  processStrategy: ({ id, name, location, disposition }) => ({
     id,
     name,
-    location: locationId,
+    location: location.id,
     disposition,
   }),
 })
 
 export const bookingSchema = new schema.Entity('bookings', {}, {
-  processStrategy: ({ id, subject, start, end, bookableId, user }) => ({
+  processStrategy: ({ id, subject, start, end, bookable, user }) => ({
     id,
     subject,
     start,
     end,
-    bookable: bookableId,
+    bookable: bookable.id,
     user,
   }),
 })
