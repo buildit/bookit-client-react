@@ -35,8 +35,9 @@ artifacts:
   files:
     - build.json
 
-cache:
-  paths:
-    - 'node_modules/**/*'
-    - '/usr/local/share/.cache/yarn/**/*'
-    - '/var/cache/apt/**/*'
+# currently doesn't work as yarn can't find eslint on 2nd run
+# cache:
+#   paths:
+#     - 'node_modules/**/*'
+#     - '/usr/local/share/.cache/yarn/**/*'
+#     - '/var/cache/apt/**/*'
