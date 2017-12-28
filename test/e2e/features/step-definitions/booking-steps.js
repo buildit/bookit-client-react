@@ -6,6 +6,9 @@ Given('I am on the bookit website form', async function() {
 })
 
 When('I fill in the form', async function() {
+  const locationInput = await this.waitUntilElement(By.name('locationId'))
+  await locationInput.sendKeys('NYC')
+
   const end = new Date(this.start)
   end.setMinutes(this.start.getMinutes() + 1)
 

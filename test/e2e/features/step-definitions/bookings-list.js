@@ -7,6 +7,9 @@ import addWeeks from 'date-fns/add_weeks'
 Given('I create a booking for next week', async function() {
   await this.getWithLogin('/book')
 
+  const locationInput = await this.waitUntilElement(By.name('locationId'))
+  await locationInput.sendKeys('NYC')
+
   const start = addWeeks(this.start, 1)
   const end = new Date(start)
 
