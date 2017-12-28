@@ -20,6 +20,7 @@ describe('<BookablesList />', () => {
       <BookablesList
         start='2017-12-15T00:30'
         end='2017-12-15T01:00'
+        location='xyz'
         change={change}
         getAvailability={getAvailability}
         setBookablesVisible={setBookablesVisible}
