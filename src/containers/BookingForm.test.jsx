@@ -26,14 +26,13 @@ describe('<BookingForm />', () => {
   })
 
   it('renders itself and <Button /> given the default props', () => {
-    const wrapper = mount(<BookingForm { ...props } />)
+    const wrapper = shallow(<BookingForm { ...props } />)
 
     expect(wrapper.find(Button).find('button')).to.not.be.disabled
   })
 
   it('calls handleSubmit on click', () => {
-    const { locations, ...newProps } = props  // eslint-disable-line
-    const wrapper = shallow(<BookingForm { ...newProps } />, { disableLifecycleMethods: true })
+    const wrapper = shallow(<BookingForm { ...props } />, { disableLifecycleMethods: true })
 
     wrapper.find('Button').shallow().find('button').simulate('click')
 
@@ -41,7 +40,8 @@ describe('<BookingForm />', () => {
   })
 
   it('[BKIT-91] renders <Loading> when `locations` is empty', () => {
-    const wrapper = shallow(<BookingForm { ...props } />, { disableLifecycleMethods: true })
+    const { locations, ...newProps } = props  // eslint-disable-line
+    const wrapper = shallow(<BookingForm { ...newProps } />, { disableLifecycleMethods: true })
 
     expect(wrapper.find('Loading').length).to.equal(1)
   })

@@ -124,7 +124,7 @@ export class BookingForm extends React.Component {
       locations,
     } = this.props
 
-    if (this.hasLocations()) {
+    if (!this.hasLocations()) {
       return <div><Loading /></div>
     }
 
