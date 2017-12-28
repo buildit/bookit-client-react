@@ -11,6 +11,7 @@ import { Field, reduxForm, isSubmitting, change } from 'redux-form'
 import { actionCreators, selectors } from 'Redux'
 
 import Button from 'Components/Button'
+import Loading from 'Components/Loading'
 
 import { addHours, isBefore, isAfter, formatDate } from 'Utils'
 
@@ -48,6 +49,16 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
   </div>
 )
 
+const renderSelect = (locations = [], onChange) => (
+  <Field name="locationId" component="select" onChange={onChange}>
+    {locations.map(location => (
+      <option value={location.id} key={location.id}>
+        {location.name}
+      </option>
+    ))}
+  </Field>
+)
+
 renderField.propTypes = {
   input: PropTypes.any,
   label: PropTypes.string,
@@ -58,19 +69,46 @@ renderField.propTypes = {
 const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, index) => <p key={index}>{error}</p>)}</h1>
 
 export class BookingForm extends React.Component {
-  async componentDidMount() {
+  componentDidMount() {
     const now = new Date
+    const end = formatDate(addHours(now, 1), 'YYYY-MM-DDTHH:mm')
+    const start = formatDate(now, 'YYYY-MM-DDTHH:mm')
+
     const values = {
-      end: formatDate(addHours(now, 1), 'YYYY-MM-DDTHH:mm'),
-      start: formatDate(now, 'YYYY-MM-DDTHH:mm'),
+      end: end,
+      start: start,
     }
-    this.props.initialize(values)
+
+    const { locations, initialize, getAllLocations } = this.props
+
+    if (!this.hasLocations()) {
+      getAllLocations()
+    } else {
+      values.locationId = locations[0].id
+    }
+
+    initialize(values)
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.locations.length !== this.props.locations.length) {
+      this.props.dispatch(change('booking', 'locationId', this.props.locations[0].id))
+    }
   }
 
   submitBookingForm = (values) => {
     return Promise.resolve().then(() => {
       this.props.createBooking(values)
     })
+  }
+
+  clearRoom = () => {
+    this.props.dispatch(change('booking', 'bookableId', ''))
+  }
+
+  hasLocations = () => {
+    return this.props.locations
+    && this.props.locations.length > 0
   }
 
   render() {
@@ -83,20 +121,26 @@ export class BookingForm extends React.Component {
       errorMessages,
       setBookablesVisible,
       bookableName,
+      locations,
     } = this.props
+
+    if (!this.hasLocations()) {
+      return <div><Loading /></div>
+    }
 
     return (
       <div className={ styles.bookingForm }>
-        <div className={ styles.heading }>
-          <h2 className={ styles.title }>Book A Room</h2>
-          <Link to="/home" className={ styles.cancel }>X</Link>
-        </div>
-
-        { error && <strong>{ error }</strong> }
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
-          <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
-          <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={() => this.props.dispatch(change('booking', 'bookableId', '' ))} />
+          <div className={ styles.heading }>
+            <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
+            <Link to="/home" className={ styles.cancel }>X</Link>
+          </div>
+
+          { error && <strong>{ error }</strong> }
+          <h5 className={ styles.disclaimer }>All times local to selected location</h5>
+          <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
+          <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
 
           <a href="#" onClick={(event) => {
             event.preventDefault()
@@ -132,6 +176,8 @@ BookingForm.propTypes = {
   setBookablesVisible: PropTypes.func,
   bookableName: PropTypes.string,
   dispatch: PropTypes.func,
+  locations: PropTypes.arrayOf(PropTypes.object),
+  getAllLocations: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -139,11 +185,12 @@ const mapStateToProps = state => ({
   errorMessages: selectors.getErrorMessages(state),
   submitting: isSubmitting('booking')(state),
   bookableName: selectors.getBookingFormBookableName(state),
+  locations: selectors.getLocationOptions(state),
 })
 
 const enhance = compose(
   reduxForm({ form: 'booking' }),
-  connect(mapStateToProps, { createBooking: actionCreators.createBooking })
+  connect(mapStateToProps, { createBooking: actionCreators.createBooking, getAllLocations: actionCreators.getAllLocations })
 )
 
 export default enhance(BookingForm)

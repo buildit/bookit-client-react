@@ -54,9 +54,9 @@ export const getAllLocations = () => ({
   },
 })
 
-export const getAllBookables = () => ({
+export const getAllBookables = location => ({
   [RSAA]: {
-    endpoint: state => `${apiEndpoint}/location/${selectors.getSelectedLocation(state)}/bookable`,
+    endpoint: `${apiEndpoint}/location/${location}/bookable`,
     method: 'GET',
     types: [
       'GET_BOOKABLES_PENDING',
@@ -110,7 +110,7 @@ export const getBookingsForWeek = (week) => {
   }
 }
 
-export const getAvailability = (start, end) => {
+export const getAvailability = (start, end, location) => {
   const qs = QS.stringify({
     start: formatDate(start),
     end: formatDate(addDays(start, 1)),
@@ -118,7 +118,7 @@ export const getAvailability = (start, end) => {
   })
   return {
     [RSAA]: {
-      endpoint: state => `${apiEndpoint}/location/${selectors.getSelectedLocation(state)}/bookable?${qs}`,
+      endpoint: `${apiEndpoint}/location/${location}/bookable?${qs}`,
       method: 'GET',
       types: [
         'GET_AVAILABILITY_PENDING',

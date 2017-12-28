@@ -20,6 +20,7 @@ const bookingFormSelector = formValueSelector('booking')
 const getBookingFormBookableId = state => bookingFormSelector(state, 'bookableId')
 export const getBookingFormStart = state => bookingFormSelector(state, 'start')
 export const getBookingFormEnd = state => bookingFormSelector(state, 'end')
+export const getBookingFormLocation = state => bookingFormSelector(state, 'locationId')
 
 export const getBookingFormBookableName = createSelector(
   [ getBookingFormBookableId, getBookableEntities ],

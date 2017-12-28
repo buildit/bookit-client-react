@@ -8,7 +8,7 @@ export const bookableSchema = new schema.Entity('bookables', {}, {
   processStrategy: ({ id, name, location, disposition }) => ({
     id,
     name,
-    location: location.id,
+    location,
     disposition,
   }),
 })
@@ -19,7 +19,7 @@ export const bookingSchema = new schema.Entity('bookings', {}, {
     subject,
     start,
     end,
-    bookable: bookable.id,
+    bookable,
     user,
   }),
 })
@@ -38,6 +38,7 @@ export const availabilitySchema = new schema.Entity('availability', {}, {
   },
 })
 
+bookableSchema.define({ location: locationSchema })
 bookingSchema.define({ bookable: bookableSchema, user: userSchema })
 
 export const normalizeLocations = (data) => {

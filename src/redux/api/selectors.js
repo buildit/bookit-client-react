@@ -52,7 +52,14 @@ const getBookingBookableEntity = createSelector(
   (bookingBookable, bookables) => bookables.find((value, key) => key === bookingBookable) || Map()
 )
 
+// Private heper for relating a location to a booking via its bookable
+const getBookingBookableLocationEntity = createSelector(
+  [ getBookingBookableEntity, getLocationEntities ],
+  (bookingBookable, locations) => locations.find((value, key) => key === bookingBookable.get('location')) || Map()
+)
+
 export const getBookingBookableName = createGetSelector(getBookingBookableEntity, 'name', null)
+export const getBookingLocationName = createGetSelector(getBookingBookableLocationEntity, 'name', null)
 
 export const getBookingDates = createSelector(
   [ getBookingIds, getBookingEntities ],
@@ -86,6 +93,11 @@ export const getLocationByName = createSelector(
   (name, locations) => locations.find(value => value.get('name') === name)
 )
 
+export const getLocationOptions = createSelector(
+  [ getLocationIds, getLocationEntities ],
+  (ids, locations) => ids.map(id => ({ id, name: locations.getIn([id, 'name']) }))
+)
+
 // ### Users -----------------------------------------------------------------
 
 export const getBookingsByUser = createSelector(
@@ -115,6 +127,7 @@ export const getBookableEntity = (state, props) => getBookableEntities(state).ge
 export const getBookableId = createGetSelector(getBookableEntity, 'id', null)
 export const getBookableName = createGetSelector(getBookableEntity, 'name', null)
 export const getBookableDisposition = createGetSelector(getBookableEntity, 'disposition', Map())
+export const getBookableLocation = createGetSelector(getBookableEntity, 'location', null)
 
 const getBookableBookings = createSelector(
   [ getBookableId, getBookingIds, getBookingEntities ],
@@ -147,8 +160,6 @@ export const isBookableAvailable = createSelector(
   [ isBookableClosed, isBookableBooked ],
   (closed, booked) => !closed && !booked
 )
-
-export const getBookableLocation = createGetSelector(getBookableEntity, 'location', null)
 
 const getBookableLocationEntity = createSelector(
   [ getBookableLocation, getLocationEntities ],

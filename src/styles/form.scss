@@ -1,8 +1,13 @@
 @import './mixins/flex';
+@import './mixins/media';
 
 .booking-form {
   background-color: white;
   color: black;
+
+  @include desktop {
+    margin-left: 20%;
+  }
 
   @include page;
   flex-flow: column nowrap;
@@ -25,6 +30,12 @@
 
   input {
     flex: 1 0 auto;
+    border: 1px solid lightgray;
+    padding: 10px;
+    
+    @include desktop {
+      width: 60%;
+    }
   }
 }
 
@@ -37,17 +48,34 @@
   .title {
     flex: 1 0 auto;
     color: black;
+    font-weight: bold;
+
+    @include desktop {
+      font-size: 25px;
+    }
   }
 
   .cancel {
     flex: 0 1 auto;
+    text-decoration: none;
+
+    @include desktop {
+      margin-right: 20px;
+      font-size: 25px;
+    }
   }
+}
+
+.disclaimer {
+  padding-left: 15px;
 }
 
 .error-span {
   color: red;
   display: inline-block;
   padding-left: 5px;
+  font-size: 13px;
+  margin-top: 5px;
 }
 
 .submitButton {
@@ -60,6 +88,10 @@
   line-height: 18px;
   margin-top: 20px;
   padding: 20px 0;
+
+  @include desktop {
+    width: 60%;
+  }
 
   &:disabled {
     cursor: disabled;

@@ -16,11 +16,12 @@ jest.mock('Redux', () => ({
     getBookingStart: jest.fn().mockReturnValue('2017-12-19T01:00'),
     getBookingEnd: jest.fn().mockReturnValue('2017-12-19T02:00'),
     getBookingBookableName: jest.fn().mockReturnValue('Bookable Name'),
+    getBookingLocationName: jest.fn().mockReturnValue('Location Name'),
   },
 }))
 
 describe('with-booking', () => {
-  const AComponent = ({ id, subject, start, end, bookableName }) => (<div>{ id }:{ subject }:{ start }:{ end }:{ bookableName }</div>)
+  const AComponent = ({ id, subject, start, end, bookableName, locationName }) => (<div>{ id }:{ subject }:{ start }:{ end }:{ bookableName }:{ locationName }</div>)
 
   AComponent.propTypes = {
     id: PropTypes.string,
@@ -28,6 +29,7 @@ describe('with-booking', () => {
     start: PropTypes.string,
     end: PropTypes.string,
     bookableName: PropTypes.string,
+    locationName: PropTypes.string,
   }
 
   const WrappedComponent = withBooking(AComponent)
@@ -37,7 +39,7 @@ describe('with-booking', () => {
     it('connects a normal component to the redux store for booking properties', () => {
       const wrapper = mount(<Provider store={mockStore()}><WrappedComponent id={id} /></Provider>)
 
-      expect(wrapper.text()).to.equal('abc:A Subject:2017-12-19T01:00:2017-12-19T02:00:Bookable Name')
+      expect(wrapper.text()).to.equal('abc:A Subject:2017-12-19T01:00:2017-12-19T02:00:Bookable Name:Location Name')
     })
   })
 })

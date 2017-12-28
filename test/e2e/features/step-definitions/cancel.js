@@ -13,7 +13,7 @@ Given('I book a room', async function() {
   const startForForm = start.toISOString().split('.')[0]
   const endForForm = end.toISOString().split('.')[0]
 
-  const subjectInput = await this.findElementByName('subject')
+  const subjectInput = await this.waitUntilElement(By.name('subject'))
   await subjectInput.sendKeys('My Bookable To Be Deleted')
 
   const startInput = await this.findElementByName('start')

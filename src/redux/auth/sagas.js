@@ -20,11 +20,11 @@ export function* loadLocalAuthenticationIntoState() {
 }
 
 export function* preloadData() {
-  yield all([
-    put(actionCreators.getAllLocations()),
-    put(actionCreators.getAllBookables()),
-    // put(actionCreators.getAllBookings()),
-  ])
+  yield put(actionCreators.getAllLocations())
+  const { payload: { result: { locations } } } = yield take('GET_LOCATIONS_SUCCESS')
+  yield all(
+    locations.map(locationId => put(actionCreators.getAllBookables(locationId)))
+  )
 }
 
 export function* clearAllAuth() {
