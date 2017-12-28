@@ -5,6 +5,8 @@ import Button from 'Components/Button'
 
 import { BookingForm } from 'Containers/BookingForm'
 
+// TODO: See BKIT-199 w/regards to clunky/ineffective tests
+
 describe('<BookingForm />', () => {
   const props = {
     createBooking: jest.fn(),
