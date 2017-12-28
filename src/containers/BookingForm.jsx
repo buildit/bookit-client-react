@@ -49,7 +49,7 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
   </div>
 )
 
-const renderSelect = (locations, onChange) => (
+const renderSelect = (locations = [], onChange) => (
   <Field name="locationId" component="select" onChange={onChange}>
     {locations.map(location => (
       <option value={location.id} key={location.id}>
@@ -73,21 +73,21 @@ export class BookingForm extends React.Component {
     const now = new Date
     const end = formatDate(addHours(now, 1), 'YYYY-MM-DDTHH:mm')
     const start = formatDate(now, 'YYYY-MM-DDTHH:mm')
-    if (this.props.locations.length === 0) {
-      this.props.getAllLocations()
-      const values = {
-        end: end,
-        start: start,
-      }
-      this.props.initialize(values)
-    } else {
-      const values = {
-        end: end,
-        start: start,
-        locationId: this.props.locations[0].id,
-      }
-      this.props.initialize(values)
+
+    const values = {
+      end: end,
+      start: start,
     }
+
+    const { locations, initialize, getAllLocations } = this.props
+
+    if (!this.hasLocations()) {
+      getAllLocations()
+    } else {
+      values.locationId = locations[0].id
+    }
+
+    initialize(values)
   }
 
   componentDidUpdate(prevProps) {
@@ -106,6 +106,11 @@ export class BookingForm extends React.Component {
     this.props.dispatch(change('booking', 'bookableId', ''))
   }
 
+  hasLocations = () => {
+    return this.props.locations
+    && this.props.locations.length > 0
+  }
+
   render() {
     const {
       handleSubmit,
@@ -118,46 +123,43 @@ export class BookingForm extends React.Component {
       bookableName,
       locations,
     } = this.props
-    if (locations.length === 0) {
-      return (
-        <div>
-          <Loading />
-        </div>
-      )
-    } else {
-      return (
-        <div className={ styles.bookingForm }>
 
-          <form onSubmit={ handleSubmit(this.submitBookingForm) }>
-            <div className={ styles.heading }>
-              <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
-              <Link to="/home" className={ styles.cancel }>X</Link>
-            </div>
-
-            { error && <strong>{ error }</strong> }
-            <h5 className={ styles.disclaimer }>All times local to selected location</h5>
-            <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
-            <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
-
-            <a href="#" onClick={(event) => {
-              event.preventDefault()
-              setBookablesVisible(true)
-            }} className="roomsInput">Rooms</a>
-
-            <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } />
-            <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
-
-            <div className={ styles.field }>
-              <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={ styles.submitButton }>
-                BookIt
-              </Button>
-            </div>
-          </form>
-
-          { errorMessages && renderErrorMessages(errorMessages) }
-        </div>
-      )
+    if (this.hasLocations()) {
+      return <div><Loading /></div>
     }
+
+    return (
+      <div className={ styles.bookingForm }>
+
+        <form onSubmit={ handleSubmit(this.submitBookingForm) }>
+          <div className={ styles.heading }>
+            <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
+            <Link to="/home" className={ styles.cancel }>X</Link>
+          </div>
+
+          { error && <strong>{ error }</strong> }
+          <h5 className={ styles.disclaimer }>All times local to selected location</h5>
+          <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
+          <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
+
+          <a href="#" onClick={(event) => {
+            event.preventDefault()
+            setBookablesVisible(true)
+          }} className="roomsInput">Rooms</a>
+
+          <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } />
+          <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
+
+          <div className={ styles.field }>
+            <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={ styles.submitButton }>
+              BookIt
+            </Button>
+          </div>
+        </form>
+
+        { errorMessages && renderErrorMessages(errorMessages) }
+      </div>
+    )
   }
 }
 

@@ -17,4 +17,12 @@ describe('<BaseBookingItem />', () => {
 
     expect(wrapper).to.exist
   })
+
+  it('[BKIT-91] includes locationName', () => {
+    const expected = 'Swiggity Swooty'
+    const newProps = { ...props, locationName: expected }
+    const wrapper = shallow(<BaseBookingItem {...newProps} />)
+
+    expect(wrapper.find('h3').text()).to.contain(expected)
+  })
 })
