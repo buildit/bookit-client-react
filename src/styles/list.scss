@@ -1,7 +1,7 @@
 @import './mixins/flex';
 @import './mixins/media';
 
-.bookablesList {
+.bookables-list {
   background-color: white;
 
   @include page;
@@ -11,9 +11,25 @@
   flex-flow: column nowrap;
 }
 
-.back {
-  margin-top: 20px;
-  padding-left: 10px;
+
+.bookables-header {
+  display: flex;
+  flex-flow: row nowrap;
+
+  margin-top: 10px;
+  padding: 10px;
+
+  .back {
+    flex: 0;
+  }
+
+  .heading {
+    color: black;
+    text-align: center;
+    width: 100vw;
+    position: absolute;
+    pointer-events: none;
+  }
 }
 
 .bookable {
@@ -35,8 +51,4 @@
       background-color: #dfe7f1;
     }
   }
-}
-
-.heading {
-  text-align: center;
 }
