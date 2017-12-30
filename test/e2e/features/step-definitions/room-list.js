@@ -3,8 +3,7 @@ import { By } from 'selenium-webdriver'
 
 Given('I am on the Bookit form', async function() {
   await this.getWithLogin('/book')
-  const locationInput = await this.waitUntilElement(By.name('locationId'))
-  await locationInput.sendKeys('NYC')
+  await this.waitUntilElementByName('locationId').sendKeys('NYC')
 })
 
 When('I click the room input button', async function() {
