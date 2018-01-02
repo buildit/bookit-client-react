@@ -19,6 +19,19 @@ When('I create my booking', async function() {
   await this.submitBookingForm()
 })
 
+When('I change my location', async function() {
+  await this.fillBookingForm('My Bookable', 'LON')
+})
+
+Then('My selected room clears', async function() {
+  await this.waitUntilElementById('pick-a-room')
+})
+
+Then('The list of rooms is updated', async function() {
+  await this.viewBookables()
+  await this.waitUntilElementByXpath(`//h2[contains(text(),"Greenwich")]`)
+})
+
 Then('I cannot select the same room', async function() {
   await this.viewBookables()
   expect(await this.isBookableBooked('Red Room')).to.be.true
