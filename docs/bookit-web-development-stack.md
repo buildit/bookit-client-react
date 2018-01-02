@@ -46,6 +46,8 @@ Testing Libraries
 - enzyme
 - chai
 - chai-enzyme
+- cucumber-js
+- selenium
 
 Jest for collecting and running tests and providing assertions.
 Enzyme for faking DOM for shallow render assertions.
@@ -58,6 +60,7 @@ https://github.com/remcohaszing/chai-enzyme
 - https://dashbouquet.com/blog/frontend-development/usage-of-reselect-in-a-react-redux-application
   - Specifically "Top tips to make your life better"
 
+Cucumber and Selenium for end to end integration tests.
 
 Supporting Arguments
 --------------------
