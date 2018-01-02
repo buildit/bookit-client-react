@@ -39,7 +39,7 @@ const startBeforeEnd = (value, {end}) => {
 
 const renderField = ({ input, label, type, meta: { touched, error, warning } }) => (
   <div className={ styles.field }>
-    <label id={label.replace(' ', '-').toLowerCase()}>{label}</label>
+    <label id={label.replace(/\s/g, '-').toLowerCase()}>{label}</label>
     <div className={ styles.fieldInput }>
       <input {...input} placeholder={label} type={type} />
       { touched &&
