@@ -4,6 +4,7 @@ Feature: Bookings List Feature
     When I view my bookings
     And I navigate to next week
     Then I see my created booking
+    And The location of the booking is listed
     And the booking is cancelled
 
   Scenario: View bookings as another user

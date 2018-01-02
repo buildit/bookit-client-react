@@ -34,6 +34,10 @@ Then('I see my created booking', async function() {
   await this.waitUntilElementTextContains(By.id('booking-my-bookable-for-next-week'), 'My Bookable for Next Week')
 })
 
+Then('The location of the booking is listed', async function() {
+  await this.waitUntilElementTextContains(By.xpath('//p[@id="booking-my-bookable-for-next-week"]/following-sibling::h3'), '(NYC)')
+})
+
 Then('I don\'t see the created booking', async function() {
   try {
     await this.waitUntilElementTextContains(By.id('booking-my-bookable-for-next-week'), 'My Bookable for Next Week', 3000)
