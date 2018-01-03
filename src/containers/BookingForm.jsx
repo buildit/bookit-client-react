@@ -66,8 +66,6 @@ renderField.propTypes = {
   meta: PropTypes.object,
 }
 
-const renderErrorMessages = errors => <h1>Booking Failed: {errors.map((error, index) => <p key={index}>{error}</p>)}</h1>
-
 export class BookingForm extends React.Component {
   componentDidMount() {
     const now = new Date
@@ -118,7 +116,6 @@ export class BookingForm extends React.Component {
       pristine,
       invalid,
       error,
-      errorMessages,
       setBookablesVisible,
       bookableName,
       locations,
@@ -157,7 +154,6 @@ export class BookingForm extends React.Component {
           </div>
         </form>
 
-        { errorMessages && renderErrorMessages(errorMessages) }
       </div>
     )
   }
@@ -171,7 +167,6 @@ BookingForm.propTypes = {
   initialize: PropTypes.func,
   pristine: PropTypes.bool,
   invalid: PropTypes.bool,
-  errorMessages: PropTypes.arrayOf(PropTypes.string),
   error: PropTypes.string,
   setBookablesVisible: PropTypes.func,
   bookableName: PropTypes.string,
