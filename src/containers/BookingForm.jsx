@@ -102,6 +102,10 @@ export class BookingForm extends React.Component {
     })
   }
 
+  handleDayClick = (day) => {
+    console.log(day)
+  }
+
   clearRoom = () => {
     this.props.dispatch(change('booking', 'bookableId', ''))
   }
@@ -138,7 +142,7 @@ export class BookingForm extends React.Component {
 
           { error && <strong>{ error }</strong> }
           <h5 className={ styles.disclaimer }>All times local to selected location</h5>
-          <DayPickerInput onDayChange={day => console.log(day)} />
+          <DayPickerInput onDayChange={day => this.handleDayClick(day)} dayPickerProps={{ todayButton: 'Today' }} />
           <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
           <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
 
