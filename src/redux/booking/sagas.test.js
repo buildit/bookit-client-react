@@ -1,4 +1,4 @@
-import { call, fork, take, race, put } from 'redux-saga/effects'
+import { call, fork, take, race } from 'redux-saga/effects'
 import { cloneableGenerator } from 'redux-saga/utils'
 
 import { sagas as booking, watchForCreateBooking, doSomething } from './sagas'
@@ -23,7 +23,6 @@ describe('sagas/booking', () => {
       const pendingAction = { type: 'CREATE_BOOKING_PENDING' }
 
       expect(saga.next(pendingAction).value).to.deep.equal(take('CREATE_BOOKING_PENDING'))
-      expect(saga.next().value).to.deep.equal(put({ type: 'CLEAR_ERRORS' }))
 
       expect(saga.next().value).to.deep.equal(race({
         failure: take('CREATE_BOOKING_FAILURE'),
@@ -36,7 +35,6 @@ describe('sagas/booking', () => {
       expect(saga.next(pendingAction).value).to.deep.equal(take('CREATE_BOOKING_PENDING'))
 
       const failure = {payload: true}
-      expect(failureSaga.next({ failure }).value).to.deep.equal(put({ type: 'APPEND_ERROR', payload: true }))
       expect(failureSaga.next().value).to.deep.equal(call(doSomething, failure))
       expect(failureSaga.next(pendingAction).value).to.deep.equal(take('CREATE_BOOKING_PENDING'))
     })
