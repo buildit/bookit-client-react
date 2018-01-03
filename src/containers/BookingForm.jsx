@@ -177,7 +177,6 @@ BookingForm.propTypes = {
 
 const mapStateToProps = state => ({
   bookingInstanceId: selectors.getBookingInstanceId(state),
-  errorMessages: selectors.getErrorMessages(state),
   submitting: isSubmitting('booking')(state),
   bookableName: selectors.getBookingFormBookableName(state),
   locations: selectors.getLocationOptions(state),
