@@ -51,6 +51,27 @@ const renderField = ({ input, label, type, meta: { touched, error, warning } }) 
   </div>
 )
 
+renderField.propTypes = {
+  input: PropTypes.any,
+  label: PropTypes.string,
+  type: PropTypes.string,
+  meta: PropTypes.object,
+}
+
+const renderDayPicker = ({ input }) => (
+  <DayPickerInput
+    value={input.value}
+    format="YYYY-MM-DD"
+    placeholder="YYYY-MM-DD"
+    onDayChange={day => input.onChange(day)}
+    dayPickerProps={{ todayButton: 'Today' }}
+  />
+)
+
+renderDayPicker.propTypes = {
+  input: PropTypes.any,
+}
+
 const renderSelect = (locations = [], onChange) => (
   <Field name="locationId" component="select" onChange={onChange}>
     {locations.map(location => (
@@ -61,12 +82,6 @@ const renderSelect = (locations = [], onChange) => (
   </Field>
 )
 
-renderField.propTypes = {
-  input: PropTypes.any,
-  label: PropTypes.string,
-  type: PropTypes.string,
-  meta: PropTypes.object,
-}
 
 export class BookingForm extends React.Component {
   componentDidMount() {
@@ -100,10 +115,6 @@ export class BookingForm extends React.Component {
     return Promise.resolve().then(() => {
       this.props.createBooking(values)
     })
-  }
-
-  handleDayClick = (day) => {
-    console.log(day)
   }
 
   clearRoom = () => {
@@ -142,7 +153,8 @@ export class BookingForm extends React.Component {
 
           { error && <strong>{ error }</strong> }
           <h5 className={ styles.disclaimer }>All times local to selected location</h5>
-          <DayPickerInput onDayChange={day => this.handleDayClick(day)} dayPickerProps={{ todayButton: 'Today' }} />
+          <Field name="day" component={ renderDayPicker } />
+          {/*<DayPickerInput onDayChange={day => this.handleDayClick(day)} dayPickerProps={{ todayButton: 'Today' }} />*/}
           <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
           <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
 
