@@ -10,11 +10,13 @@ import { Field, reduxForm, isSubmitting, change } from 'redux-form'
 
 import { actionCreators, selectors } from 'Redux'
 
+import DayPickerInput from 'react-day-picker/DayPickerInput'
 import Button from 'Components/Button'
 import Loading from 'Components/Loading'
 
 import { addHours, isBefore, isAfter, formatDate } from 'Utils'
 
+import 'react-day-picker/lib/style.css'
 import styles from 'Styles/form.scss'
 
 const required = value => (value ? undefined : 'Required')
@@ -139,6 +141,7 @@ export class BookingForm extends React.Component {
 
           { error && <strong>{ error }</strong> }
           <h5 className={ styles.disclaimer }>All times local to selected location</h5>
+          <DayPickerInput onDayChange={day => console.log(day)} />
           <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
           <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
 
