@@ -14,7 +14,14 @@ import DayPickerInput from 'react-day-picker/DayPickerInput'
 import Button from 'Components/Button'
 import Loading from 'Components/Loading'
 
-import { addHours, isBefore, isAfter, formatDate } from 'Utils'
+import {
+  addHours,
+  isToday,
+  isBefore,
+  isAfter,
+  formatDate,
+  parseDate,
+} from 'Utils'
 
 import 'react-day-picker/lib/style.css'
 import styles from 'Styles/form.scss'
@@ -58,19 +65,50 @@ renderField.propTypes = {
   meta: PropTypes.object,
 }
 
-const renderDayPicker = ({ input }) => (
-  <DayPickerInput
-    value={input.value}
-    format="YYYY-MM-DD"
-    placeholder="YYYY-MM-DD"
-    onDayChange={day => input.onChange(day)}
-    dayPickerProps={{ todayButton: 'Today' }}
-  />
-)
+const renderDayPicker = ({ input, label, meta: { touched, error, warning } }) => {
+  const onDayChange = day => input.onChange(day)
+  const disabledDays = day => !isToday(day) && isBefore(day, new Date)
 
-renderDayPicker.propTypes = {
-  input: PropTypes.any,
+  const inputProps = {
+    name: input.name,
+    onBlur: input.onBlur,
+    onClick: input.onClick,
+    onFocus: input.onFocus,
+    onKeyDown: input.onKeyDown,
+    onKeyUp: input.onKeyUp,
+  }
+  const dayPickerProps = {
+    todayButton: 'Today',
+    disabledDays: disabledDays,
+    fromMonth: new Date,
+  }
+
+  return (
+    <div className={ styles.field }>
+      <label>{ label }</label>
+      <div className={ styles.fieldInput }>
+        <DayPickerInput
+          format="ddd, MMMM D, YYYY"
+          placeholder="Select Booking Date"
+          value={input.value}
+          formatDate={formatDate}
+          parseDate={parseDate}
+          onDayChange={onDayChange}
+          inputProps={inputProps}
+          dayPickerProps={dayPickerProps}
+        />
+        { touched &&
+          (
+            (error && <span className={ styles.errorSpan }>{ error }</span>) ||
+            (warning && <span>{ warning }</span>)
+          )
+        }
+      </div>
+    </div>
+  )
 }
+
+renderDayPicker.propTypes = renderField.propTypes
 
 const renderSelect = (locations = [], onChange) => (
   <Field name="locationId" component="select" onChange={onChange}>
@@ -85,16 +123,13 @@ const renderSelect = (locations = [], onChange) => (
 
 export class BookingForm extends React.Component {
   componentDidMount() {
-    const now = new Date
-    const end = formatDate(addHours(now, 1), 'YYYY-MM-DDTHH:mm')
-    const start = formatDate(now, 'YYYY-MM-DDTHH:mm')
-
-    const values = {
-      end: end,
-      start: start,
-    }
-
     const { locations, initialize, getAllLocations } = this.props
+
+    const date = new Date
+    const start = formatDate(date, 'YYYY-MM-DDTHH:mm')
+    const end = formatDate(addHours(date, 1), 'YYYY-MM-DDTHH:mm')
+
+    const values = { date, end, start }
 
     if (!this.hasLocations()) {
       getAllLocations()
@@ -153,7 +188,7 @@ export class BookingForm extends React.Component {
 
           { error && <strong>{ error }</strong> }
           <h5 className={ styles.disclaimer }>All times local to selected location</h5>
-          <Field name="day" component={ renderDayPicker } />
+          <Field name="date" component={ renderDayPicker } label="Date" validate={ [ required ] } onBlur={this.clearRoom} />
           {/*<DayPickerInput onDayChange={day => this.handleDayClick(day)} dayPickerProps={{ todayButton: 'Today' }} />*/}
           <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
           <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
