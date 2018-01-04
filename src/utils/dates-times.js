@@ -19,7 +19,7 @@ import {
 
 export const formatTime = datetime => format(datetime, 'h:mm A')
 export const formatDate = (date, pattern = 'YYYY-MM-DD') => format(date, pattern)
-export const parseDate = (date, pattern = 'YYYY-MM-DD') => parse(date, pattern, new Date)
+export const parseDate = (date, pattern = 'YYYY-MM-DD', base = new Date) => parse(date, pattern, base)
 
 export const getSecondOfDay = date => differenceInSeconds(date, startOfDay(date))
 export const getIntervalInSeconds = (low, high) => [ getSecondOfDay(low), getSecondOfDay(high) ]
