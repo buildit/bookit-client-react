@@ -26,8 +26,3 @@ export const getBookingFormBookableName = createSelector(
   [ getBookingFormBookableId, getBookableEntities ],
   (bookableId, bookables) => bookableId && bookables.getIn([bookableId, 'name'], null)
 )
-
-export const getBookingFormDateRange = createSelector(
-  [ getBookingFormStart, getBookingFormEnd ],
-  (start, end) => ({ end, start })
-)

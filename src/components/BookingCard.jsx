@@ -1,7 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-// import cn from 'classnames'
 import { formatDate, formatTime } from 'Utils'
 
 import styles from 'Styles/booking-card.scss'

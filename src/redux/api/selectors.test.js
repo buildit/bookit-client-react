@@ -38,15 +38,12 @@ import {
   isBookingInPast,
   getBookingBookableName,
   getBookingLocationName,
-  getBookingDates,
   getBookingsForDate,
   getLocationEntity,
   getLocationName,
   getLocationTimezone,
   getLocationByName,
   getLocationOptions,
-  getBookingsByUser,
-  getBookingsForUser,
   getBookingsForUserForDate,
   getBookableEntity,
   getBookableId,
@@ -54,8 +51,6 @@ import {
   getBookableDisposition,
   isBookableClosed,
   getBookableDispositionReason,
-  isBookableBooked,
-  isBookableAvailable,
   getBookableLocation,
   getBookableLocationName,
   getBookableLocationTimezone,
@@ -261,14 +256,6 @@ describe('API selectors', () => {
     })
   })
 
-  describe('#getBookingDates(state, props)', () => {
-    it('returns the correct value from state', () => {
-      const actual = getBookingDates(state)
-
-      expect(actual).to.exist
-    })
-  })
-
   // TODO: Branch miss on line 69 - not sure how to test
   describe('#getBookingsForDate(state, props)', () => {
     it('returns the correct value from state', () => {
@@ -326,25 +313,6 @@ describe('API selectors', () => {
       expect(actual).to.have.lengthOf(expected.length)
       expect(actual[0]).to.deep.equal(expected[0])
       expect(actual[1]).to.deep.equal(expected[1])
-    })
-  })
-
-  // TODO: Pluck random sample
-  // TODO: Branch miss on line 96 - not sure how to test
-  describe('#getBookingsByUser(state)', () => {
-    it('returns the correct value from state', () => {
-      const actual = getBookingsByUser(state)
-
-      expect(actual).to.exist
-    })
-  })
-
-  describe('#getBookingsForUser(state)', () => {
-    it('returns the correct value from state', () => {
-      const modifiedState = { ...state, user: Map({ email: 'test@test.com', oid: 'aea828cc-8895-4ca6-a1a9-5d3e1a2ffd30' }) }
-      const actual = getBookingsForUser(modifiedState)
-
-      expect(actual).to.exist
     })
   })
 
@@ -410,28 +378,6 @@ describe('API selectors', () => {
       const actual = getBookableDispositionReason(state, props)
 
       expect(actual).to.equal(entities.getIn(['bookables', 'entities', props.id, 'disposition', 'reason']))
-    })
-  })
-
-  describe('#isBookableBooked(state)', () => {
-    it('returns the correct value from state', () => {
-      const formValues = { start: '2017-12-19T01:00', end: '2017-12-19T02:00', bookableId: 'abc', subject: 'A Booking' }
-      const formState = { form: { booking: { values: formValues } } }
-      const modifiedState = { ...state, ...formState }
-
-      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
-      const actual = isBookableBooked(modifiedState, props)
-
-      expect(actual).to.be.false
-    })
-  })
-
-  describe('#isBookableAvailable(state)', () => {
-    it('returns the correct value from state', () => {
-      const props = { id: 'cd87ee34-b393-4400-a1c9-d91278d4b8ee' }
-      const actual = isBookableAvailable(state, props)
-
-      expect(actual).to.be.true
     })
   })
 

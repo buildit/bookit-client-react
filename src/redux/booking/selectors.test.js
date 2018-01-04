@@ -7,7 +7,6 @@ import {
   getBookingFormEnd,
   getBookingFormLocation,
   getBookingFormBookableName,
-  getBookingFormDateRange,
 } from './selectors'
 
 describe('booking/selectors', () => {
@@ -59,15 +58,6 @@ describe('booking/selectors', () => {
       }
 
       expect(getBookingFormBookableName(combinedState)).to.equal('A Bookable')
-    })
-  })
-
-  describe('#getBookingFormDateRange(state)', () => {
-    it('returns the correct state', () => {
-      const { start, end } = formValues
-      const expected = { start, end }
-
-      expect(getBookingFormDateRange(formState)).to.deep.equal(expected)
     })
   })
 })
