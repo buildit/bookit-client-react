@@ -24,6 +24,15 @@
   }
 }
 
+:global(.DayPickerInput) > input {
+  box-sizing: border-box;
+  width: 100%;
+}
+
+:global(.rc-time-picker-panel-select) :global(li) {
+  color: black;
+}
+
 .field-input {
   display: flex;
   flex-direction: column;
@@ -32,7 +41,7 @@
     flex: 1 0 auto;
     border: 1px solid lightgray;
     padding: 10px;
-    
+
     @include desktop {
       width: 60%;
     }

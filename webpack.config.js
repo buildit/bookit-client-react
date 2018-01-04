@@ -7,7 +7,6 @@ const postcssReporter = require('postcss-reporter')
 
 const HTMLPlugin = require('html-webpack-plugin')
 
-
 const sourceLoaderRule = {
   test: /\.jsx?$/,
   exclude: [ /node_modules/ ],

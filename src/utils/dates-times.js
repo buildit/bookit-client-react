@@ -1,30 +1,29 @@
 import IntervalTree, { Node } from 'node-interval-tree'
 
-import parse from 'date-fns/parse'
-import format from 'date-fns/format'
-
-import startOfDay from 'date-fns/start_of_day'
-import isSameDay from 'date-fns/is_same_day'
-import isToday from 'date-fns/is_today'
-import isBefore from 'date-fns/is_before'
-import isAfter from 'date-fns/is_after'
-import isSameMonth from 'date-fns/is_same_month'
-import isSameYear from 'date-fns/is_same_year'
-
-import addDays from 'date-fns/add_days'
-import eachDay from 'date-fns/each_day'
-
-import addHours from 'date-fns/add_hours'
-import addWeeks from 'date-fns/add_weeks'
-
-import differenceInSeconds from 'date-fns/difference_in_seconds'
+import {
+  toDate,
+  format,
+  parse,
+  startOfDay,
+  isBefore,
+  isAfter,
+  isSameDay,
+  isSameMonth,
+  isSameYear,
+  addDays,
+  eachDayOfInterval,
+  addHours,
+  addWeeks,
+  differenceInSeconds,
+} from 'date-fns/esm'
 
 export const formatTime = datetime => format(datetime, 'h:mm A')
 export const formatDate = (date, pattern = 'YYYY-MM-DD') => format(date, pattern)
+export const parseDate = (date, pattern = 'YYYY-MM-DD', base = new Date) => parse(date, pattern, base)
 
 export const getSecondOfDay = date => differenceInSeconds(date, startOfDay(date))
 export const getIntervalInSeconds = (low, high) => [ getSecondOfDay(low), getSecondOfDay(high) ]
-export const getWholeDayInterval = () => [ 0, 86399 ]  // getIntervalInSeconds(startOfDay(new Date), endOfDay(new Date))
+export const getWholeDayInterval = () => [ 0, 86399 ]
 
 export const compareDates = (dateA, dateB) => {
   if (isBefore(dateA, dateB)) {
@@ -36,17 +35,15 @@ export const compareDates = (dateA, dateB) => {
   return 0
 }
 
-// const weekOptions = { weekStartsOn: 1 }
-
 export const getWeekStartAndEnd = (date = new Date) => {
-  const weekStart = parse(date)
+  const weekStart = toDate(date)
   const weekEnd = addDays(date, 6)
   return [ weekStart, weekEnd ]
 }
 
 export const getWeekDaysRange = (date = new Date) => {
-  const [ weekStart, weekEnd ] = getWeekStartAndEnd(date)
-  return eachDay(weekStart, weekEnd, 1).map(day => formatDate(day))
+  const [ start, end ] = getWeekStartAndEnd(date)
+  return eachDayOfInterval({ start, end }).map(day => formatDate(day))
 }
 
 export const getPreviousAndNextWeekDates = (date = new Date) => {
@@ -69,6 +66,8 @@ export const formatWeek = (date = new Date) => {
   const formatWeekEnd = format(weekEnd, weekEndPattern)
   return `${formatWeekStart} - ${formatWeekEnd}`
 }
+
+export const isToday = date => isSameDay(new Date, date)
 
 // "Monkeypatch" node-interval-tree to allow for exclusive overlap testing
 // rather than the baked-in default of inclusive overlaps
@@ -99,4 +98,4 @@ export const createIntervalTree = (intervals) => {
 }
 
 // "Re-export" functions from `date-fns` to reduce overall import statements
-export { addHours, isToday, isBefore, isAfter, isSameDay, addDays }
+export { addHours, isBefore, isAfter, isSameDay, addDays }

@@ -8,9 +8,9 @@ import faker from 'faker'
 import jwt from 'jsonwebtoken'
 
 import format from 'date-fns/format'
-import addMinutes from 'date-fns/add_minutes'
-import addDays from 'date-fns/add_days'
-import addWeeks from 'date-fns/add_weeks'
+import addMinutes from 'date-fns/addMinutes'
+import addDays from 'date-fns/addDays'
+import addWeeks from 'date-fns/addWeeks'
 
 function makeValidToken() {
   return JSON.stringify(

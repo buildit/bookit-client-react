@@ -22,6 +22,48 @@ describe('dates-times', () => {
     })
   })
 
+  describe('#parseDate(date, pattern = \'YYYY-MM-DD\', base = new Date)', () => {
+    it('parses a string representation of a date using the default pattern and base', () => {
+      const parsed = DT.parseDate('2018-01-04')
+      expect(parsed.getFullYear()).to.equal(2018)
+      expect(parsed.getMonth()).to.equal(0)  // Yeah. JS Date months are zero-indexed
+      expect(parsed.getDate()).to.equal(4)
+    })
+
+    it('parses a time and uses the default base parameter to backfill the resulting Date', () => {
+      const date = new Date
+      const parsed = DT.parseDate('13:37', 'HH:mm')
+
+      expect(parsed.getHours()).to.equal(13)
+      expect(parsed.getMinutes()).to.equal(37)
+
+      // Now test that the backfilled day, month and year are as expected
+      expect(parsed.getFullYear()).to.equal(date.getFullYear())
+      expect(parsed.getMonth()).to.equal(parsed.getMonth())
+      expect(parsed.getDate()).to.equal(parsed.getDate())
+    })
+
+    it('parses a time and uses the provided base parameter to backfill the resulting Date', () => {
+      const halloween2015 = new Date(2015, 9, 31)
+      const parsed = DT.parseDate('23:59', 'HH:mm', halloween2015)
+
+      expect(parsed.getHours()).to.equal(23)
+      expect(parsed.getMinutes()).to.equal(59)
+
+      // Now test that the backfilled day, month and year are as expected
+      expect(parsed.getFullYear()).to.equal(halloween2015.getFullYear())
+      expect(parsed.getMonth()).to.equal(halloween2015.getMonth())
+      expect(parsed.getDate()).to.equal(halloween2015.getDate())
+    })
+
+    it('parses a time string using 24-hour time despite the pattern expecting a single digit for hour', () => {
+      const parsed = DT.parseDate('15:59', 'H:mm')
+
+      expect(parsed.getHours()).to.equal(15)
+      expect(parsed.getMinutes()).to.equal(59)
+    })
+  })
+
   describe('#getSecondOfDay(date)', () => {
     it('returns seconds since the beginning of the day from a date', () => {
       expect(DT.getSecondOfDay('2017-12-19T01:00')).to.equal(3600)

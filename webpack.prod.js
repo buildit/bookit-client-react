@@ -72,7 +72,18 @@ const prod = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        include: [ /node_modules/ ],
+        use: extractText.extract({
+          fallback: 'style-loader',
+          use: [
+            { loader: 'css-loader', options: { modules: true, camelCase: 'only', localIdentName: '[local]' } },
+          ],
+        }),
+      },
+      {
         test: /\.(sass|scss|css)$/,
+        exclude: [ /node_modules/ ],
         use: extractText.extract({
           fallback: 'style-loader',
           use: [
