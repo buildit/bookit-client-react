@@ -39,6 +39,11 @@ const htmlLoaderRule = {
   use: [ { loader: 'file-loader?name=[name].[ext]' } ],
 }
 
+const jsonLoaderRule = {
+  test: /\.json$/,
+  use: [ { loader: 'file-loader?name=[name].[ext]' } ],
+}
+
 module.exports = {
   // MAKE IMPORTS GREAT AGAIN!
   resolve: {
@@ -72,6 +77,7 @@ module.exports = {
     }),
     new HTMLPlugin({
       template: './src/index.ejs',
+      favicon: './src/images/favicon.ico',
       filename: 'index.html',
       inject: 'body',
     }),
@@ -83,6 +89,7 @@ module.exports = {
       styleLinterRule,
       assetsLoaderRule,
       htmlLoaderRule,
+      jsonLoaderRule,
     ],
   },
 }
