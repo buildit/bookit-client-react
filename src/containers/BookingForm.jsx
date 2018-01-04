@@ -8,9 +8,11 @@ import { Link } from 'react-router-dom'
 
 import { Field, reduxForm, isSubmitting, change } from 'redux-form'
 
+import DayPickerInput from 'react-day-picker/DayPickerInput'
+import TimePicker from 'rc-time-picker-date-fns'
+
 import { actionCreators, selectors } from 'Redux'
 
-import DayPickerInput from 'react-day-picker/DayPickerInput'
 import Button from 'Components/Button'
 import Loading from 'Components/Loading'
 
@@ -24,6 +26,8 @@ import {
 } from 'Utils'
 
 import 'react-day-picker/lib/style.css'
+import 'rc-time-picker-date-fns/assets/index.css'
+
 import styles from 'Styles/form.scss'
 
 const required = value => (value ? undefined : 'Required')
@@ -110,6 +114,35 @@ const renderDayPicker = ({ input, label, meta: { touched, error, warning } }) =>
 
 renderDayPicker.propTypes = renderField.propTypes
 
+const renderTimePicker = ({ input, label, meta: { touched, error, warning } }) => {
+  const { onChange, onBlur, ...props } = input  // eslint-disable-line
+
+  const onTimeChange = (value) => {
+    console.log('VALUE:', value)
+    // `value` will be an instance of Date when _not_ empty
+    // but when the input is empty, it will be `null` and bad things
+    // will happen
+    return input.onChange(value)
+  }
+
+  return (
+    <div className={ styles.field }>
+      <label>{ label }</label>
+      <div className={ styles.fieldInput }>
+        <TimePicker {...props} onChange={onTimeChange} showSecond={false} />
+        { touched &&
+          (
+            (error && <span className={ styles.errorSpan }>{ error }</span>) ||
+            (warning && <span>{ warning }</span>)
+          )
+        }
+      </div>
+    </div>
+  )
+}
+
+renderTimePicker.propTypes = renderField.propTypes
+
 const renderSelect = (locations = [], onChange) => (
   <Field name="locationId" component="select" onChange={onChange}>
     {locations.map(location => (
@@ -126,8 +159,8 @@ export class BookingForm extends React.Component {
     const { locations, initialize, getAllLocations } = this.props
 
     const date = new Date
-    const start = formatDate(date, 'YYYY-MM-DDTHH:mm')
-    const end = formatDate(addHours(date, 1), 'YYYY-MM-DDTHH:mm')
+    const start = date
+    const end = addHours(date, 1)
 
     const values = { date, end, start }
 
@@ -190,8 +223,10 @@ export class BookingForm extends React.Component {
           <h5 className={ styles.disclaimer }>All times local to selected location</h5>
           <Field name="date" component={ renderDayPicker } label="Date" validate={ [ required ] } onBlur={this.clearRoom} />
           {/*<DayPickerInput onDayChange={day => this.handleDayClick(day)} dayPickerProps={{ todayButton: 'Today' }} />*/}
-          <Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />
-          <Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />
+          {/*<Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />*/}
+          <Field name="start" component={ renderTimePicker } label="Start" validate={ [ required, startBeforeEnd ] } onBlur={this.clearRoom} />
+          {/*<Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />*/}
+          <Field name="end" component={ renderTimePicker } label="End" type="text" validate={ [ required, endAfterStart ] } onBlur={this.clearRoom} />
 
           <a href="#" onClick={(event) => {
             event.preventDefault()

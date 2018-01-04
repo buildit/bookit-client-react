@@ -29,6 +29,10 @@
   width: 100%;
 }
 
+:global(.rc-time-picker-panel-select) :global(li) {
+  color: black;
+}
+
 .field-input {
   display: flex;
   flex-direction: column;
