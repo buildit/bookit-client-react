@@ -33,9 +33,8 @@ describe('sagas/booking', () => {
 
       expect(saga.next({ success: true }).value).to.deep.equal(call(doSomething, true))
       expect(saga.next(pendingAction).value).to.deep.equal(take('CREATE_BOOKING_PENDING'))
-
-      const failure = {payload: true}
-      expect(failureSaga.next().value).to.deep.equal(call(doSomething, failure))
+      
+      expect(failureSaga.next({ failure: true }).value).to.deep.equal(call(doSomething, true))
       expect(failureSaga.next(pendingAction).value).to.deep.equal(take('CREATE_BOOKING_PENDING'))
     })
   })
