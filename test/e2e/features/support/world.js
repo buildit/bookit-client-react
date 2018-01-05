@@ -1,6 +1,6 @@
 import { defineSupportCode, setWorldConstructor } from 'cucumber'
 
-import { By, Builder, until } from 'selenium-webdriver'
+import { By, Builder, until, Key } from 'selenium-webdriver'
 import chrome from 'selenium-webdriver/chrome'
 
 import faker from 'faker'
@@ -25,7 +25,7 @@ function makeAnotherUsersValidToken() {
 }
 
 function makeStartEnd(start, weeks = 0) {
-  const pattern = 'YYYY-MM-DDTHH:mm'
+  const pattern = 'HH:mm'
   start = addWeeks(start, weeks)
   return [ format(start, pattern), format(addMinutes(start, 1), pattern) ]
 }
@@ -85,24 +85,56 @@ class _JWhutWorld {
 
   async fillBookingForm(subject, location, weeks = 0) {
     const [ start, end ] = makeStartEnd(this._start, weeks)
+    const bookingDate = addWeeks(this._start, weeks)
 
     const form = await this.waitUntilElementByCss('form')
 
     const $location = await form.findElement(By.name('locationId'))
     const $subject = await form.findElement(By.name('subject'))
+    const $date = await form.findElement(By.name('date'))
     const $start = await form.findElement(By.name('start'))
     const $end = await form.findElement(By.name('end'))
 
     await $location.sendKeys(location)
     await $subject.sendKeys(subject)
 
-    // TODO: Don't appear to need this "check" any more...
-    // await this.driver.wait(async () => (await $start.getAttribute('value')).includes('T'))
-    await $start.clear()
-    await $start.sendKeys(start)
+    const captionDate = format(bookingDate, 'MMMM YYYY')
+    const dayDate = format(bookingDate, 'ddd MMM DD YYYY')
 
-    await $end.clear()
-    await $end.sendKeys(end)
+    await $date.click()
+
+    let $dayPickerCaption
+
+    $dayPickerCaption = await this.waitUntilElementByCss('.DayPicker-Caption > div')
+    const captionText = await $dayPickerCaption.getText()
+
+    // Booking dates are randomly picked between today and today + 1 week
+    // If these tests are run towards the end of the current month, there is
+    // a chance that the booking date will be in the next month, and in that
+    // case we'll just click the day picker Next navigation to ensure we can
+    // pick the correct date to book against.
+    if (captionText !== captionDate) {
+      const $dayPickerNavButtonNext = await this.waitUntilElementByCss('.DayPicker-NavButton--next')
+      await $dayPickerNavButtonNext.click()
+      $dayPickerCaption = await this.waitUntilElementByCss('.DayPicker-Caption > div')
+    }
+
+    const $dayPickerDayToSelect = await this.waitUntilElementByCss(`[aria-label="${dayDate}"]`)
+    await $dayPickerDayToSelect.click()
+
+    await this.driver.wait(until.stalenessOf($dayPickerCaption), 2000, 'DayPicker overlay should definitely be removed from the DOM before 2 seconds')
+
+    await $start.click()
+    const $timepickerStart = await this.waitUntilElementByCss('.rc-time-picker-panel-input')
+    await $timepickerStart.clear()
+    await $timepickerStart.sendKeys(start)
+    await $timepickerStart.sendKeys(Key.ESCAPE)
+
+    await $end.click()
+    const $timepickerEnd = await this.waitUntilElementByCss('.rc-time-picker-panel-input')
+    await $timepickerEnd.clear()
+    await $timepickerEnd.sendKeys(end)
+    await $timepickerEnd.sendKeys(Key.ESCAPE)
   }
 
   async viewBookables() {

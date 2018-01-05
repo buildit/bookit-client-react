@@ -84,6 +84,7 @@ const renderDayPicker = ({ input, label, meta: { touched, error, warning }, clea
     onFocus: input.onFocus,
     onKeyDown: input.onKeyDown,
     onKeyUp: input.onKeyUp,
+    readonly: 'readonly',
   }
   const dayPickerProps = {
     todayButton: 'Today',
@@ -240,7 +241,7 @@ export class BookingForm extends React.Component {
           <a href="#" onClick={(event) => {
             event.preventDefault()
             setBookablesVisible(true)
-          }} className={styles.roomsInput}>Rooms</a>
+          }} className="roomsInput">Rooms</a>
 
           <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } />
           <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
