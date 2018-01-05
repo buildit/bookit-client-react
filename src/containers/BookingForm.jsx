@@ -29,7 +29,6 @@ import {
 import 'react-day-picker/lib/style.css'
 import 'rc-time-picker-date-fns/assets/index.css'
 
-import 'react-day-picker/lib/style.css'
 import styles from 'Styles/form.scss'
 
 const required = value => (value ? undefined : 'Required')
