@@ -21,6 +21,8 @@ export const formatTime = datetime => format(datetime, 'h:mm A')
 export const formatDate = (date, pattern = 'YYYY-MM-DD') => format(date, pattern)
 export const parseDate = (date, pattern = 'YYYY-MM-DD', base = new Date) => parse(date, pattern, base)
 
+export const normalizeDateWithBase = (date, base) => parseDate(formatDate(date, 'HH:mm:ss'), 'HH:mm:ss', base)
+
 export const getSecondOfDay = date => differenceInSeconds(date, startOfDay(date))
 export const getIntervalInSeconds = (low, high) => [ getSecondOfDay(low), getSecondOfDay(high) ]
 export const getWholeDayInterval = () => [ 0, 86399 ]

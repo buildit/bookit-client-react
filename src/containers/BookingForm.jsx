@@ -6,7 +6,7 @@ import { compose } from 'redux'
 
 import { Link } from 'react-router-dom'
 
-import { Field, reduxForm, isSubmitting, change } from 'redux-form'
+import { Field, reduxForm, isSubmitting, change, touch } from 'redux-form'
 
 import DayPickerInput from 'react-day-picker/DayPickerInput'
 import TimePicker from 'rc-time-picker-date-fns'
@@ -23,6 +23,7 @@ import {
   isAfter,
   formatDate,
   parseDate,
+  normalizeDateWithBase,
 } from 'Utils'
 
 import 'react-day-picker/lib/style.css'
@@ -76,7 +77,7 @@ const renderDayPicker = ({ input, label, meta: { touched, error, warning } }) =>
 
   const inputProps = {
     name: input.name,
-    onBlur: input.onBlur,
+    // onBlur: input.onBlur,
     onClick: input.onClick,
     onFocus: input.onFocus,
     onKeyDown: input.onKeyDown,
@@ -115,22 +116,20 @@ const renderDayPicker = ({ input, label, meta: { touched, error, warning } }) =>
 
 renderDayPicker.propTypes = renderField.propTypes
 
-const renderTimePicker = ({ input, label, meta: { touched, error, warning } }) => {
+const renderTimePicker = ({ input, label, meta: { touched, error, warning }, touch }) => {  // eslint-disable-line
   const { onChange, onBlur, ...props } = input  // eslint-disable-line
 
   const onTimeChange = (value) => {
     console.log('VALUE:', value)
-    // `value` will be an instance of Date when _not_ empty
-    // but when the input is empty, it will be `null` and bad things
-    // will happen
-    return input.onChange(value)
+    input.onChange(value)
+    touch('booking', input.name)
   }
 
   return (
     <div className={ styles.field }>
       <label>{ label }</label>
       <div className={ styles.fieldInput }>
-        <TimePicker {...props} onChange={onTimeChange} showSecond={false} />
+        <TimePicker {...props} onChange={onTimeChange} showSecond={false} allowEmpty={false} />
         { touched &&
           (
             (error && <span className={ styles.errorSpan }>{ error }</span>) ||
@@ -176,13 +175,18 @@ export class BookingForm extends React.Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.locations.length !== this.props.locations.length) {
-      this.props.dispatch(change('booking', 'locationId', this.props.locations[0].id))
+      this.props.change('booking', 'locationId', this.props.locations[0].id)
     }
   }
 
   submitBookingForm = (values) => {
     return Promise.resolve().then(() => {
-      this.props.createBooking(values)
+      this.props.createBooking({
+        ...values,
+        start: formatDate(normalizeDateWithBase(values.start, values.date), 'YYYY-MM-DDTHH:mm:ss'),
+        end: formatDate(normalizeDateWithBase(values.end, values.date), 'YYYY-MM-DDTHH:mm:ss'),
+        date: undefined,
+      })
     })
   }
 
@@ -191,7 +195,7 @@ export class BookingForm extends React.Component {
   }
 
   clearRoom = () => {
-    this.props.dispatch(change('booking', 'bookableId', ''))
+    this.props.change('booking', 'bookableId', '')
   }
 
   hasLocations = () => {
@@ -209,6 +213,7 @@ export class BookingForm extends React.Component {
       setBookablesVisible,
       bookableName,
       locations,
+      touch,
     } = this.props
 
     if (!this.hasLocations()) {
@@ -226,12 +231,13 @@ export class BookingForm extends React.Component {
 
           { error && <strong>{ error }</strong> }
           <h5 className={ styles.disclaimer }>All times local to selected location</h5>
+
           <Field name="date" component={ renderDayPicker } label="Date" validate={ [ required ] } onBlur={this.clearRoom} />
-          {/*<DayPickerInput onDayChange={day => this.handleDayClick(day)} dayPickerProps={{ todayButton: 'Today' }} />*/}
-          {/*<Field name="start" component={ renderField } label="Start" type="text" validate={ [required, startBeforeEnd] } onBlur={this.clearRoom} />*/}
-          <Field name="start" component={ renderTimePicker } label="Start" validate={ [ required, startBeforeEnd ] } onBlur={this.clearRoom} />
-          {/*<Field name="end" component={ renderField } label="End" type="text" validate={ [required, endAfterStart] } onBlur={this.clearRoom} />*/}
-          <Field name="end" component={ renderTimePicker } label="End" type="text" validate={ [ required, endAfterStart ] } onBlur={this.clearRoom} />
+
+          <div className={styles.fieldTwoColumn}>
+            <Field name="start" component={ renderTimePicker } label="Start" validate={ [ required, startBeforeEnd ] } onBlur={this.clearRoom} touch={touch} />
+            <Field name="end" component={ renderTimePicker } label="End" type="text" validate={ [ required, endAfterStart ] } onBlur={this.clearRoom} touch={touch} />
+          </div>
 
           <a href="#" onClick={(event) => {
             event.preventDefault()
@@ -264,9 +270,11 @@ BookingForm.propTypes = {
   error: PropTypes.string,
   setBookablesVisible: PropTypes.func,
   bookableName: PropTypes.string,
-  dispatch: PropTypes.func,
+  bookingFormDate: PropTypes.any,
   locations: PropTypes.arrayOf(PropTypes.object),
   getAllLocations: PropTypes.func,
+  change: PropTypes.func,
+  touch: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
@@ -274,12 +282,18 @@ const mapStateToProps = state => ({
   errorMessages: selectors.getErrorMessages(state),
   submitting: isSubmitting('booking')(state),
   bookableName: selectors.getBookingFormBookableName(state),
+  bookingFormDate: selectors.getBookingFormDate(state),
   locations: selectors.getLocationOptions(state),
 })
 
 const enhance = compose(
   reduxForm({ form: 'booking' }),
-  connect(mapStateToProps, { createBooking: actionCreators.createBooking, getAllLocations: actionCreators.getAllLocations })
+  connect(mapStateToProps, {
+    createBooking: actionCreators.createBooking,
+    getAllLocations: actionCreators.getAllLocations,
+    change,
+    touch,
+  })
 )
 
 export default enhance(BookingForm)

@@ -3,7 +3,6 @@
 
 .booking-form {
   background-color: white;
-  color: black;
 
   @include desktop {
     margin-left: 20%;
@@ -26,11 +25,26 @@
 
 :global(.DayPickerInput) > input {
   box-sizing: border-box;
+  color: #666;
   width: 100%;
 }
 
 :global(.rc-time-picker-panel-select) :global(li) {
-  color: black;
+  color: #666;
+}
+
+.field-two-column {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  margin: 10px 0;
+
+  .field-input input {
+    border-radius: 0;
+    font-size: unset;
+    line-height: unset;
+    height: auto;
+  }
 }
 
 .field-input {

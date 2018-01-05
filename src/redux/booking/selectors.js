@@ -2,6 +2,8 @@ import { createSelector } from 'reselect'
 
 import { formValueSelector } from 'redux-form'
 
+import { normalizeDateWithBase } from 'Utils'
+
 import { getBookableEntities } from '../api/selectors'
 
 // ### Booking Instance ------------------------------------------------------
@@ -18,9 +20,10 @@ export const getBookingInstanceId = createSelector(
 const bookingFormSelector = formValueSelector('booking')
 
 const getBookingFormBookableId = state => bookingFormSelector(state, 'bookableId')
+export const getBookingFormLocation = state => bookingFormSelector(state, 'locationId')
+export const getBookingFormDate = state => bookingFormSelector(state, 'date')
 export const getBookingFormStart = state => bookingFormSelector(state, 'start')
 export const getBookingFormEnd = state => bookingFormSelector(state, 'end')
-export const getBookingFormLocation = state => bookingFormSelector(state, 'locationId')
 
 export const getBookingFormBookableName = createSelector(
   [ getBookingFormBookableId, getBookableEntities ],
@@ -28,6 +31,9 @@ export const getBookingFormBookableName = createSelector(
 )
 
 export const getBookingFormDateRange = createSelector(
-  [ getBookingFormStart, getBookingFormEnd ],
-  (start, end) => ({ end, start })
+  [ getBookingFormStart, getBookingFormEnd, getBookingFormDate ],
+  (start, end, date) => ({
+    end: normalizeDateWithBase(end, date),
+    start: normalizeDateWithBase(start, date),
+  })
 )
