@@ -35,7 +35,6 @@ export const getUserEntities = state => getUsers(state).get('entities', Map())
 export const getBookingEntity = (state, props) => getBookingEntities(state).get(props.id, Map())
 
 export const hasBooking = (state, id) => getBookings(state).get('result', Set()).includes(id)
-// export const getBookingId = createGetSelector(getBookingEntity, 'id', null)
 export const getBookingSubject = createGetSelector(getBookingEntity, 'subject', null)
 export const getBookingStart = createGetSelector(getBookingEntity, 'start', null)
 export const getBookingEnd = createGetSelector(getBookingEntity, 'end', null)
@@ -46,7 +45,7 @@ export const isBookingInPast = createSelector(
   end => end && isBefore(end, new Date)
 )
 
-// Private helper for relating a bookable entity to a booking via the booking' bookable id
+// Private helper for relating a bookable entity to a booking via the booking's bookable id
 const getBookingBookableEntity = createSelector(
   [ getBookingBookable, getBookableEntities ],
   (bookingBookable, bookables) => bookables.find((value, key) => key === bookingBookable) || Map()
@@ -60,11 +59,6 @@ const getBookingBookableLocationEntity = createSelector(
 
 export const getBookingBookableName = createGetSelector(getBookingBookableEntity, 'name', null)
 export const getBookingLocationName = createGetSelector(getBookingBookableLocationEntity, 'name', null)
-
-export const getBookingDates = createSelector(
-  [ getBookingIds, getBookingEntities ],
-  (bookingIds, bookings) => Set(bookingIds.map(id => formatDate(bookings.getIn([id, 'start'])))).sort().toArray()
-)
 
 // Private helper for selecting bookings for a given date (ie. GroupedBookingsList)
 const getDateForBookings = (state, props) => props.date
@@ -82,7 +76,6 @@ export const getBookingsForDate = createSelector(
 
 export const getLocationEntity = (state, props) => getLocationEntities(state).get(props.id, null)
 
-// export const getLocationId = createGetSelector(getLocationEntity, 'id', null)
 export const getLocationName = createGetSelector(getLocationEntity, 'name', null)
 export const getLocationTimezone = createGetSelector(getLocationEntity, 'timeZone', null)
 
@@ -99,21 +92,6 @@ export const getLocationOptions = createSelector(
 )
 
 // ### Users -----------------------------------------------------------------
-
-export const getBookingsByUser = createSelector(
-  [ getUserIds, getBookingIds, getBookingEntities ],
-  (userIds, bookingIds, bookings) => {
-    return Map(userIds.map(userId => [
-      userId,
-      bookingIds.filter(bookingId => bookings.getIn([bookingId, 'user']) === userId),
-    ]))
-  }
-)
-
-export const getBookingsForUser = createSelector(
-  [ getUserId, getBookingsByUser ],
-  (userId, bookings) => bookings.get(userId, Set())
-)
 
 export const getBookingsForUserForDate = createSelector(
   [ getUserId, getBookingsForDate, getBookingEntities ],
@@ -144,7 +122,6 @@ export const getBookableDispositionReason = createSelector(
   disposition => disposition.get('reason')
 )
 
-// Support selector for isBookableBooked
 const getBookingFormDates = state => formValueSelector('booking')(state, 'start', 'end', 'date')
 
 const getBookingFormDateRange = createSelector(
@@ -153,20 +130,6 @@ const getBookingFormDateRange = createSelector(
     end: formatDate(normalizeDateWithBase(end, date), 'YYYY-MM-DDTHH:mm:ss'),
     start: formatDate(normalizeDateWithBase(start, date), 'YYYY-MM-DDTHH:mm:ss'),
   })
-)
-
-// TODO: make `existingBookingRanges` its own selector to memoize and SAVE TIME!
-export const isBookableBooked = createSelector(
-  [ getBookableBookings, getBookingEntities, getBookingFormDateRange ],
-  (bookingIds, bookings, bookingFormDateRange) => {
-    const existingBookingRanges = bookingIds.map(id => ({ end: bookings.getIn([id, 'end']), start: bookings.getIn([id, 'start']) }))
-    return doesRangeOverlap(bookingFormDateRange, existingBookingRanges)
-  }
-)
-
-export const isBookableAvailable = createSelector(
-  [ isBookableClosed, isBookableBooked ],
-  (closed, booked) => !closed && !booked
 )
 
 const getBookableLocationEntity = createSelector(

@@ -60,13 +60,12 @@ describe('booking/selectors', () => {
 
       expect(getBookingFormBookableName(combinedState)).to.equal('A Bookable')
     })
-  })
 
-  describe('#getBookingFormDateRange(state)', () => {
-    it('returns the correct state', () => {
-      const expected = { start: '2017-12-19T01:00:00', end: '2017-12-19T02:00:00' }
+    describe('#getBookingFormDateRange(state)', () => {
+      it('returns the correct state', () => {
+        const expected = { start: '2017-12-19T01:00:00', end: '2017-12-19T02:00:00' }
 
-      expect(getBookingFormDateRange(formState)).to.deep.equal(expected)
+        expect(getBookingFormDateRange(formState)).to.deep.equal(expected)
+      })
     })
-  })
-})
+  })})

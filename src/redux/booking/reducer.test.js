@@ -1,5 +1,3 @@
-// import { Map } from 'immutable'
-
 import { bookingInstance } from './reducer'
 
 describe('reducers/booking', () => {
