@@ -7,10 +7,11 @@ import {
   getBookingFormEnd,
   getBookingFormLocation,
   getBookingFormBookableName,
+  getBookingFormDateRange,
 } from './selectors'
 
 describe('booking/selectors', () => {
-  const formValues = { start: '2017-12-19T01:00', end: '2017-12-19T02:00', bookableId: 'abc', subject: 'A Booking', locationId: 'def' }
+  const formValues = { date: new Date('2017-12-19T00:00'), start: new Date('2017-12-19T01:00'), end: new Date('2017-12-19T02:00'), bookableId: 'abc', subject: 'A Booking', locationId: 'def' }
   const formState = { form: { booking: { values: formValues } } }
 
   describe('#getBookingInstance(state)', () => {
@@ -59,5 +60,12 @@ describe('booking/selectors', () => {
 
       expect(getBookingFormBookableName(combinedState)).to.equal('A Bookable')
     })
-  })
-})
+
+    describe('#getBookingFormDateRange(state)', () => {
+      it('returns the correct state', () => {
+        const expected = { start: '2017-12-19T01:00:00', end: '2017-12-19T02:00:00' }
+
+        expect(getBookingFormDateRange(formState)).to.deep.equal(expected)
+      })
+    })
+  })})

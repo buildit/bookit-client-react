@@ -7,7 +7,6 @@ const postcssReporter = require('postcss-reporter')
 
 const HTMLPlugin = require('html-webpack-plugin')
 
-
 const sourceLoaderRule = {
   test: /\.jsx?$/,
   exclude: [ /node_modules/ ],
@@ -36,6 +35,11 @@ const assetsLoaderRule = {
 
 const htmlLoaderRule = {
   test: /\.html$/,
+  use: [ { loader: 'file-loader?name=[name].[ext]' } ],
+}
+
+const jsonLoaderRule = {
+  test: /\.json$/,
   use: [ { loader: 'file-loader?name=[name].[ext]' } ],
 }
 
@@ -72,6 +76,7 @@ module.exports = {
     }),
     new HTMLPlugin({
       template: './src/index.ejs',
+      favicon: './src/images/favicon.ico',
       filename: 'index.html',
       inject: 'body',
     }),
@@ -83,6 +88,7 @@ module.exports = {
       styleLinterRule,
       assetsLoaderRule,
       htmlLoaderRule,
+      jsonLoaderRule,
     ],
   },
 }

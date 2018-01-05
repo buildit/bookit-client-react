@@ -16,6 +16,9 @@
     "^Fixtures(.*)$": "<rootDir>/test/unit/__fixtures__$1"
   },
   "moduleFileExtensions": [ "js", "jsx", "json" ],
+  "transformIgnorePatterns": [
+    "node_modules/(?!(date-fns)/)"
+  ],
   "testPathIgnorePatterns": [ "<rootDir>/(build|docs|node_modules|images)/" ],
   "testEnvironment": "jsdom",
   "testRegex": "\\.test.jsx?$",

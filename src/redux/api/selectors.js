@@ -8,7 +8,7 @@ import { createGetSelector } from 'reselect-immutable-helpers'
 import { getSelectedLocation } from '../app/selectors'
 import { getUserId } from '../auth/selectors'
 
-import { doesRangeOverlap, isSameDay, compareDates, isBefore } from 'Utils'
+import { doesRangeOverlap, formatDate, normalizeDateWithBase, isSameDay, compareDates, isBefore } from 'Utils'
 
 // ### Baseline selectors ----------------------------------------------------
 
@@ -122,8 +122,15 @@ export const getBookableDispositionReason = createSelector(
   disposition => disposition.get('reason')
 )
 
-// Support selector for isBookableBooked
-const getBookingFormDateRange = state => formValueSelector('booking')(state, 'start', 'end')
+const getBookingFormDates = state => formValueSelector('booking')(state, 'start', 'end', 'date')
+
+const getBookingFormDateRange = createSelector(
+  [ getBookingFormDates ],
+  ({ start, end, date }) => ({
+    end: formatDate(normalizeDateWithBase(end, date), 'YYYY-MM-DDTHH:mm:ss'),
+    start: formatDate(normalizeDateWithBase(start, date), 'YYYY-MM-DDTHH:mm:ss'),
+  })
+)
 
 const getBookableLocationEntity = createSelector(
   [ getBookableLocation, getLocationEntities ],

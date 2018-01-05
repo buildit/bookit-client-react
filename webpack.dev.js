@@ -30,7 +30,16 @@ const dev = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        include: [ /node_modules/ ],
+        use: [
+          { loader: 'style-loader' },
+          { loader: 'css-loader', options: { modules: true, camelCase: 'only', localIdentName: '[local]' } },
+        ],
+      },
+      {
         test: /\.(sass|scss|css)$/,
+        exclude: [ /node_modules/ ],
         use: [
           { loader: 'style-loader', options: { sourceMap: true } },
           { loader: 'css-loader', options: { sourceMap: true, modules: true, camelCase: 'only', localIdentName: '[name]-[local]--[hash:base64:5]', importLoaders: 2 } },
