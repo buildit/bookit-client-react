@@ -83,7 +83,7 @@ const renderDayPicker = ({ input, label, meta: { touched, error, warning }, clea
     onFocus: input.onFocus,
     onKeyDown: input.onKeyDown,
     onKeyUp: input.onKeyUp,
-    readonly: 'readonly',
+    readOnly: 'readonly',
   }
   const dayPickerProps = {
     todayButton: 'Today',
