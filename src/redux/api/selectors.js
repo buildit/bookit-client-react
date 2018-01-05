@@ -150,8 +150,8 @@ const getBookingFormDates = state => formValueSelector('booking')(state, 'start'
 const getBookingFormDateRange = createSelector(
   [ getBookingFormDates ],
   ({ start, end, date }) => ({
-    end: normalizeDateWithBase(end, date),
-    start: normalizeDateWithBase(start, date),
+    end: formatDate(normalizeDateWithBase(end, date), 'YYYY-MM-DDTHH:mm:ss'),
+    start: formatDate(normalizeDateWithBase(start, date), 'YYYY-MM-DDTHH:mm:ss'),
   })
 )
 

@@ -71,13 +71,15 @@ renderField.propTypes = {
   meta: PropTypes.object,
 }
 
-const renderDayPicker = ({ input, label, meta: { touched, error, warning } }) => {
-  const onDayChange = day => input.onChange(day)
+const renderDayPicker = ({ input, label, meta: { touched, error, warning }, clearRoom }) => {
+  const onDayChange = (day) => {
+    input.onChange(day)
+    clearRoom()
+  }
   const disabledDays = day => !isToday(day) && isBefore(day, new Date)
 
   const inputProps = {
     name: input.name,
-    // onBlur: input.onBlur,
     onClick: input.onClick,
     onFocus: input.onFocus,
     onKeyDown: input.onKeyDown,
@@ -116,13 +118,13 @@ const renderDayPicker = ({ input, label, meta: { touched, error, warning } }) =>
 
 renderDayPicker.propTypes = renderField.propTypes
 
-const renderTimePicker = ({ input, label, meta: { touched, error, warning }, touch }) => {  // eslint-disable-line
+const renderTimePicker = ({ input, label, meta: { touched, error, warning }, touch, clearRoom }) => {  // eslint-disable-line
   const { onChange, onBlur, ...props } = input  // eslint-disable-line
 
   const onTimeChange = (value) => {
-    console.log('VALUE:', value)
     input.onChange(value)
     touch('booking', input.name)
+    clearRoom()
   }
 
   return (
@@ -190,10 +192,6 @@ export class BookingForm extends React.Component {
     })
   }
 
-  handleDayClick = (day) => {
-    console.log(day)
-  }
-
   clearRoom = () => {
     this.props.change('booking', 'bookableId', '')
   }
@@ -232,17 +230,17 @@ export class BookingForm extends React.Component {
           { error && <strong>{ error }</strong> }
           <h5 className={ styles.disclaimer }>All times local to selected location</h5>
 
-          <Field name="date" component={ renderDayPicker } label="Date" validate={ [ required ] } onBlur={this.clearRoom} />
+          <Field name="date" component={ renderDayPicker } label="Date" validate={ [ required ] } clearRoom={this.clearRoom} />
 
           <div className={styles.fieldTwoColumn}>
-            <Field name="start" component={ renderTimePicker } label="Start" validate={ [ required, startBeforeEnd ] } onBlur={this.clearRoom} touch={touch} />
-            <Field name="end" component={ renderTimePicker } label="End" type="text" validate={ [ required, endAfterStart ] } onBlur={this.clearRoom} touch={touch} />
+            <Field name="start" component={ renderTimePicker } label="Start" validate={ [ required, startBeforeEnd ] } clearRoom={this.clearRoom} touch={touch} />
+            <Field name="end" component={ renderTimePicker } label="End" type="text" validate={ [ required, endAfterStart ] } clearRoom={this.clearRoom} touch={touch} />
           </div>
 
           <a href="#" onClick={(event) => {
             event.preventDefault()
             setBookablesVisible(true)
-          }} className="roomsInput">Rooms</a>
+          }} className={styles.roomsInput}>Rooms</a>
 
           <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } />
           <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
