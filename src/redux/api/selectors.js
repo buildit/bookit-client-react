@@ -8,7 +8,7 @@ import { createGetSelector } from 'reselect-immutable-helpers'
 import { getSelectedLocation } from '../app/selectors'
 import { getUserId } from '../auth/selectors'
 
-import { doesRangeOverlap, formatDate, isSameDay, compareDates, isBefore } from 'Utils'
+import { doesRangeOverlap, formatDate, normalizeDateWithBase, isSameDay, compareDates, isBefore } from 'Utils'
 
 // ### Baseline selectors ----------------------------------------------------
 
@@ -145,7 +145,15 @@ export const getBookableDispositionReason = createSelector(
 )
 
 // Support selector for isBookableBooked
-const getBookingFormDateRange = state => formValueSelector('booking')(state, 'start', 'end')
+const getBookingFormDates = state => formValueSelector('booking')(state, 'start', 'end', 'date')
+
+const getBookingFormDateRange = createSelector(
+  [ getBookingFormDates ],
+  ({ start, end, date }) => ({
+    end: formatDate(normalizeDateWithBase(end, date), 'YYYY-MM-DDTHH:mm:ss'),
+    start: formatDate(normalizeDateWithBase(start, date), 'YYYY-MM-DDTHH:mm:ss'),
+  })
+)
 
 // TODO: make `existingBookingRanges` its own selector to memoize and SAVE TIME!
 export const isBookableBooked = createSelector(

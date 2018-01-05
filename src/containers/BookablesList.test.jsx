@@ -18,8 +18,10 @@ describe('<BookablesList />', () => {
 
     const wrapper = mount(
       <BookablesList
-        start='2017-12-15T00:30'
-        end='2017-12-15T01:00'
+        dates={{
+          start: '2017-12-15T00:30:00',
+          end: '2017-12-15T01:00:00',
+        }}
         location='xyz'
         change={change}
         getAvailability={getAvailability}

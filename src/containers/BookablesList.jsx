@@ -21,7 +21,8 @@ export class BookablesList extends React.Component {
   }
 
   async componentDidMount() {
-    const { payload: availability } = await this.props.getAvailability(this.props.start, this.props.end, this.props.location)
+    const { getAvailability, dates: { start, end }, location } = this.props
+    const { payload: availability } = await getAvailability(start, end, location)
     this.setState({ availability })
   }
 
@@ -57,8 +58,7 @@ export class BookablesList extends React.Component {
 }
 
 BookablesList.propTypes = {
-  start: PropTypes.string,
-  end: PropTypes.string,
+  dates: PropTypes.object,
   change: PropTypes.func,
   getAvailability: PropTypes.func,
   setBookablesVisible: PropTypes.func,
@@ -66,14 +66,13 @@ BookablesList.propTypes = {
 }
 
 const mapStateToProps = state => ({
-  start: selectors.getBookingFormStart(state),
-  end: selectors.getBookingFormEnd(state),
+  dates: selectors.getBookingFormDateRange(state),
   location: selectors.getBookingFormLocation(state),
 })
 
 const mapDispatchToProps = {
-  change,
   getAvailability: actionCreators.getAvailability,
+  change,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookablesList)
