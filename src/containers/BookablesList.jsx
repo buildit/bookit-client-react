@@ -57,8 +57,8 @@ export class BookablesList extends React.Component {
 }
 
 BookablesList.propTypes = {
-  start: PropTypes.string,
-  end: PropTypes.string,
+  start: PropTypes.instanceOf(Date),
+  end: PropTypes.instanceOf(Date),
   change: PropTypes.func,
   getAvailability: PropTypes.func,
   setBookablesVisible: PropTypes.func,
