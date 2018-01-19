@@ -146,7 +146,7 @@ const renderTimePicker = ({ input, label, meta: { touched, error, warning }, tou
 renderTimePicker.propTypes = renderField.propTypes
 
 const renderSelect = (locations = [], onChange) => (
-  <Field name="locationId" component="select" onChange={onChange}>
+  <Field name="locationId" className={ styles.locationSelectDropdown } component="select" onChange={onChange}>
     {locations.map(location => (
       <option value={location.id} key={location.id}>
         {location.name}
@@ -220,11 +220,14 @@ export class BookingForm extends React.Component {
 
     return (
       <div className={ styles.bookingForm }>
+        
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
+          <Link to="/home" className={ styles.cancel }>
+            <img src="images/close.svg" alt="Closing booking form and go home"/>
+          </Link>
           <div className={ styles.heading }>
             <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
-            <Link to="/home" className={ styles.cancel }>X</Link>
           </div>
 
           { error && <strong>{ error }</strong> }
@@ -247,7 +250,7 @@ export class BookingForm extends React.Component {
 
           <div className={ styles.field }>
             <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={ styles.submitButton }>
-              BookIt
+              Book A Room
             </Button>
           </div>
         </form>
