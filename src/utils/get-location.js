@@ -20,17 +20,10 @@ export const getAPIEndpoint = () => {
  * <env>-bookit-client-react.buildit.tools for everything else
  */
 export const deriveAPIEndpoint = (location) => {
-  const urlParts = location.split('.')
-  if (urlParts.length === 1) {
+  if (location.indexOf('localhost') != -1) {
     return LOCAL_SERVER_HOST
   }
-
-  const subDomain = urlParts[0].split('-')
-  const apiParts = subDomain.slice(0, subDomain.length - 2)
-  apiParts.push('api')
-
-  const apiDomain = apiParts.join('-')
-  const domain = urlParts.slice(1)
-
-  return [apiDomain, ...domain].join('.')
+  if (location.indexOf('client-react') != -1)
+    return location.replace('client-react', 'api')
+  return location.replace('bookit', 'bookit-api')
 }
