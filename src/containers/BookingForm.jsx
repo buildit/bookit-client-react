@@ -220,12 +220,12 @@ export class BookingForm extends React.Component {
 
     return (
       <div className={ styles.bookingForm }>
-        
+        <Link to="/home" className={ styles.cancel }>
+          <img src="images/close.svg" alt="Closing booking form and go home"/>
+        </Link>
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
-          <Link to="/home" className={ styles.cancel }>
-            <img src="images/close.svg" alt="Closing booking form and go home"/>
-          </Link>
+          
           <div className={ styles.heading }>
             <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
           </div>

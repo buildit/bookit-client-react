@@ -2,9 +2,9 @@
 @import './mixins/media';
 
 .booking-form {
+  position: relative;
   background-color: white;
   
-
   @include desktop {
     padding-top: 20px;
   }
@@ -14,11 +14,12 @@
   align-items: center;
 
   .cancel {
-    flex: 0 1 auto;
+    position: absolute;
+    top: 12px;
+    right: 7px;
+
     text-decoration: none;
-    margin-top: 20px;
-    display: block;
-    text-align: right;
+    display: inline-block;
 
     img{
       display: block;
@@ -30,8 +31,8 @@
     }
 
     @include desktop {
-      margin-right: 20px;
-      font-size: 25px;
+      top: 35px;
+      right: 35px;
 
       img{
         margin-right: 0;
