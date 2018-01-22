@@ -2,14 +2,59 @@
 @import './mixins/media';
 
 .booking-form {
+  position: relative;
   background-color: white;
-
+  
   @include desktop {
-    margin-left: 20%;
+    padding-top: 20px;
   }
 
   @include page;
   flex-flow: column nowrap;
+  align-items: center;
+
+  .cancel {
+    position: absolute;
+    top: 12px;
+    right: 7px;
+
+    text-decoration: none;
+    display: inline-block;
+
+    img{
+      display: block;
+      margin-left: auto;
+      margin-right: 20px;
+      max-width: 100%;
+      height: 30px;
+      width: 30px;
+    }
+
+    @include desktop {
+      top: 35px;
+      right: 35px;
+
+      img{
+        margin-right: 0;
+        height: 40px;
+        width: 40px;
+      }
+    }
+  }
+
+}
+
+.locationSelectDropdown{
+  appearance: none;
+
+  border-radius: 0;
+  border-style: none none dashed none;
+  border-width: 1px;
+  border-color: #51aea6;
+
+  color: #4594fd;
+
+  padding-bottom: 2px; 
 }
 
 .field {
@@ -20,6 +65,10 @@
   label {
     display: block;
     margin: 10px 0;
+
+    font-size: 14px;
+
+    color: #c5c5c5;
   }
 }
 
@@ -44,8 +93,9 @@
   }
 
   .field-input input {
-    border-radius: 0;
+    border-radius: 4px;
     font-size: unset;
+    font-size: 14px;
     line-height: unset;
     height: auto;
   }
@@ -57,20 +107,20 @@
 
   input {
     flex: 1 0 auto;
-    border: 1px solid lightgray;
-    padding: 10px;
+    border: 1px solid #e6e8ed;
+    border-radius: 4px;
 
-    @include desktop {
-      width: 60%;
-    }
+    font-size: 14px;
+    padding: 10px;
   }
 }
 
 .heading {
   display: flex;
-  flex-direction: row;
+  align-items: center;
+  text-align: center;
 
-  padding: 20px 10px 20px 10px;
+  padding: 20px 10px 10px 10px;
 
   .title {
     flex: 1 0 auto;
@@ -81,20 +131,12 @@
       font-size: 25px;
     }
   }
-
-  .cancel {
-    flex: 0 1 auto;
-    text-decoration: none;
-
-    @include desktop {
-      margin-right: 20px;
-      font-size: 25px;
-    }
-  }
 }
 
 .disclaimer {
+  text-align: center;
   padding-left: 15px;
+  margin-bottom: 30px;
 }
 
 .error-span {
@@ -105,20 +147,43 @@
   margin-top: 5px;
 }
 
+.roomsToggle{
+  color: #666;
+  text-decoration: none;
+}
+
+.roomSelectToggleInput{
+  margin: 0 20px;
+  display: flex;
+  align-items: center;
+
+  padding-bottom: 3px;
+  border-bottom: solid 1px #013f93;
+
+  span{
+    flex: 1;
+    font-size: 14px;
+    padding-left: 10px;
+  }
+
+  img{
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+  }
+}
+
 .submitButton {
-  background-color: #f3f0f0;
-  border: 1px solid #969696;
-  border-radius: 7px;
-  color: black;
+  background-color: #4594fd;
+  border-radius: 2px;
+  border: none;
+  color: #ffffff;
   cursor: pointer;
   font-size: 18px;
   line-height: 18px;
   margin-top: 20px;
   padding: 20px 0;
 
-  @include desktop {
-    width: 60%;
-  }
 
   &:disabled {
     cursor: disabled;

@@ -138,7 +138,7 @@ class _JWhutWorld {
   }
 
   async viewBookables() {
-    await this.findElementByLinkText('Rooms').click()
+    await this.findElementByLinkText('Pick A Room').click()
     // Grumble grumble... Why not opposite of `until.stalenessOf`?
     await this.driver.sleep(1000)  // Delay next action because of animating transitions and selenium is dumb
   }

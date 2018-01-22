@@ -146,13 +146,20 @@ const renderTimePicker = ({ input, label, meta: { touched, error, warning }, tou
 renderTimePicker.propTypes = renderField.propTypes
 
 const renderSelect = (locations = [], onChange) => (
-  <Field name="locationId" component="select" onChange={onChange}>
+  <Field name="locationId" className={ styles.locationSelectDropdown } component="select" onChange={onChange}>
     {locations.map(location => (
       <option value={location.id} key={location.id}>
         {location.name}
       </option>
     ))}
   </Field>
+)
+
+const roomSelectToggle = (selectedRoomName = 'Pick A Room') => (
+  <div className={styles.roomSelectToggleInput} id={selectedRoomName.replace(/\s/g, '-').toLowerCase()}>
+    <span>{selectedRoomName}</span>
+    <img src="images/input-arrow-right.svg" alt="Select a room"/>
+  </div>
 )
 
 
@@ -220,11 +227,14 @@ export class BookingForm extends React.Component {
 
     return (
       <div className={ styles.bookingForm }>
+        <Link to="/home" className={ styles.cancel }>
+          <img src="images/close.svg" alt="Closing booking form and go home"/>
+        </Link>
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
+          
           <div className={ styles.heading }>
             <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
-            <Link to="/home" className={ styles.cancel }>X</Link>
           </div>
 
           { error && <strong>{ error }</strong> }
@@ -237,17 +247,21 @@ export class BookingForm extends React.Component {
             <Field name="end" component={ renderTimePicker } label="End" type="text" validate={ [ required, endAfterStart ] } clearRoom={this.clearRoom} touch={touch} />
           </div>
 
+          
+
+          <Field name="bookableId" component={ renderField } type="hidden" label="Room" />
           <a href="#" onClick={(event) => {
             event.preventDefault()
             setBookablesVisible(true)
-          }} className="roomsInput">Rooms</a>
+          }} className={`${styles.roomsToggle} roomsInput`}>{roomSelectToggle(bookableName)}</a>
 
-          <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } />
+          {/* <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } /> */}
+          
           <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
 
           <div className={ styles.field }>
             <Button type="submit" disabled={ pristine || submitting || invalid } id="bookit" className={ styles.submitButton }>
-              BookIt
+              Book A Room
             </Button>
           </div>
         </form>
