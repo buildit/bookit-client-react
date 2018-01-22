@@ -155,6 +155,13 @@ const renderSelect = (locations = [], onChange) => (
   </Field>
 )
 
+const roomSelectToggle = (selectedRoomName = 'Pick A Room') => (
+  <div className={styles.roomSelectToggleInput}>
+    <span>{selectedRoomName}</span>
+    <img src="images/input-arrow-right.svg" alt="Select a room"/>
+  </div>
+)
+
 
 export class BookingForm extends React.Component {
   componentDidMount() {
@@ -240,12 +247,16 @@ export class BookingForm extends React.Component {
             <Field name="end" component={ renderTimePicker } label="End" type="text" validate={ [ required, endAfterStart ] } clearRoom={this.clearRoom} touch={touch} />
           </div>
 
+          
+
+          <Field component={ renderField } type="hidden" label="Room" />
           <a href="#" onClick={(event) => {
             event.preventDefault()
             setBookablesVisible(true)
-          }} className="roomsInput">Rooms</a>
+          }} className={styles.roomsInput}>{roomSelectToggle(bookableName)}</a>
 
-          <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } />
+          {/* <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } /> */}
+          
           <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
 
           <div className={ styles.field }>

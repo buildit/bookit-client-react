@@ -147,6 +147,32 @@
   margin-top: 5px;
 }
 
+.roomsInput{
+  color: #666;
+  text-decoration: none;
+}
+
+.roomSelectToggleInput{
+  margin: 0 20px;
+  display: flex;
+  align-items: center;
+
+  padding-bottom: 3px;
+  border-bottom: solid 1px #013f93;
+
+  span{
+    flex: 1;
+    font-size: 14px;
+    padding-left: 10px;
+  }
+
+  img{
+    width: 10px;
+    height: 10px;
+    margin-right: 10px;
+  }
+}
+
 .submitButton {
   background-color: #4594fd;
   border-radius: 2px;
