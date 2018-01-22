@@ -253,7 +253,7 @@ export class BookingForm extends React.Component {
           <a href="#" onClick={(event) => {
             event.preventDefault()
             setBookablesVisible(true)
-          }} className={styles.roomsInput}>{roomSelectToggle(bookableName)}</a>
+          }} className={`${styles.roomsToggle} roomsInput`}>{roomSelectToggle(bookableName)}</a>
 
           {/* <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } /> */}
           
