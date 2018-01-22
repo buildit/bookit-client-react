@@ -249,7 +249,7 @@ export class BookingForm extends React.Component {
 
           
 
-          <Field component={ renderField } type="hidden" label="Room" />
+          <Field name="bookableId" component={ renderField } type="hidden" label="Room" />
           <a href="#" onClick={(event) => {
             event.preventDefault()
             setBookablesVisible(true)
