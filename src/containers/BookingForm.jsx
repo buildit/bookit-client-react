@@ -156,7 +156,7 @@ const renderSelect = (locations = [], onChange) => (
 )
 
 const roomSelectToggle = (selectedRoomName = 'Pick A Room') => (
-  <div className={styles.roomSelectToggleInput}>
+  <div className={styles.roomSelectToggleInput} id={selectedRoomName.replace(/\s/g, '-').toLowerCase()}>
     <span>{selectedRoomName}</span>
     <img src="images/input-arrow-right.svg" alt="Select a room"/>
   </div>
