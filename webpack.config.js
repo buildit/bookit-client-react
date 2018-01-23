@@ -60,6 +60,7 @@ module.exports = {
       Utils: path.resolve(__dirname, 'src/utils'),
 
       Styles: path.resolve(__dirname, 'src/styles'),
+      Images: path.resolve(__dirname, 'src/images'),
 
       Api: path.resolve(__dirname, 'src/api'),
 
