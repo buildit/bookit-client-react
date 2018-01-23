@@ -42,16 +42,18 @@ export class BookablesList extends React.Component {
       <div className={styles.bookablesList}>
         <div className={styles.bookablesHeader}>
           <ActionLink onClick={this.handleBack} className={styles.back}>BACK</ActionLink>
-          <h3 className={styles.heading}>Change Room</h3>
+          <h3 className={styles.heading}>Select Room</h3>
         </div>
-        { availability.map(bookable => (
-          <BookableAvailabilityItem
-            key={bookable.bookableId}
-            className={styles.bookable}
-            onClick={this.handleBookableClick}
-            {...bookable}
-          />)
-        )}
+        <div className={styles.bookablecontainer}>
+          { availability.map(bookable => (
+            <BookableAvailabilityItem
+              key={bookable.bookableId}
+              className={styles.bookable}
+              onClick={this.handleBookableClick}
+              {...bookable}
+            />)
+          )}
+        </div>
       </div>
     )
   }

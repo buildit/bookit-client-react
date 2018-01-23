@@ -1,54 +1,83 @@
 @import './mixins/flex';
 @import './mixins/media';
+@import 'variables.scss';
+
 
 .bookables-list {
-  background-color: white;
+    background-color: white;
 
-  @include page;
-  position: fixed;
-  top: 0;
-  width: 100vw;
-  flex-flow: column nowrap;
+    @include page;
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    flex-flow: column nowrap;
 }
 
 
 .bookables-header {
-  display: flex;
-  flex-flow: row nowrap;
-
-  margin-top: 10px;
-  padding: 10px;
-
-  .back {
-    flex: 0;
-  }
-
-  .heading {
-    color: black;
-    text-align: center;
+    display: flex;
+    flex-flow: row nowrap;
+    position: fixed;
     width: 100vw;
-    position: absolute;
-    pointer-events: none;
-  }
+    padding: 10px;
+    background-color: white;
+    height: 50px;
+
+    .back {
+        flex: 0;
+        margin: 20px 0px 0px 25px;
+        font-family: $base-font-family;
+        color: black;
+        text-decoration: none;
+        &:hover {
+            color: #068b80;
+        }
+    }
+
+    .heading {
+        color: black;
+        text-align: center;
+        width: 100vw;
+        pointer-events: none;
+        font-size: 25px;
+        font-family: $base-font-family;
+        font-weight: bold;
+        margin-top: 10px;
+        width: 100vw;
+
+    }
 }
 
 .bookable {
-  color: black;
-  display: flex;
-  border-top: 1px solid lightgray;
-  margin-top: 10px;
-  padding-left: 10px;
-  padding-top: 10px;
-  padding-right: 10px;
-  align-content: center;
-  justify-content: space-between;
-  user-select: none;
+    color: black;
+    display: flex;
+    border-top: 1px solid #d5d5d5;
+    padding: 30px;
+    align-content: center;
+    justify-content: space-between;
+    user-select: none;
+    font-family: $base-font-family;
+    font-size: 18px;
+    font-weight: light;
 
-  @include desktop {
-    width: 95%;
-    padding: 20px;
-    &:hover {
-      background-color: #dfe7f1;
+
+    @include mobile {
+        font-size: 16px;
     }
-  }
+}
+
+
+@include desktop {
+    width: 95%;
+    margin-left: 5px;
+    &:hover {
+        background-color: #dfe7f1;
+    }
+
+
+}
+
+
+.bookablecontainer{
+    padding-top: 85px;
 }
