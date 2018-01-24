@@ -50,7 +50,7 @@ export class BookingsList extends React.Component {
     return (
       <div className={styles.bookings}>
         <div className={styles.heading}>
-          <h2 className={styles.title}>All Bookings</h2>
+          <h2 className={styles.title}>My Bookings</h2>
           <Link to="/home" className={styles.cancel}>
             <img src="images/close.svg" alt="Closing booking form and go home"/>
           </Link>
