@@ -16,6 +16,9 @@ import { actionCreators, selectors } from 'Redux'
 import Button from 'Components/Button'
 import Loading from 'Components/Loading'
 
+import arrowRightSrc from 'Images/input-arrow-right.svg'
+import closeSrc from 'Images/close.svg'
+
 import {
   addHours,
   isToday,
@@ -158,7 +161,7 @@ const renderSelect = (locations = [], onChange) => (
 const roomSelectToggle = (selectedRoomName = 'Pick A Room') => (
   <div className={styles.roomSelectToggleInput} id={selectedRoomName.replace(/\s/g, '-').toLowerCase()}>
     <span>{selectedRoomName}</span>
-    <img src="images/input-arrow-right.svg" alt="Select a room"/>
+    <img src={arrowRightSrc} alt="Select a room"/>
   </div>
 )
 
@@ -228,11 +231,11 @@ export class BookingForm extends React.Component {
     return (
       <div className={ styles.bookingForm }>
         <Link to="/home" className={ styles.cancel }>
-          <img src="images/close.svg" alt="Closing booking form and go home"/>
+          <img src={closeSrc} alt="Closing booking form and go home"/>
         </Link>
 
         <form onSubmit={ handleSubmit(this.submitBookingForm) }>
-          
+
           <div className={ styles.heading }>
             <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
           </div>
@@ -247,16 +250,12 @@ export class BookingForm extends React.Component {
             <Field name="end" component={ renderTimePicker } label="End" type="text" validate={ [ required, endAfterStart ] } clearRoom={this.clearRoom} touch={touch} />
           </div>
 
-          
-
           <Field name="bookableId" component={ renderField } type="hidden" label="Room" />
           <a href="#" onClick={(event) => {
             event.preventDefault()
             setBookablesVisible(true)
           }} className={`${styles.roomsToggle} roomsInput`}>{roomSelectToggle(bookableName)}</a>
 
-          {/* <Field name="bookableId" component={ renderField } type="hidden" label={ bookableName || 'Pick a Room' } /> */}
-          
           <Field name="subject" component={ renderField } label="Event Name" type="text" validate={ required } />
 
           <div className={ styles.field }>

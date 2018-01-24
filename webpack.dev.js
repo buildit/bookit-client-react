@@ -6,15 +6,20 @@ const merge = require('webpack-merge')
 const webpackConfig = require('./webpack.config')
 
 const dev = {
+  devtool: 'inline-source-map',
   entry: {
     app: [
       'react-hot-loader/patch',
       './src/client.jsx',
     ],
   },
-  devtool: 'inline-source-map',
+  output: {
+    pathinfo: true,
+    publicPath: '/',
+  },
   devServer: {
     contentBase: './src',
+    publicPath: '/',
     hot: true,
     port: 3001,
     compress: true,

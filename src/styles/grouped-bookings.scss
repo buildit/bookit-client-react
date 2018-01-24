@@ -1,14 +1,19 @@
 @import './mixins/flex';
+@import 'variables.scss';
 
 
 .bookings {
   background-color: white;
   color: black;
 
-  @include page;
+.bookings {
+    background-color: white;
+    color: black;
+    font-family: $base-font-family;
+    @include page;
 
-  flex-flow: column nowrap;
-  height: 100%;
+    flex-flow: column nowrap;
+    height: 100%;
 }
 
 .grouped-booking-list {
@@ -21,7 +26,6 @@
   .heading {
     background-color: #d5d5d5;
     margin-bottom: 20px;
-    padding: 10px;
 
     &.headingGreen{
       background-color: #068b80;
@@ -32,10 +36,10 @@
       padding-left: 10px;
       color: #ffffff;
     }
-  }
 
-  .no-booking {
-    padding-left: 20px;
-    color: gray;
-  }
+    .no-booking {
+        font-family: $base-font-family;
+        padding-left: 20px;
+        color: gray;
+    }
 }

@@ -18,5 +18,5 @@ Then('I am on the booking form', async function() {
 })
 
 Then('I am on the view bookings page', async function() {
-  await this.waitUntilElementTextContains(By.tagName('h2'), 'All Bookings')
+  await this.waitUntilElementTextContains(By.tagName('h2'), 'My Bookings')
 })

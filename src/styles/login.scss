@@ -11,7 +11,7 @@
 
 .top {
   height: 33%;
-  background: lightgray;
+  background: #4594fd;
   color: white;
   display: flex;
   justify-content: center;
@@ -34,14 +34,15 @@
 
 .big-button {
   user-select: none;
-  background-color: #f3f0f0;
-  border: 1px solid #969696;
-  color: black;
+  background-color: #013f93;
+  border: 1px solid #013f93;
+  color: white;
   cursor: pointer;
   font-size: 18px;
   line-height: 18px;
   padding: 20px 0;
   width: 90%;
+    font-weight: 200;
 
   &:focus {
     outline: none;

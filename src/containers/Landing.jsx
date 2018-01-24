@@ -10,10 +10,10 @@ export const Landing = () => (
   <div className={styles.landing} id="landing">
     <div className={[styles.landingRow, styles.landingRowPadded].join(' ')}>
       <Link to="/book">
-        <Button className={styles.bigButton}>Book A Room</Button>
+        <Button className={styles.bigButton1}>Book A Room</Button>
       </Link>
       <Link to="/bookings">
-        <Button className={styles.bigButton}>View Your Bookings</Button>
+        <Button className={styles.bigButton2}>View Your Bookings</Button>
       </Link>
     </div>
   </div>

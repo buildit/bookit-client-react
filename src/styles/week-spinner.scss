@@ -1,3 +1,6 @@
+@import 'variables.scss';
+
+
 .container {
   display: flex;
   flex-direction: row;
@@ -19,6 +22,9 @@
 }
 
 .week {
-  flex: 0 0 auto;
-  text-align: center;
+    flex: 0 0 auto;
+    text-align: center;
+    font-family: $base-font-family;
+    font-weight: normal;
+
 }
