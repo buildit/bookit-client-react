@@ -1,5 +1,6 @@
 @import './mixins/flex';
 
+
 .bookings {
   background-color: white;
   color: black;
@@ -18,16 +19,18 @@
   }
 
   .heading {
-    background-color: #efefef;
+    background-color: #d5d5d5;
     margin-bottom: 20px;
     padding: 10px;
 
-    .title {
-      color: black;
+    &.headingGreen{
+      background-color: #068b80;
     }
-    .cancel {
-      width: 10%;
-      float: right;
+
+    .title {
+      font-size: 14px;
+      padding-left: 10px;
+      color: #ffffff;
     }
   }
 

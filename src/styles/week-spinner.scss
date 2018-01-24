@@ -1,7 +1,7 @@
 .container {
   display: flex;
   flex-direction: row;
-  padding: 20px 10px 20px 10px;
+  margin: 5px auto 40px;
   flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
@@ -14,7 +14,7 @@
   text-align: center;
   a {
     text-decoration: none;
-    color: black;
+    color: #068b80;
   }
 }
 

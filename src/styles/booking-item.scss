@@ -1,5 +1,11 @@
+.bookingItemLink{
+  display: inline-block;
+  text-decoration: none;
+  color: #000;
+  font-size: 16px;
+}
 .booking-item {
-  border: 1px solid black;
+  border: 1px solid #d5d5d5;
   margin: 6px 12px;
-  padding: 6px;
+  padding: 22px 20px;
 }
