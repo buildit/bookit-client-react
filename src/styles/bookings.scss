@@ -1,9 +1,9 @@
 @import './mixins/flex';
-@import 'variables.scss';
+@import 'variables';
 
 .bookings {
     background-color: white;
-    color: black;
+    color: $black;
 
     @include page;
     flex-flow: column nowrap;
