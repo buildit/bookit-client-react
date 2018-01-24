@@ -1,52 +1,75 @@
-@import './mixins/flex';
+@import './mixins/media';
 
-.booking {
-  background-color: white;
-  color: black;
-
-  @include page;
-  flex-flow: column nowrap;
-}
-
-.heading {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: center;
-  align-items: center;
-
-  padding: 20px 10px 20px 10px;
-
-  .heading-item {
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-    padding: 20px;
-    width: 100vw;
-  }
-
-  .title {
-    color: black;
-  }
-
-  .cancel {
-    color: black;
-    width: 44px;
-  }
-}
 
 .booking-item {
-  padding: 20px;
+    padding: 80px 20px;
 
-  .booking-input {
-    margin-bottom: 10px;
-  }
+    .booking-input {
+        margin-bottom: 10px;
+    }
+    
 
-  p {
-    color: lightgray;
-    margin-bottom: 5px;
-  }
+    p {
+        color: #c5c5c5;
+        margin-bottom: 10px;
+    }
 
-  h3 {
-    border-bottom: 2px solid black;
-  }
+    h3 {
+        font-size: 16px;
+        font-color: #666;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #d5d5d5;
+    }
 }
+
+    .booking {
+        padding: 20px;
+        display: flex;
+        flex-flow: column;
+    }
+
+
+.title {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+
+}
+
+.cancel {
+    padding: 20px;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+.bigButton {
+    color: white;
+    background-color: #e8324e;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 2px;
+    height: 60px;
+    align-self: center;
+    
+    @include mobile {
+        width: 100%;
+    }
+    
+    @include desktop{
+        width: 60%;
+    }
+}
+
+.bookingCard{
+    align-self: center;
+    
+    @include mobile {
+        width: 85%;
+    }
+    
+    @include desktop {
+        width: 45%;
+    }
+}
+
