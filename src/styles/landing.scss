@@ -1,5 +1,6 @@
 @import './mixins/flex';
 @import './mixins/media';
+@import 'variables';
 
 .landing {
     background-color: white;
@@ -20,12 +21,13 @@
 
 .big-button1 {
     user-select: none;
-    background-color: #4594fd;
-    border: 1px solid #4594fd;
+    background-color: $blue;
+    border: none;
+    border-radius:2px;
     color: white;
     cursor: pointer;
     font-size: 18px;
-  
+
     line-height: normal;
     letter-spacing: -0.4px;
     padding: 20px 0;
@@ -46,8 +48,9 @@
 
 .big-button2 {
     user-select: none;
-    background-color: #013f93;
-    border: 1px solid #013f93;
+    background-color: $darkblue;
+    border: none;
+    border-radius:2px;
     color: white;
     cursor: pointer;
     font-size: 18px;

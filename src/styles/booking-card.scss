@@ -1,8 +1,9 @@
 @import './mixins/flex';
+@import 'variables';
 
 .booking {
   background-color: white;
-  color: black;
+  color: $black;
 
   @include page;
   flex-flow: column nowrap;
@@ -25,11 +26,11 @@
   }
 
   .title {
-    color: black;
+    color: $black;
   }
 
   .cancel {
-    color: black;
+    color: $black;
     width: 44px;
   }
 }
@@ -42,11 +43,11 @@
   }
 
   p {
-    color: lightgray;
+    color: $gray;
     margin-bottom: 5px;
   }
 
   h3 {
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid $black;
   }
 }

@@ -45,9 +45,8 @@
     padding: 20px 0;
     width: 90%;
     font-weight: 200;
-
-
-    &:focus {
-        outline: none;
+    &:hover{
+        background-color: red;
     }
+
 }
