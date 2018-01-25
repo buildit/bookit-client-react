@@ -1,4 +1,4 @@
-@import 'variables.scss';
+@import 'variables';
 
 
 .container {
@@ -11,14 +11,14 @@
 }
 
 .controls {
-  flex: 0 1 50px;
-  justify-content: center;
-  font-size: 32px;
-  text-align: center;
-  a {
-    text-decoration: none;
-    color: #068b80;
-  }
+    flex: 0 1 50px;
+    justify-content: center;
+    font-size: 32px;
+    text-align: center;
+    a {
+        text-decoration: none;
+        color: $green;
+    }
 }
 
 .week {

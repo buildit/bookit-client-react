@@ -1,50 +1,52 @@
 @import './mixins/flex';
+@import 'variables';
 
 .login {
-  background-color: white;
-  color: black;
+    background-color: white;
+    color: black;
 
-  @include page;
+    @include page;
 
-  flex-flow: column nowrap;
+    flex-flow: column nowrap;
 }
 
 .top {
-  height: 33%;
-  background: #4594fd;
-  color: white;
-  display: flex;
-  justify-content: center;
+    height: 33%;
+    background: $blue;
+    color: white;
+    display: flex;
+    justify-content: center;
 
-  h1 {
-    text-align: center;
-    font-size: 5em;
-    align-self: flex-end;
-    margin-bottom: 5px;
-  }
+    h1 {
+        text-align: center;
+        font-size: 5em;
+        align-self: flex-end;
+        margin-bottom: 5px;
+    }
 }
 
 .bottom {
-  height: 67%;
-  text-align: center;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    height: 67%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .big-button {
-  user-select: none;
-  background-color: #013f93;
-  border: 1px solid #013f93;
-  color: white;
-  cursor: pointer;
-  font-size: 18px;
-  line-height: 18px;
-  padding: 20px 0;
-  width: 90%;
+    user-select: none;
+    background-color: #013f93;
+    border: none;
+    border-radius: 2px;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 18px;
+    padding: 20px 0;
+    width: 90%;
     font-weight: 200;
+    &:hover{
+        background-color: red;
+    }
 
-  &:focus {
-    outline: none;
-  }
 }
