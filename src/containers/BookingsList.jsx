@@ -53,7 +53,7 @@ export class BookingsList extends React.Component {
         <div className={styles.heading}>
           <h2 className={styles.title}>My Bookings</h2>
           <Link to="/home" className={styles.cancel}>
-            <img ssrc={closeSrc} alt="Closing booking form and go home"/>
+            <img src={closeSrc} alt="Closing booking form and go home"/>
           </Link>
         </div>
 
