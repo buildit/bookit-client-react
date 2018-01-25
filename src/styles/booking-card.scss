@@ -30,16 +30,44 @@
   }
 }
 
+.heading {
+    display:flex;
+}
+
 .title {
-    font-size: 25px;
     font-weight: bold;
     text-align: center;
+    
+    @include mobile {
+        font-size: 18px;
+        margin-top: 31px;
+    }
+    
+    @include desktop {
+        font-size: 25px;
+        font-weight: bold;
+        text-align: center;
+        margin: 29px auto;
+    }
 }
 
 .cancel {
     padding: 20px;
     text-decoration: none;
     font-size: 18px;
+
+    @include desktop{
+         img{
+            width: 50px;
+        }
+    }
+
+    @include mobile{
+         img{
+            width: 40px;
+        }
+    }
+    
 }
 
 .bigButton {
@@ -57,7 +85,7 @@
     }
     
     @include desktop{
-        width: 60%;
+        width: 45%;
     }
 }
 
@@ -65,7 +93,7 @@
     align-self: center;
     
     @include mobile {
-        width: 85%;
+        width: 100%;
     }
     
     @include desktop {

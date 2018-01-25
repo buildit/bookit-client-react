@@ -9,6 +9,8 @@ import cn from 'classnames'
 
 import { actionCreators, selectors } from 'Redux'
 
+import backArrow from 'Images/backArrow.svg'
+
 import styles from 'Styles/booking-card.scss'
 import BookingCard from 'Components/BookingCard'
 import withBooking from 'Hoc/with-booking'
@@ -24,7 +26,9 @@ export class EditBooking extends React.Component {
     return (
       <div className={styles.booking}>
         <div className={styles.heading}>
-          <Link to="/bookings" className={cn(styles.headingItem, styles.cancel)}>Back</Link>
+          <Link to="/bookings" className={cn(styles.headingItem, styles.cancel)}>
+            <img src={backArrow} alt="Go Back" />
+          </Link>
           <h2 className={cn(styles.headingItem, styles.title)}>Manage Your Booking</h2>
         </div>
         <div className={styles.bookingCard}>
