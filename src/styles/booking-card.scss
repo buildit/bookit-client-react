@@ -1,39 +1,39 @@
 @import './mixins/media';
+@import 'variables';
 
 
-.booking-item {
-    padding: 80px 20px;
-
-    .booking-input {
-        margin-bottom: 10px;
-    }
-    
-
-    p {
-        color: #c5c5c5;
-        margin-bottom: 10px;
-    }
-
-    h3 {
-        font-size: 16px;
-        font-color: #666;
-        padding-bottom: 5px;
-        border-bottom: 1px solid #d5d5d5;
-    }
+.booking {
+    background-color: $white;
+    padding: 20px;
+    display: flex;
+    flex-flow: column;
 }
 
-    .booking {
-        padding: 20px;
-        display: flex;
-        flex-flow: column;
-    }
+.booking-item {
+  padding: 80px 20px;
 
+  .booking-input {
+      margin-bottom: 10px;
+  }
+    
+
+  p {
+      color: #c5c5c5;
+      margin-bottom: 10px;
+  }
+
+  h3 {
+      font-size: 16px;
+      font-color: #666;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #d5d5d5;
+  }
+}
 
 .title {
     font-size: 25px;
     font-weight: bold;
     text-align: center;
-
 }
 
 .cancel {
