@@ -123,7 +123,8 @@
     "webpack-merge": "^4.1.0"
   },
   "pre-commit": [
-    "lint"
+    "lint",
+    "lint:style"
   ],
   "pre-push": [
     "test",
