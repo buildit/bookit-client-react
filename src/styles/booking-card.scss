@@ -1,9 +1,5 @@
-@import './mixins/flex';
-@import 'variables';
+@import './mixins/media';
 
-.booking {
-  background-color: white;
-  color: $black;
 
 .booking-item {
     padding: 80px 20px;
@@ -26,15 +22,12 @@
     }
 }
 
-  .title {
-    color: $black;
-  }
+    .booking {
+        padding: 20px;
+        display: flex;
+        flex-flow: column;
+    }
 
-  .cancel {
-    color: $black;
-    width: 44px;
-  }
-}
 
 .title {
     font-size: 25px;
@@ -49,13 +42,34 @@
     font-size: 18px;
 }
 
-  p {
-    color: $gray;
-    margin-bottom: 5px;
-  }
+.bigButton {
+    color: white;
+    background-color: #e8324e;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 2px;
+    height: 60px;
+    align-self: center;
+    
+    @include mobile {
+        width: 100%;
+    }
+    
+    @include desktop{
+        width: 60%;
+    }
+}
 
-  h3 {
-    border-bottom: 2px solid $black;
-  }
-
+.bookingCard{
+    align-self: center;
+    
+    @include mobile {
+        width: 85%;
+    }
+    
+    @include desktop {
+        width: 45%;
+    }
+}
 

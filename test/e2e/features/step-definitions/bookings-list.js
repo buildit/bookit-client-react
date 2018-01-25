@@ -49,6 +49,6 @@ Then('I don\'t see the created booking', async function() {
 
 Then('the booking is cancelled', async function() {
   await this.waitUntilElementById('booking-my-bookable-for-next-week').click()
-  await this.waitUntilElementByLinkText('Cancel Booking').click()
+  await this.waitUntilElementByXpath(`//button[contains(text(),"Cancel Booking")]`).click()
   await this.waitUntilElementTextContains(By.tagName('body'), 'Success! Your booking was successfully cancelled.')
 })

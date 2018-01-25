@@ -20,7 +20,7 @@ When('I am now editing details through the My Bookings page', async function() {
 })
 
 When('I click the Cancel Booking button', async function() {
-  await this.waitUntilElementByLinkText('Cancel Booking').click()
+  await this.waitUntilElementByXpath(`//button[contains(text(),"Cancel Booking")]`).click()
 })
 
 Then('It is cancelled', async function() {
