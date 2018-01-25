@@ -10,7 +10,7 @@ export class GroupedBookingsList extends React.Component {
     const { date, bookingIds, component: Component } = this.props
     return (
       <div className={styles.groupedBookingList}>
-        <div className={styles.heading}>
+        <div className={`${styles.heading} ${ isToday(date) ? styles.headingGreen : ''}`}>
           <h4 className={styles.title}>
             { isToday(date) && 'TODAY - ' }
             { formatDate(date, 'ddd MMM D').toUpperCase() }
