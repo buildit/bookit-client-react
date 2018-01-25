@@ -40,14 +40,14 @@
     
     @include mobile {
         font-size: 18px;
-        margin-top: 20px;
+        margin-top: 31px;
     }
     
     @include desktop {
         font-size: 25px;
         font-weight: bold;
         text-align: center;
-        margin: 20px auto;
+        margin: 29px auto;
     }
 }
 
@@ -55,6 +55,18 @@
     padding: 20px;
     text-decoration: none;
     font-size: 18px;
+
+    @include desktop{
+         img{
+            width: 50px;
+        }
+    }
+
+    @include mobile{
+         img{
+            width: 40px;
+        }
+    }
     
 }
 
