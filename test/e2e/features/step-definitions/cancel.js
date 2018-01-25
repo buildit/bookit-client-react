@@ -22,6 +22,7 @@ When('I am now editing details through the My Bookings page', async function() {
 })
 
 When('I click the Cancel Booking button', async function() {
+  await this.driver.sleep(1000)
   await this.waitUntilElementByCss('button').click()
 })
 
