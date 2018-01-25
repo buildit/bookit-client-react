@@ -4,6 +4,8 @@ import { By } from 'selenium-webdriver'
 Given('I book a room', async function() {
   await this.getWithLogin('/book')
 
+  await this.driver.sleep(1000)
+
   await this.fillBookingForm('My Bookable To Be Deleted', 'NYC', 1)
   await this.selectBookable('Black Room')
   await this.submitBookingForm()
