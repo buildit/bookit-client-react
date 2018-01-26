@@ -17,6 +17,7 @@ import Button from 'Components/Button'
 import Loading from 'Components/Loading'
 
 import arrowRightSrc from 'Images/input-arrow-right.svg'
+import downArrow from 'Images/downArrow.svg'
 import closeSrc from 'Images/close.svg'
 
 import {
@@ -238,6 +239,7 @@ export class BookingForm extends React.Component {
 
           <div className={ styles.heading }>
             <h2 className={ styles.title }>Book A Room in { renderSelect(locations, this.clearRoom) }</h2>
+            <img src={downArrow} alt="Go Back" className={ styles.titleDropdown } />
           </div>
 
           { error && <strong>{ error }</strong> }

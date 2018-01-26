@@ -11,17 +11,20 @@ import BookableAvailabilityItem from 'Components/BookableAvailabilityItem'
 
 import styles from 'Styles/list.scss'
 
+import backArrow from 'Images/backArrow.svg'
+
 export class BookablesList extends React.Component {
   constructor(props) {
     super(props)
 
     this.state = {
       availability: [],
+      selectedLocationName: '',
     }
   }
 
   async componentDidMount() {
-    const { getAvailability, dates: { start, end }, location } = this.props
+    const { getAvailability, dates: { start, end }, location} = this.props
     const { payload: availability } = await getAvailability(start, end, location)
     this.setState({ availability })
   }
@@ -37,12 +40,15 @@ export class BookablesList extends React.Component {
 
   render() {
     const { availability } = this.state
+    const { locationName } = this.props
 
     return (
       <div className={styles.bookablesList}>
         <div className={styles.bookablesHeader}>
-          <ActionLink onClick={this.handleBack} className={styles.back}>BACK</ActionLink>
-          <h3 className={styles.heading}>Select Room</h3>
+          <ActionLink onClick={this.handleBack} className={styles.back}>
+            <img src={backArrow} alt="Go Back" />
+          </ActionLink>
+          <h3 className={styles.heading}>Select a Room ({locationName})</h3>
         </div>
         <div className={styles.bookablecontainer}>
           { availability.map(bookable => (
@@ -65,11 +71,13 @@ BookablesList.propTypes = {
   getAvailability: PropTypes.func,
   setBookablesVisible: PropTypes.func,
   location: PropTypes.string,
+  locationName: PropTypes.string,
 }
 
 const mapStateToProps = state => ({
   dates: selectors.getBookingFormDateRange(state),
   location: selectors.getBookingFormLocation(state),
+  locationName: selectors.getBookingFormLocationName(state),
 })
 
 const mapDispatchToProps = {
