@@ -17,7 +17,6 @@ export class BookablesList extends React.Component {
 
     this.state = {
       availability: [],
-      selectedLocation: '',
     }
   }
 
