@@ -54,6 +54,7 @@
   border-color: $green;
 
   color: $blue;
+  cursor: pointer;
 
   padding-bottom: 2px; 
 }
@@ -119,18 +120,22 @@
 .heading {
   display: flex;
   align-items: center;
+  justify-content: center;
   text-align: center;
 
   padding: 20px 10px 10px 10px;
 
   .title {
-    flex: 1 0 auto;
     color: black;
     font-weight: bold;
 
     @include desktop {
       font-size: 25px;
     }
+  }
+
+  .titleDropdown{
+    margin-left: 1px;
   }
 }
 
