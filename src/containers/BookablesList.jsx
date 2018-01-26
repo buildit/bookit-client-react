@@ -17,16 +17,33 @@ export class BookablesList extends React.Component {
 
     this.state = {
       availability: [],
+      selectedLocationName: '',
     }
   }
 
- 
+  getLocationName = (location, locationOptions) => {
+
+    let foundLocationOnList = {}
+
+    if(locationOptions){
+      foundLocationOnList = locationOptions.find((options) => {
+        return options.id === location
+      })
+    }
+    else {
+      foundLocationOnList.name = ''
+    }
+   
+
+    return (foundLocationOnList.name)
+  }
 
   async componentDidMount() {
-    const { getAvailability, dates: { start, end }, location } = this.props
+    const { getAvailability, dates: { start, end }, location, locationOptions } = this.props
     const { payload: availability } = await getAvailability(start, end, location)
-    
+    const selectedLocationName = await this.getLocationName(location, locationOptions)
     this.setState({ availability })
+    this.setState({ selectedLocationName: selectedLocationName })
   }
 
   handleBack = () => {
@@ -38,18 +55,8 @@ export class BookablesList extends React.Component {
     this.handleBack()
   }
 
-  getLocationName = (location, locationOptions) => {
-    const foundLocationOnList = locationOptions.find((options) => {
-      return options.id === location
-    })
-
-    return (foundLocationOnList.name)
-  }
-
   render() {
-    const { availability } = this.state
-    const {location, locationOptions} = this.props
-    const selectedLocationName = this.getLocationName(location, locationOptions)
+    const { availability, selectedLocationName } = this.state
 
     return (
       <div className={styles.bookablesList}>
