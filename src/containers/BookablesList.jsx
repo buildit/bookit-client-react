@@ -17,12 +17,16 @@ export class BookablesList extends React.Component {
 
     this.state = {
       availability: [],
+      selectedLocation: '',
     }
   }
+
+ 
 
   async componentDidMount() {
     const { getAvailability, dates: { start, end }, location } = this.props
     const { payload: availability } = await getAvailability(start, end, location)
+    
     this.setState({ availability })
   }
 
@@ -35,14 +39,29 @@ export class BookablesList extends React.Component {
     this.handleBack()
   }
 
+  getLocationName = (location, locationOptions) => {
+    const foundLocationOnList = locationOptions.find((options) => {
+      return options.id === location
+    })
+
+    console.log('found location', foundLocationOnList)
+
+
+    return (foundLocationOnList.name)
+  }
+
   render() {
     const { availability } = this.state
+    const {location, locationOptions} = this.props
+    const selectedLocationName = this.getLocationName(location, locationOptions)
+
+    console.log('selected', selectedLocationName)
 
     return (
       <div className={styles.bookablesList}>
         <div className={styles.bookablesHeader}>
           <ActionLink onClick={this.handleBack} className={styles.back}>BACK</ActionLink>
-          <h3 className={styles.heading}>Select Room</h3>
+          <h3 className={styles.heading}>Select a Room ({selectedLocationName})</h3>
         </div>
         <div className={styles.bookablecontainer}>
           { availability.map(bookable => (
@@ -64,11 +83,13 @@ BookablesList.propTypes = {
   change: PropTypes.func,
   getAvailability: PropTypes.func,
   setBookablesVisible: PropTypes.func,
+  locationOptions: PropTypes.arrayOf(PropTypes.object),
   location: PropTypes.string,
 }
 
 const mapStateToProps = state => ({
   dates: selectors.getBookingFormDateRange(state),
+  locationOptions: selectors.getLocationOptions(state),
   location: selectors.getBookingFormLocation(state),
 })
 
