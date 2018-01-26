@@ -44,9 +44,6 @@ export class BookablesList extends React.Component {
       return options.id === location
     })
 
-    console.log('found location', foundLocationOnList)
-
-
     return (foundLocationOnList.name)
   }
 
@@ -54,8 +51,6 @@ export class BookablesList extends React.Component {
     const { availability } = this.state
     const {location, locationOptions} = this.props
     const selectedLocationName = this.getLocationName(location, locationOptions)
-
-    console.log('selected', selectedLocationName)
 
     return (
       <div className={styles.bookablesList}>
