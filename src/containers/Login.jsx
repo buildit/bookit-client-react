@@ -9,7 +9,7 @@ import styles from 'Styles/login.scss'
 export const Login = () => (
   <div className={styles.login}>
     <div className={styles.top}>
-      <h1>BookIt</h1>
+      <h1>Bookit</h1>
     </div>
     <div className={styles.bottom}>
       <LoginWindowOpener>
