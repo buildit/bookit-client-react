@@ -11,6 +11,8 @@ import BookableAvailabilityItem from 'Components/BookableAvailabilityItem'
 
 import styles from 'Styles/list.scss'
 
+import backArrow from 'Images/backArrow.svg'
+
 export class BookablesList extends React.Component {
   constructor(props) {
     super(props)
@@ -61,7 +63,9 @@ export class BookablesList extends React.Component {
     return (
       <div className={styles.bookablesList}>
         <div className={styles.bookablesHeader}>
-          <ActionLink onClick={this.handleBack} className={styles.back}>BACK</ActionLink>
+          <ActionLink onClick={this.handleBack} className={styles.back}>
+            <img src={backArrow} alt="Go Back" />
+          </ActionLink>
           <h3 className={styles.heading}>Select a Room ({selectedLocationName})</h3>
         </div>
         <div className={styles.bookablecontainer}>
