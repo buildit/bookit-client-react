@@ -23,29 +23,10 @@ export class BookablesList extends React.Component {
     }
   }
 
-  getLocationName = (location, locationOptions) => {
-
-    let foundLocationOnList = {}
-
-    if(locationOptions){
-      foundLocationOnList = locationOptions.find((options) => {
-        return options.id === location
-      })
-    }
-    else {
-      foundLocationOnList.name = ''
-    }
-   
-
-    return (foundLocationOnList.name)
-  }
-
   async componentDidMount() {
-    const { getAvailability, dates: { start, end }, location, locationOptions } = this.props
+    const { getAvailability, dates: { start, end }, location} = this.props
     const { payload: availability } = await getAvailability(start, end, location)
-    const selectedLocationName = await this.getLocationName(location, locationOptions)
     this.setState({ availability })
-    this.setState({ selectedLocationName: selectedLocationName })
   }
 
   handleBack = () => {
@@ -58,7 +39,8 @@ export class BookablesList extends React.Component {
   }
 
   render() {
-    const { availability, selectedLocationName } = this.state
+    const { availability } = this.state
+    const { locationName } = this.props
 
     return (
       <div className={styles.bookablesList}>
@@ -66,7 +48,7 @@ export class BookablesList extends React.Component {
           <ActionLink onClick={this.handleBack} className={styles.back}>
             <img src={backArrow} alt="Go Back" />
           </ActionLink>
-          <h3 className={styles.heading}>Select a Room ({selectedLocationName})</h3>
+          <h3 className={styles.heading}>Select a Room ({locationName})</h3>
         </div>
         <div className={styles.bookablecontainer}>
           { availability.map(bookable => (
@@ -88,14 +70,14 @@ BookablesList.propTypes = {
   change: PropTypes.func,
   getAvailability: PropTypes.func,
   setBookablesVisible: PropTypes.func,
-  locationOptions: PropTypes.arrayOf(PropTypes.object),
   location: PropTypes.string,
+  locationName: PropTypes.string,
 }
 
 const mapStateToProps = state => ({
   dates: selectors.getBookingFormDateRange(state),
-  locationOptions: selectors.getLocationOptions(state),
   location: selectors.getBookingFormLocation(state),
+  locationName: selectors.getBookingFormLocationName(state),
 })
 
 const mapDispatchToProps = {

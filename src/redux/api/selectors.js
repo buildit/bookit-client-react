@@ -91,6 +91,13 @@ export const getLocationOptions = createSelector(
   (ids, locations) => ids.map(id => ({ id, name: locations.getIn([id, 'name']) }))
 )
 
+const getBookingFormLocation = state => formValueSelector('booking')(state, 'locationId')
+
+export const getBookingFormLocationName = createSelector(
+  [ getBookingFormLocation, getLocationEntities ],
+  (locationId, locations) => locations.getIn([locationId, 'name'], 'North Pole')
+)
+
 // ### Users -----------------------------------------------------------------
 
 export const getBookingsForUserForDate = createSelector(
