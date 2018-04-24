@@ -31,4 +31,18 @@ describe('<BookableAvailabilityItem />', () => {
 
     expect(props.onClick.mock.calls).to.have.lengthOf(1)
   })
+
+  it('should show a text "Free until %TIME%" if room is not closed representing the nearest time this particular room will be occupied', () => {
+    const propsCopy = { ...props, closed: false, freeUntil: '2018-04-23T12:33' }
+    const wrapper = shallow(<BookableAvailabilityItem {...propsCopy} />)
+
+    expect(wrapper.find('p').text()).to.equal('Free until 12:33')
+  })
+
+  it('should show a text "Free all day" if room is not closed and if this room will be available to the end the day', () => {
+    const propsCopy = { ...props, closed: false, freeUntil: null }
+    const wrapper = shallow(<BookableAvailabilityItem {...propsCopy} />)
+
+    expect(wrapper.find('p').text()).to.equal('Free all day')
+  })
 })

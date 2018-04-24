@@ -1,6 +1,6 @@
 import { normalize, schema } from 'normalizr'
 
-import { createIntervalTree } from 'Utils'
+import { createIntervalTree, formatDate, endOfDay } from 'Utils'
 
 export const locationSchema = new schema.Entity('locations', {})
 
@@ -32,7 +32,7 @@ export const userSchema = new schema.Entity('users', {}, {
 export const availabilitySchema = new schema.Entity('availability', {}, {
   processStrategy: ({ id, name, disposition: { closed, reason }, bookings }) => {
     const tree = createIntervalTree(
-      bookings.map(({ start, end, user: { name } }) => [ start, end, { name } ])
+      bookings.map(({ start, end, user: { name } }) => [ start, end, { name, start, end } ])
     )
     return { id, name, closed, reason, bookings: tree }
   },
@@ -73,8 +73,15 @@ export const normalizeAvailability = (data, start, end) => {
     if (!closed) {
       const overlaps = bookings.search(start, end)
       closed = Boolean(overlaps.length)
-      reason = closed ? `Booked by ${overlaps[0].name}` : reason
+      reason = closed ? `Booked by ${overlaps[0].name} until ${formatDate(overlaps[0].end, 'HH:mm')}` : reason
     }
-    return { bookableId: id, name, closed, reason }
+
+    let freeUntil = null
+    const futureOverlap = bookings.search(end, formatDate(endOfDay(end), 'YYYY-MM-DDTHH:mm:ss'))
+    if(futureOverlap && futureOverlap.length > 0){
+      freeUntil = futureOverlap[0].start
+    }
+    
+    return { bookableId: id, name, closed, reason, freeUntil }
   }).sort((a, b) => a.closed - b.closed)
 }

@@ -5,6 +5,7 @@ import {
   format,
   parse,
   startOfDay,
+  endOfDay,
   isBefore,
   isAfter,
   isSameDay,
@@ -100,4 +101,4 @@ export const createIntervalTree = (intervals) => {
 }
 
 // "Re-export" functions from `date-fns` to reduce overall import statements
-export { addHours, isBefore, isAfter, isSameDay, addDays }
+export { addHours, isBefore, isAfter, isSameDay, addDays, endOfDay }
