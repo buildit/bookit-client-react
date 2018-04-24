@@ -73,7 +73,7 @@ export const normalizeAvailability = (data, start, end) => {
     if (!closed) {
       const overlaps = bookings.search(start, end)
       closed = Boolean(overlaps.length)
-      reason = closed ? `Booked by ${overlaps[0].name} unti ${formatDate(overlaps[0].end, 'HH:mm')}` : reason
+      reason = closed ? `Booked by ${overlaps[0].name} until ${formatDate(overlaps[0].end, 'HH:mm')}` : reason
     }
 
     let freeUntil = null
