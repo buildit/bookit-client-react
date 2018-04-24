@@ -8,6 +8,7 @@ import {
   // normalizeLocations,
   // normalizeBookables,
   normalizeBookings,
+  normalizeAvailability,
   // normalizeBooking,
   // availabilitySchema,
   // normalizeAvailability,
@@ -76,7 +77,17 @@ describe('api/schema', () => {
 
   describe('#normalizeBooking()', () => {})
 
-  describe('#availabilitySchema()', () => {})
+  describe('#availabilitySchema()', () => {
+    it('should get data of locations and bookables, start end end time of the event and return normilized availability for each resourse', () => {
+      const data = [{"location":{"name":"NYC","timeZone":"America/New_York","id":"b1177996-75e2-41da-a3e9-fcdd75d1ab31","timezoneDisplayName":"Eastern Time"},"name":"Black Room","disposition":{"closed":false,"reason":""},"id":"1c824c61-7539-41d7-b723-d4447826ba50","bookings":[]},{"location":{"name":"NYC","timeZone":"America/New_York","id":"b1177996-75e2-41da-a3e9-fcdd75d1ab31","timezoneDisplayName":"Eastern Time"},"name":"Blue Room","disposition":{"closed":false,"reason":""},"id":"23787564-e99d-4741-b285-4d17cc29bf8d","bookings":[]},{"location":{"name":"NYC","timeZone":"America/New_York","id":"b1177996-75e2-41da-a3e9-fcdd75d1ab31","timezoneDisplayName":"Eastern Time"},"name":"Green Room","disposition":{"closed":false,"reason":""},"id":"a7b68976-8dda-44f2-8e39-4e2b6c3514cd","bookings":[{"bookable":{"location":{"name":"NYC","timeZone":"America/New_York","id":"b1177996-75e2-41da-a3e9-fcdd75d1ab31","timezoneDisplayName":"Eastern Time"},"name":"Green Room","disposition":{"closed":false,"reason":""},"id":"a7b68976-8dda-44f2-8e39-4e2b6c3514cd"},"subject":"mm","start":"2018-04-24T15:00","end":"2018-04-24T16:00","user":{"externalId":"a55aea54-9464-4b4b-90d5-7605790a6f38","id":"dc89c8b4-d172-4870-9a1b-a9a3d35b994e","name":"Gregory Soloshchenko (Digital)"},"id":"2c374a26-c2dd-4862-8327-6778b05beb05","startTimezoneAbbreviation":"EDT","endTimezoneAbbreviation":"EDT"},{"bookable":{"location":{"name":"NYC","timeZone":"America/New_York","id":"b1177996-75e2-41da-a3e9-fcdd75d1ab31","timezoneDisplayName":"Eastern Time"},"name":"Green Room","disposition":{"closed":false,"reason":""},"id":"a7b68976-8dda-44f2-8e39-4e2b6c3514cd"},"subject":"nn","start":"2018-04-24T14:00","end":"2018-04-24T14:59","user":{"externalId":"a55aea54-9464-4b4b-90d5-7605790a6f38","id":"dc89c8b4-d172-4870-9a1b-a9a3d35b994e","name":"Gregory Soloshchenko (Digital)"},"id":"aacc1727-ffc9-4ead-abed-068e8ab0c5b4","startTimezoneAbbreviation":"EDT","endTimezoneAbbreviation":"EDT"}]},{"location":{"name":"NYC","timeZone":"America/New_York","id":"b1177996-75e2-41da-a3e9-fcdd75d1ab31","timezoneDisplayName":"Eastern Time"},"name":"Randolph Room","disposition":{"closed":true,"reason":"Out of beer!"},"id":"86d0eb7c-cce0-400a-b413-72f19ba11230","bookings":[]},{"location":{"name":"NYC","timeZone":"America/New_York","id":"b1177996-75e2-41da-a3e9-fcdd75d1ab31","timezoneDisplayName":"Eastern Time"},"name":"Red Room","disposition":{"closed":false,"reason":""},"id":"aab6d676-d3cb-4b9b-b285-6e63058aeda8","bookings":[{"bookable":{"location":{"name":"NYC","timeZone":"America/New_York","id":"b1177996-75e2-41da-a3e9-fcdd75d1ab31","timezoneDisplayName":"Eastern Time"},"name":"Red Room","disposition":{"closed":false,"reason":""},"id":"aab6d676-d3cb-4b9b-b285-6e63058aeda8"},"subject":"some","start":"2018-04-24T12:00","end":"2018-04-24T13:00","user":{"externalId":"a55aea54-9464-4b4b-90d5-7605790a6f38","id":"dc89c8b4-d172-4870-9a1b-a9a3d35b994e","name":"Gregory Soloshchenko (Digital)"},"id":"fa6a62b6-94d9-4cc3-965d-37928a05d228","startTimezoneAbbreviation":"EDT","endTimezoneAbbreviation":"EDT"}]},{"location":{"name":"NYC","timeZone":"America/New_York","id":"b1177996-75e2-41da-a3e9-fcdd75d1ab31","timezoneDisplayName":"Eastern Time"},"name":"White Room","disposition":{"closed":false,"reason":""},"id":"25708e84-cf1b-45aa-b062-0af903328a52","bookings":[]},{"location":{"name":"NYC","timeZone":"America/New_York","id":"b1177996-75e2-41da-a3e9-fcdd75d1ab31","timezoneDisplayName":"Eastern Time"},"name":"Yellow Room","disposition":{"closed":true,"reason":"Not bookable (ad-hoc)"},"id":"cc4bd7e5-00f6-4903-86a2-abf5423edb84","bookings":[]}]
+      const start = '2018-04-24T13:08:41'
+      const end = '2018-04-24T14:08:41'
+      const result = [{"bookableId":"1c824c61-7539-41d7-b723-d4447826ba50","name":"Black Room","closed":false,"reason":"","freeUntil":null},{"bookableId":"23787564-e99d-4741-b285-4d17cc29bf8d","name":"Blue Room","closed":false,"reason":"","freeUntil":null},{"bookableId":"aab6d676-d3cb-4b9b-b285-6e63058aeda8","name":"Red Room","closed":false,"reason":"","freeUntil":null},{"bookableId":"25708e84-cf1b-45aa-b062-0af903328a52","name":"White Room","closed":false,"reason":"","freeUntil":null},{"bookableId":"a7b68976-8dda-44f2-8e39-4e2b6c3514cd","name":"Green Room","closed":true,"reason":"Booked by Gregory Soloshchenko (Digital) unti 14:59","freeUntil":"2018-04-24T14:00"},{"bookableId":"86d0eb7c-cce0-400a-b413-72f19ba11230","name":"Randolph Room","closed":true,"reason":"Out of beer!","freeUntil":null},{"bookableId":"cc4bd7e5-00f6-4903-86a2-abf5423edb84","name":"Yellow Room","closed":true,"reason":"Not bookable (ad-hoc)","freeUntil":null}]
+
+      expect(normalizeAvailability(data, start, end)).to.deep.equal(result)
+    })
+
+  })
 
   describe('#normalizeAvailability()', () => {})
 })
